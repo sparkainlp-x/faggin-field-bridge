@@ -1,0 +1,65 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+title: "Faggin Field Bridge: attunement as spooky unity minus entropy cost, calibrated"
+type: software
+authors:
+  - family-names: "Brisson"
+    given-names: "Jean-François"
+    orcid: "https://orcid.org/0009-0000-9778-5374"
+    affiliation: "Spark AI NLP, Fredericton, New Brunswick, Canada"
+version: 0.1.0
+date-released: "2026-11-14"
+license: AGPL-3.0-only
+repository-code: "https://github.com/sparkainlp-x/faggin-field-bridge"
+url: "https://sparkainlpx.xyz"
+abstract: >-
+  SYNTHETIC measured mapping of Federico Faggin's quantum-field theory of
+  consciousness (Quantum Information Panpsychism, with Giacomo Mauro
+  D'Ariano, arXiv:2012.06580; book-length statement "Irreducible", 2024)
+  onto the sparkainlp-x work. The bridge's central quantity is attunement,
+  A = U * (1 + delta) - C, where U is the spooky correlation (unity, mean
+  pairwise |dot| over 5 noisy copies), C is the normalized entropy cost,
+  and delta is one clipped calibrator scalar in [-0.05, 0.05] (the
+  membrane-arena Yin bound). Faggin is the theory author; Jean-Francois
+  Brisson is the bridge/test author. Faggin has not reviewed or endorsed
+  this software. The metaphysics (fields ARE conscious) is an
+  interpretation and is NOT tested here; only the mapping is tested.
+  Reproductions, recomputed fresh from the definitions: de Broglie spooky
+  0.99999995 at sigma = 0.01; calibration improvement exactly
+  log10(1/0.95) = 0.022276 orders; tensor-membrane mean single-qubit
+  entropy 0.955 bits. The Omega-Genesis spooky 0.9005 is the notebook's
+  reported value; the synthetic reproduction gives 0.837 (same regime,
+  not exact) because the original evolved state is unavailable. Empathy
+  0.5503 is the notebook's reported value, recorded as a supplied proxy,
+  not recomputed. Spooky is self-similarity under noise, not entanglement.
+  No gravity model exists in this package. No DOI yet (no Zenodo record).
+keywords:
+  - synthetic-data
+  - consciousness
+  - Faggin
+  - quantum-information-panpsychism
+  - spooky
+  - attunement
+  - calibration
+  - reproducibility
+  - negative-results
+  - scientific-software
+references:
+  - type: article
+    status: preprint
+    title: "Quantum Information Panpsychism"
+    authors:
+      - family-names: "Faggin"
+        given-names: "Federico"
+      - family-names: "D'Ariano"
+        given-names: "Giacomo Mauro"
+    doi: "10.48550/arXiv.2012.06580"
+    year: 2020
+  - type: article
+    status: preprint
+    title: "Digital to Wave: LGD In Situ Wave Memory-Human Wave Integrated Interface-Metaverse Hologram-Wave Affective AI"
+    authors:
+      - family-names: "Lee"
+        given-names: "Mun Seok"
+    doi: "10.5281/zenodo.21947108"
+    year: 2026

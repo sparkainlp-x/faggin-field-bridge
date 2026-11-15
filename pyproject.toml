@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "faggin-field-bridge"
+version = "0.1.0"
+description = "A measured mapping of Federico Faggin's quantum-field theory of consciousness onto Jean's sparkainlp-x work: attunement A = spooky unity minus normalized entropy cost, adjusted by a bounded calibrator delta. SYNTHETIC; the metaphysics is not tested, only the mapping."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "AGPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [{ name = "Jean-François Brisson" }]
+keywords = ["synthetic-data", "consciousness", "faggin", "quantum-information-panpsychism", "spooky", "attunement", "calibration", "reproducibility", "negative-results"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+]
+dependencies = ["numpy>=1.26"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.urls]
+Repository = "https://github.com/sparkainlp-x/faggin-field-bridge"
+Homepage = "https://sparkainlpx.xyz"
+
+[tool.setuptools]
+py-modules = ["faggin_theory", "attunement", "unity", "cost", "bridge"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]

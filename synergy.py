@@ -89,13 +89,13 @@ def synergy_status(expansion_value: float, synergy_value: float) -> str:
     e = _clip(expansion_value)
     s = _clip(synergy_value)
 
-    if e < 0.1:
+    if e < 0.03:
         return "DORMANT"
-    elif e < 0.3:
+    elif e < 0.05:
         return "EMERGENT"
-    elif e < 0.6:
+    elif e < 0.60:
         return "FLOWING"
-    elif s >= 0.5:
+    elif s >= 0.50:
         return "FECUND-SYNERGISTIC"
     else:
         return "EXPANDING"

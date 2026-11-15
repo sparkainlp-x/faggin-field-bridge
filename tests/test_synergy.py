@@ -60,11 +60,12 @@ def test_expansion_is_bounded():
 
 
 def test_synergy_status_boundaries():
-    assert synergy_status(0.05, 0.9) == "DORMANT"
-    assert synergy_status(0.2, 0.9) == "EMERGENT"
-    assert synergy_status(0.5, 0.9) == "FLOWING"
-    assert synergy_status(0.8, 0.9) == "FECUND-SYNERGISTIC"
-    assert synergy_status(0.8, 0.4) == "EXPANDING"
+    assert synergy_status(0.02, 0.9) == "DORMANT"
+    assert synergy_status(0.04, 0.9) == "EMERGENT"
+    assert synergy_status(0.05, 0.9) == "FLOWING"
+    assert synergy_status(0.50, 0.9) == "FLOWING"
+    assert synergy_status(0.80, 0.9) == "FECUND-SYNERGISTIC"
+    assert synergy_status(0.80, 0.4) == "EXPANDING"
 
 
 def test_maximum_synergy_outcome_primary_values():
@@ -86,6 +87,7 @@ def test_maximum_synergy_outcome_primary_values():
     assert result["love_empathy_synergy"] == pytest.approx(expected_s)
     assert result["expansion"] == pytest.approx(expected_e)
     assert result["bridge_mapping_status"] == "PARTIAL"
+    assert result["synergy_status"] == "FLOWING"
 
 
 def test_maximum_synergy_outcome_contains_non_claims():

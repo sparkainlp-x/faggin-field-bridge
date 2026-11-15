@@ -1,15 +1,15 @@
 # bridge.py
 #
-# The bridge: observer -> calibrator -> attunement -> verdict.
+# The bridge: observer -> calibrator -> attunement -> mapping status.
 #
 # Wiring:
 #   1. The Yang Observer measures unity U and entropy cost C.
 #   2. The Yin Calibrator sweeps its bounded delta and finds the
 #      best attunement.
 #   3. Attunement A is computed at delta = 0 and at the best delta.
-#   4. The verdict labels the result and reports the empathy gate.
+#   4. The mapping status labels the result and reports the empathy gate.
 #
-# Verdict labels:
+# Mapping status labels:
 #   - DISSONANT: A < 0 (the entropy cost exceeds unity).
 #   - PARTIAL: 0 <= A < 0.5 (unity exceeds cost, weakly).
 #   - ATTUNED: A >= 0.5 and empathy E >= 0.5 (unity clearly
@@ -37,14 +37,14 @@ import unity
 
 
 # ---------------------------------------------------------------------------
-# Verdict thresholds (chosen cut points of this bridge, not measured)
+# Mapping status thresholds (chosen cut points of this bridge, not measured)
 # ---------------------------------------------------------------------------
 
 ATTUNEMENT_THRESHOLD = 0.5
 EMPATHY_GATE = at.EMPATHY_GATE
 
 
-def verdict(attunement_value, empathy):
+def mapping_status(attunement_value, empathy):
     """Label an (attunement, empathy) pair.
 
     Returns a dict with the label, the values, and whether the
@@ -77,7 +77,7 @@ def bridge(unity_value, cost_value, empathy=None):
 
     1. The observer measures (U, C) and A at delta = 0.
     2. The calibrator sweeps its bounded delta for the best A.
-    3. The verdict labels the best-calibrated attunement.
+    3. The mapping status labels the best-calibrated attunement.
     Returns a dict with every step's result. Nothing here is
     stored between calls.
     """
@@ -98,7 +98,7 @@ def bridge(unity_value, cost_value, empathy=None):
             obs.unity, obs.cost
         ),
         "empathy": at.empathy_proxy(empathy),
-        "verdict": verdict(best_a, empathy),
+        "mapping_status": mapping_status(best_a, empathy),
     }
 
 
@@ -122,7 +122,7 @@ def worked_example():
     exactly), cost = tensor-membrane entropy (0.9553, reproduced).
     Secondary: the Omega-Genesis numbers (spooky 0.9005 reported,
     synthetic reproduction 0.837) with the same cost, to show how
-    the verdict moves when the unity is the notebook's instead of
+    the mapping status moves when the unity is the notebook's instead of
     the de Broglie repo's.
     """
     primary = bridge_from_entropy(
@@ -162,8 +162,8 @@ def main():
               f"A(best) = {result['best_attunement']:.4f}")
         print(f"  empathy E = {result['empathy']:.4f} "
               f"(gate {EMPATHY_GATE}: "
-              f"{'met' if result['verdict']['empathy_gate_met'] else 'not met'})")
-        print(f"  VERDICT: {result['verdict']['label']}")
+              f"{'met' if result['mapping_status']['empathy_gate_met'] else 'not met'})")
+        print(f"  MAPPING STATUS: {result['mapping_status']['label']}")
         print()
     print("Reading: the de Broglie unity (0.99999995) is the only "
           "one high enough to cover the 0.955 entropy cost, and "

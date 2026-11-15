@@ -49,7 +49,7 @@ A is in [-1, 1]. Positive means unity exceeds the entropy cost
 
 Worked examples from `bridge.worked_example()`:
 
-| Example | U | C | A(δ=0) | A(best, δ=+0.05) | Verdict |
+| Example | U | C | A(δ=0) | A(best, δ=+0.05) | Mapping status |
 |---|---|---|---|---|---|
 | Primary: de Broglie unity + tensor cost | 0.99999995 | 0.9553 | 0.0447 | 0.0947 | PARTIAL |
 | Omega-Genesis reported unity + tensor cost | 0.9005 | 0.9553 | −0.0548 | −0.0098 | DISSONANT |
@@ -60,7 +60,7 @@ cover the 0.955 entropy cost, and only barely — PARTIAL. The
 notebook's unity does not cover it even at the best delta. The
 bounded calibrator moves A by at most 0.05 × U (~0.05); it cannot
 make a high-entropy state attuned. At δ = −0.05 the primary
-example flips to −0.0053: the calibrator can flip the verdict,
+example flips to −0.0053: the calibrator can flip the mapping status,
 but it cannot rescue the state. That is the bridge's honest
 result. Full numbers in [REPORT.md](REPORT.md).
 
@@ -86,7 +86,7 @@ from the source repos' outputs):
 
 ```sh
 python3 -m pytest tests/ -q        # 50 tests, all passing
-python3 bridge.py                   # the worked examples + verdicts
+python3 bridge.py                   # the worked examples + mapping statuses
 python3 unity.py                    # the unity reproductions
 python3 cost.py                     # the entropy reproductions
 python3 attunement.py               # attunement + calibration identity
@@ -109,7 +109,7 @@ Requires Python ≥ 3.11 and NumPy. No other dependencies.
   frozen observations); Yin Calibrator (one clipped scalar in
   [-0.05, 0.05]); the gap-calibration identity; the empathy proxy.
 - `bridge.py` — wires observer → calibrator → attunement →
-  verdict; the worked examples.
+  mapping status; the worked examples.
 
 ## Honest limits
 
@@ -149,7 +149,7 @@ Requires Python ≥ 3.11 and NumPy. No other dependencies.
    — the same regime (0.8–0.9), a difference of 0.0632. The
    test asserts the regime, not the exact value, and the
    difference is printed, not hidden.
-8. **The verdict thresholds (A ≥ 0.5, E ≥ 0.5) are chosen cut
+8. **The mapping-status thresholds (A ≥ 0.5, E ≥ 0.5) are chosen cut
    points of this bridge**, not measured constants. They are
    stated in `bridge.py` so they can be argued with.
 

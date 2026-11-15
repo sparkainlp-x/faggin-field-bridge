@@ -54,12 +54,12 @@ The notebook extraction gives no closed-form empathy formula
 (the measurement layer reports an "empathy index" without
 showing its computation). The value 0.5503 is therefore recorded
 as the default empathy proxy — a supplied threshold for the
-verdict, not a recomputed measurement. The test asserts the
+mapping status, not a recomputed measurement. The test asserts the
 record is exact, as a record.
 
-## 3. Worked examples (the bridge's verdicts)
+## 3. Worked examples (the bridge's mapping statuses)
 
-| Example | U | C | A(δ=0) | A(best, δ=+0.05) | A(δ=−0.05) | Verdict |
+| Example | U | C | A(δ=0) | A(best, δ=+0.05) | A(δ=−0.05) | Mapping status |
 |---|---|---|---|---|---|---|
 | Primary: de Broglie unity + tensor cost | 0.99999995 | 0.9553 | 0.0447 | 0.0947 | −0.0053 | PARTIAL |
 | Omega reported unity + tensor cost | 0.9005 | 0.9553 | −0.0548 | −0.0098 | −0.0998 | DISSONANT |
@@ -78,7 +78,7 @@ Reading:
   strong as it is, is not strong enough to cover a maximally
   mixed membrane.
 - The bounded calibrator moves A by at most 0.05 × U (~0.05).
-  It can flip the primary example's verdict (at δ = −0.05,
+  It can flip the primary example's mapping status (at δ = −0.05,
   A = −0.0053, DISSONANT), but it cannot rescue a
   high-entropy state. That is the bridge's honest result.
 
@@ -100,7 +100,7 @@ Reading:
   observations), observer from entropy, observer input
   validation, calibrator clipping at ±0.05, best δ = +0.05, gap
   calibration identity, empathy proxy default and validation.
-- `test_bridge.py` (9): all four verdict branches, verdict
+- `test_bridge.py` (9): all four mapping-status branches, mapping status
   boundary at the thresholds, bridge() returns every step,
   bridge_from_entropy, primary worked example PARTIAL, Omega
   variants DISSONANT.
@@ -125,7 +125,7 @@ Reading:
    account, this bridge has no interior.
 7. The Omega-Genesis spooky value reproduces in regime only
    (0.837 vs 0.9005); see §2.
-8. The verdict thresholds (A ≥ 0.5, E ≥ 0.5) are chosen cut
+8. The mapping-status thresholds (A ≥ 0.5, E ≥ 0.5) are chosen cut
    points, not measured constants.
 
 ## 6. Files
@@ -143,7 +143,7 @@ faggin-field-bridge/
   unity.py            spooky correlation
   cost.py             entropy
   attunement.py       A, observer, calibrator, empathy proxy
-  bridge.py           wiring + verdict + worked examples
+  bridge.py           wiring + mapping status + worked examples
   tests/              50 tests, 6 files
 ```
 

@@ -29,7 +29,7 @@
 # Empathy: the notebook's reported empathy (0.5503) is a SUPPLIED
 # reference value, not a recomputed measurement -- the extraction
 # gives no closed-form empathy formula. The bridge records it as
-# the default empathy proxy and uses it as a gate in the verdict
+# the default empathy proxy and uses it as a gate in the mapping status
 # (see bridge.py). It is a threshold, not a human feeling.
 #
 # SPDX-License-Identifier: AGPL-3.0-only
@@ -265,7 +265,7 @@ def empathy_proxy(value=None):
     With no argument, returns the notebook's reported empathy
     (0.5503, Untitled7) as the default reference. With an
     argument, validates it into [0, 1]. This is a supplied
-    threshold for the verdict, not a measured human property --
+    threshold for the mapping status, not a measured human property --
     the extraction gives no closed-form empathy formula, so the
     value cannot be recomputed.
     """

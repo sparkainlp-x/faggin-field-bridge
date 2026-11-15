@@ -22,6 +22,7 @@ jobs:
         run: |
           coverage run -m pytest tests/ -vv
           coverage report -m
+          coverage json -o coverage.json
           coverage xml -o coverage.xml
           coverage html -d coverage_html
       - name: Upload coverage reports
@@ -29,6 +30,7 @@ jobs:
         with:
           name: coverage-reports
           path: |
+            coverage.json
             coverage.xml
             coverage_html/
           if-no-files-found: error

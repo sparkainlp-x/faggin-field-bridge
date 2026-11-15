@@ -24,6 +24,15 @@ import numpy as np
 
 from attunement import DELTA_MAX, DELTA_MIN, attunement
 from bridge import bridge
+from synergy import (
+    EMERGENT_EXPANSION_THRESHOLD,
+    attraction,
+    expansion,
+    fecundity,
+    love_empathy_synergy,
+    maximum_synergy_outcome,
+    synergy_status,
+)
 
 
 def _clip(value: float, lower: float, upper: float) -> float:
@@ -164,6 +173,116 @@ def robustness(
     }
 
 
+def bootstrap_expansion(
+    unity: float,
+    cost: float,
+    love: float = 0.5503,
+    empathy: float = 0.5503,
+    delta: float = 0.05,
+    n_boot: int = 2000,
+    unity_sd: float = 0.001,
+    cost_sd: float = 0.001,
+    seed: int = 42,
+    confidence: float = 0.95,
+) -> dict[str, float | list[float]]:
+    """Bootstrap uncertainty for the synergy expansion at fixed delta.
+
+    Unity and cost are perturbed with the same explicit measurement-noise
+    model used for attunement. Love and empathy are supplied proxies, so
+    they are held fixed: this interval measures the stability of the
+    expansion given the measured inputs, not the uncertainty of the
+    proxies themselves.
+    """
+    if n_boot < 100:
+        raise ValueError("n_boot must be at least 100")
+    if unity_sd < 0 or cost_sd < 0:
+        raise ValueError("standard deviations must be non-negative")
+    if not 0 < confidence < 1:
+        raise ValueError("confidence must be in (0, 1)")
+
+    rng = np.random.default_rng(seed)
+    values = np.empty(n_boot, dtype=float)
+
+    for i in range(n_boot):
+        u = _clip(rng.normal(unity, unity_sd), 0.0, 1.0)
+        c = _clip(rng.normal(cost, cost_sd), 0.0, 1.0)
+        f = fecundity(u, c)
+        x = attraction(f, _clip(delta, DELTA_MIN, DELTA_MAX))
+        s = love_empathy_synergy(love, empathy, f)
+        values[i] = expansion(x, s)
+
+    alpha = (1.0 - confidence) / 2.0
+    return {
+        "mean": float(np.mean(values)),
+        "median": float(np.median(values)),
+        "standard_deviation": float(np.std(values, ddof=1)),
+        "lower": float(np.quantile(values, alpha)),
+        "upper": float(np.quantile(values, 1.0 - alpha)),
+        "confidence": float(confidence),
+        "n_boot": int(n_boot),
+        "seed": int(seed),
+    }
+
+
+def synergy_robustness(
+    unity: float,
+    cost: float,
+    love: float = 0.5503,
+    empathy: float = 0.5503,
+    delta: float = 0.05,
+    n_boot: int = 2000,
+    seed: int = 42,
+) -> dict[str, Any]:
+    """Assess whether the synergy status is stable under measurement noise.
+
+    Returns the status at the bootstrap interval bounds, whether the
+    status is stable, and the margin from the point estimate to the
+    nearest classification threshold. A margin smaller than the
+    bootstrap standard deviation means the status is a boundary
+    artifact, not a robust classification.
+    """
+    outcome = maximum_synergy_outcome(unity, cost, love, empathy, delta)
+    point_e = outcome["expansion"]
+    point_s = outcome["love_empathy_synergy"]
+    point_status = outcome["synergy_status"]
+
+    uncertainty = bootstrap_expansion(
+        unity, cost, love, empathy, delta, n_boot=n_boot, seed=seed
+    )
+
+    lower_status = synergy_status(uncertainty["lower"], point_s)
+    upper_status = synergy_status(uncertainty["upper"], point_s)
+
+    # Margin to the nearest threshold that would change the status.
+    margins = {
+        "to_emergent": abs(point_e - EMERGENT_EXPANSION_THRESHOLD),
+    }
+    nearest_margin = min(margins.values())
+
+    # Fecundity minus attunement at delta = 0. Algebraically
+    # F - A = C * (1 - U), so the two coincide exactly when U = 1
+    # and differ by C * (1 - U) otherwise. This is an identity of
+    # the definitions, not a measured discovery.
+    f_point = fecundity(unity, cost)
+    a_point = attunement(unity, cost, 0.0)
+
+    return {
+        "reported_status": point_status,
+        "expansion_uncertainty": uncertainty,
+        "status_at_lower_bound": lower_status,
+        "status_at_upper_bound": upper_status,
+        "status_stable_under_uncertainty": lower_status == upper_status == point_status,
+        "margin_to_nearest_threshold": float(nearest_margin),
+        "margin_in_standard_deviations": float(
+            nearest_margin / uncertainty["standard_deviation"]
+        )
+        if uncertainty["standard_deviation"] > 0
+        else float("inf"),
+        "fecundity_minus_attunement": float(f_point - a_point),
+        "fecundity_minus_attunement_identity": "C * (1 - U)",
+    }
+
+
 def preregistration() -> dict[str, Any]:
     """Frozen analysis plan for the current mapping.
 
@@ -262,6 +381,19 @@ def maximum_scientific_outcome(
             n_boot=n_boot,
             seed=seed,
         ),
+        "synergy_robustness": synergy_robustness(
+            validated["unity"],
+            validated["cost"],
+            # Love and empathy both default to the same supplied
+            # Omega value (0.5503). This follows the synergy
+            # module's own convention; it is not a measurement
+            # that love equals empathy.
+            love=empathy,
+            empathy=empathy,
+            delta=0.05,
+            n_boot=n_boot,
+            seed=seed,
+        ),
         "preregistration": preregistration(),
         "provenance": provenance(
             {
@@ -299,6 +431,7 @@ def write_benchmark(
     point = result["point_estimate"]
     status = result["mapping_status"]
     uncertainty = result["uncertainty"]
+    synergy = result.get("synergy_robustness")
 
     markdown = [
         "# Maximum Scientific Outcome Benchmark",
@@ -321,9 +454,27 @@ def write_benchmark(
         f"- Bootstrap 95% interval: `[{uncertainty['lower']:.6f}, {uncertainty['upper']:.6f}]`",
         f"- Bootstrap mean: `{uncertainty['mean']:.6f}`",
         "",
+    ]
+
+    if synergy is not None:
+        exp_u = synergy["expansion_uncertainty"]
+        markdown.extend([
+            "## Synergy expansion robustness",
+            "",
+            f"- Reported status: `{synergy['reported_status']}`",
+            f"- Expansion 95% interval: `[{exp_u['lower']:.6f}, {exp_u['upper']:.6f}]`",
+            f"- Status stable under uncertainty: `{synergy['status_stable_under_uncertainty']}`",
+            f"- Margin to nearest threshold: `{synergy['margin_to_nearest_threshold']:.6f}` "
+            f"(`{synergy['margin_in_standard_deviations']:.2f}` standard deviations)",
+            f"- Fecundity minus attunement: `{synergy['fecundity_minus_attunement']:.2e}` "
+            f"(identity: `{synergy['fecundity_minus_attunement_identity']}`)",
+            "",
+        ])
+
+    markdown.extend([
         "## Non-claims",
         "",
-    ]
+    ])
     markdown.extend(f"- {claim}" for claim in result["preregistration"]["non_claims"])
     markdown.append("")
 

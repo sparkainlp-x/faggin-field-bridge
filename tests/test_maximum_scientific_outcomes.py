@@ -7,10 +7,12 @@ import pytest
 
 from scientific_outcomes import (
     bootstrap_attunement,
+    bootstrap_expansion,
     maximum_scientific_outcome,
     preregistration,
     provenance,
     sensitivity_analysis,
+    synergy_robustness,
     validate_inputs,
     write_benchmark,
 )
@@ -99,6 +101,75 @@ def test_robustness_reports_sign_flip_possibility():
     robust = result["robustness"]
     assert isinstance(robust["sign_flip_possible"], bool)
     assert robust["calibration_can_rescue"] is False
+
+
+def test_bootstrap_expansion_returns_ordered_interval():
+    result = bootstrap_expansion(
+        0.99999995, 0.9553, love=0.5503, empathy=0.5503, delta=0.05,
+        n_boot=500, seed=42,
+    )
+    assert result["lower"] <= result["mean"] <= result["upper"]
+    assert result["n_boot"] == 500
+
+
+def test_bootstrap_expansion_is_deterministic():
+    first = bootstrap_expansion(
+        0.99999995, 0.9553, love=0.5503, empathy=0.5503, delta=0.05,
+        n_boot=300, seed=42,
+    )
+    second = bootstrap_expansion(
+        0.99999995, 0.9553, love=0.5503, empathy=0.5503, delta=0.05,
+        n_boot=300, seed=42,
+    )
+    assert first["mean"] == second["mean"]
+    assert first["lower"] == second["lower"]
+    assert first["upper"] == second["upper"]
+
+
+def test_synergy_robustness_primary_flowing_is_stable():
+    result = synergy_robustness(
+        0.99999995, 0.9553, love=0.5503, empathy=0.5503, delta=0.05,
+        n_boot=500, seed=42,
+    )
+    assert result["reported_status"] == "FLOWING"
+    assert result["status_stable_under_uncertainty"] is True
+    # Margin to the EMERGENT threshold is several standard deviations.
+    assert result["margin_in_standard_deviations"] > 3.0
+
+
+def test_synergy_robustness_omega_emergent_is_not_stable():
+    result = synergy_robustness(
+        0.9005, 0.9553, love=0.5503, empathy=0.5503, delta=0.05,
+        n_boot=500, seed=42,
+    )
+    assert result["reported_status"] == "EMERGENT"
+    # The Omega expansion interval straddles the 0.05 threshold, so
+    # its EMERGENT status flips to FLOWING within the noise model.
+    assert result["status_stable_under_uncertainty"] is False
+    assert result["margin_in_standard_deviations"] < 1.5
+
+
+def test_fecundity_minus_attunement_is_identity():
+    result = synergy_robustness(
+        0.99999995, 0.9553, love=0.5503, empathy=0.5503, delta=0.05,
+        n_boot=200, seed=42,
+    )
+    # F - A = C * (1 - U). With U ~ 1 the difference is ~5e-8.
+    expected = 0.9553 * (1.0 - 0.99999995)
+    assert result["fecundity_minus_attunement"] == pytest.approx(expected, abs=1e-12)
+    assert result["fecundity_minus_attunement_identity"] == "C * (1 - U)"
+
+
+def test_maximum_scientific_outcome_includes_synergy_robustness():
+    result = maximum_scientific_outcome(
+        unity=0.99999995,
+        cost=0.9553,
+        empathy=0.5503,
+        n_boot=200,
+        seed=42,
+    )
+    assert "synergy_robustness" in result
+    assert result["synergy_robustness"]["reported_status"] == "FLOWING"
 
 
 def test_preregistration_contains_non_claims():

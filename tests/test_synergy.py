@@ -3,6 +3,10 @@
 import pytest
 
 from synergy import (
+    DORMANT_EXPANSION_THRESHOLD,
+    EMERGENT_EXPANSION_THRESHOLD,
+    FECUND_EXPANSION_THRESHOLD,
+    FECUND_SYNERGY_THRESHOLD,
     attraction,
     expansion,
     fecundity,
@@ -11,6 +15,12 @@ from synergy import (
     synergy_status,
     validate_synergy_inputs,
 )
+
+
+def test_status_thresholds_are_ordered():
+    assert DORMANT_EXPANSION_THRESHOLD < EMERGENT_EXPANSION_THRESHOLD
+    assert EMERGENT_EXPANSION_THRESHOLD < FECUND_EXPANSION_THRESHOLD
+    assert 0.0 <= FECUND_SYNERGY_THRESHOLD <= 1.0
 
 
 def test_validate_synergy_inputs_accepts_valid_values():

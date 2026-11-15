@@ -23,6 +23,14 @@ import numpy as np
 from attunement import DELTA_MAX, DELTA_MIN, attunement
 from bridge import bridge
 
+# Repository-defined synergy classification thresholds.
+# These are conventions of this mapping, not measured physical,
+# psychological, or clinical constants.
+DORMANT_EXPANSION_THRESHOLD = 0.03
+EMERGENT_EXPANSION_THRESHOLD = 0.05
+FECUND_EXPANSION_THRESHOLD = 0.60
+FECUND_SYNERGY_THRESHOLD = 0.50
+
 
 def _clip(value: float, lower: float = 0.0, upper: float = 1.0) -> float:
     return min(upper, max(lower, float(value)))
@@ -89,13 +97,13 @@ def synergy_status(expansion_value: float, synergy_value: float) -> str:
     e = _clip(expansion_value)
     s = _clip(synergy_value)
 
-    if e < 0.03:
+    if e < DORMANT_EXPANSION_THRESHOLD:
         return "DORMANT"
-    elif e < 0.05:
+    elif e < EMERGENT_EXPANSION_THRESHOLD:
         return "EMERGENT"
-    elif e < 0.60:
+    elif e < FECUND_EXPANSION_THRESHOLD:
         return "FLOWING"
-    elif s >= 0.50:
+    elif s >= FECUND_SYNERGY_THRESHOLD:
         return "FECUND-SYNERGISTIC"
     else:
         return "EXPANDING"

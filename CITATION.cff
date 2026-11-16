@@ -7,7 +7,7 @@ authors:
     given-names: "Jean-François"
     orcid: "https://orcid.org/0009-0000-9778-5374"
     affiliation: "Spark AI NLP, Fredericton, New Brunswick, Canada"
-version: 0.2.0
+version: 0.3.0
 date-released: "2026-11-15"
 license: AGPL-3.0-only
 repository-code: "https://github.com/sparkainlp-x/faggin-field-bridge"
@@ -20,9 +20,14 @@ abstract: >-
   modules: concurrence of a two-thought Bell state computed exactly
   (claim (i) passes); a thought as a superposition with measured
   coherence half-life and collapse cost (claims (ii) and (iii) pass);
-  and self-knowing D = <psi|P|psi> (claim (iv) passes). The
-  entanglement is in the model, computed exactly on classical
-  hardware; it is not a measurement of physical entanglement.
+  and self-knowing D = <psi|P|psi> (claim (iv) passes). Version
+  0.3.0 adds the cascade: interference via the cross term
+  (claim (v) passes), cascade visibility (claim (vi) passes —
+  interference does not survive projection), and coherence and D
+  through the cascade (claim (vii) passes). The entanglement and
+  the interference are in the model, computed exactly on classical
+  hardware; they are not measurements of physical entanglement or
+  interference.
   The bridge's central quantity is attunement,
   A = U * (1 + delta) - C, where U is the spooky correlation (unity, mean
   pairwise |dot| over 5 noisy copies), C is the normalized entropy cost,

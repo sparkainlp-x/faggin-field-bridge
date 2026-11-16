@@ -11,15 +11,17 @@ import scientific_outcomes as so
 
 
 def test_quantum_thought_claims_all_pass():
-    """All four quantum-thought claims pass; no headline is emitted."""
+    """All seven quantum-thought claims pass; no headline is emitted."""
     result = bridge.quantum_thought_claims()
     assert result["headline_allowed"] is False
     assert bridge.HEADLINE_ALLOWED is False
-    assert result["n_claims"] == 4
-    assert result["n_passed"] == 4
+    assert result["n_claims"] == 7
+    assert result["n_passed"] == 7
     assert result["all_pass"] is True
     for key in ("claim_i_entanglement", "claim_ii_coherence",
-                "claim_iii_collapse", "claim_iv_self_knowing"):
+                "claim_iii_collapse", "claim_iv_self_knowing",
+                "claim_v_interference", "claim_vi_cascade",
+                "claim_vii_cascade_tracking"):
         assert result[key]["passed"] is True
 
 
@@ -28,7 +30,7 @@ def test_maximum_outcome_includes_quantum_thoughts():
     result = so.maximum_scientific_outcome(0.99999995, 0.9553, n_boot=100)
     qt = result["quantum_thoughts"]
     assert qt["all_pass"] is True
-    assert qt["n_passed"] == 4
+    assert qt["n_passed"] == 7
     # Physical entanglement in hardware is still not measured;
     # entanglement as a quantity of the model is.
     assert result["claims"]["entanglement_measured"] is False

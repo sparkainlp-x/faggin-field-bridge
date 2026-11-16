@@ -313,6 +313,10 @@ def preregistration() -> dict[str, Any]:
             "(concurrence of a two-thought Bell state, computed exactly "
             "on classical hardware); it is not a measurement of physical "
             "entanglement in hardware.",
+            "Interference and cascade visibility are measured only as "
+            "quantities of the model (exact geometry of state vectors "
+            "on classical hardware); they are not measurements of "
+            "physical interference in hardware.",
         ],
     }
 

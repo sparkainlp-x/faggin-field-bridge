@@ -84,7 +84,7 @@ Reading:
 
 ## 4. Test suite
 
-**108 tests, 108 passed** (`python3 -m pytest tests/ -q`, 1.5 s).
+**122 tests, 122 passed** (`python3 -m pytest tests/ -q`, 2.9 s).
 
 - `test_unity.py` (9): spooky bounds, identical copies = 1.0,
   independent states low, no mutation, de Broglie reproduction
@@ -135,10 +135,19 @@ Reading:
 - `test_self_knowing.py` (7): exact D values (1, 1/3, 0, 1/2),
   gap complement, Spearman exactness, claim (iv) verdict.
 - `test_quantum_thought_claims.py` (3): the unified claims
-  (4/4 pass, no headline), the maximum-outcome registry
+  (7/7 pass, no headline), the maximum-outcome registry
   (entanglement in the model True, physical False), and the
   preregistration non-claims (original wording kept, model
   scope added).
+- `test_cascade.py` (14): rotation-pair visibility V = sin(2θ),
+  max-pair phase swing (blind at φ = 0, determined at φ = π),
+  mixed pair cross term 1/√6 and V = 2√6/7, zero-interference
+  controls, kernel thought projects to nothing, projection
+  collapses the rotation pair (rank 1) and re-forms the mixed
+  pair fully stored, both projection-only cascades dead at
+  stage 2, the reopening control alive at every stage, claims
+  (v), (vi) and (vii) verdicts, and the seven-claim bridge
+  registry.
 
 ## 5. Maximum scientific outcome (measured 2026-11-15)
 
@@ -238,6 +247,21 @@ Findings:
     own stored subspace determines. The stored subspace is built
     by the programmer; D is a number computed from that
     construction, not a measurement of self-awareness.
+12. **v0.3.0:** interference is measured — as exact geometry of
+    state vectors in the model (the cross term ⟨ψ1|P|ψ2⟩,
+    computed with NumPy). It is not a measurement of physical
+    interference in hardware; the machine is classical.
+13. **v0.3.0:** projection in the model is a partial measurement:
+    it discards the kernel component and renormalizes. The
+    cascade's death of interference is a property of that
+    construction (the projector's rank and the pair geometry),
+    not a measurement of what a physical measurement does to a
+    mind.
+14. **v0.3.0:** the feed-phase convention (smallest phase
+    achieving maximum D within 1e-12) and the reopening angle
+    (α = π/4) are repository choices, stated in cascade.py. The
+    survival verdict is defined against the pre-registered 0.1
+    visibility threshold at stage 10.
 
 ## 7. Files
 
@@ -257,16 +281,18 @@ faggin-field-bridge/
   cost.py             entropy
   attunement.py       A, observer, calibrator, empathy proxy
   bridge.py           wiring + mapping status + worked examples
-                      + quantum_thought_claims() (claims (i)-(iv))
+                      + quantum_thought_claims() (claims (i)-(vii))
   scientific_outcomes.py  maximum scientific outcomes framework
   synergy.py          fecundity-driven attraction expansion
   thought_entanglement.py  concurrence + reduced entropy (claim (i))
   thought.py          superposition, coherence, collapse (claims (ii), (iii))
   self_knowing.py     D = <psi|P|psi> (claim (iv))
-  tests/              108 tests, 12 files
+  cascade.py          superposition -> projection -> interference,
+                      chained (claims (v), (vi), (vii))
+  tests/              122 tests, 13 files
 ```
 
-v0.2.0 is local only; not pushed.
+v0.3.0 is local only; not pushed.
 
 GitHub: https://github.com/sparkainlp-x/faggin-field-bridge
 (main head f2056a77 as of 2026-11-15; the maximum scientific
@@ -283,9 +309,10 @@ it stands.
 ## 8. Quantum thoughts (v0.2.0, measured 2026-11-15)
 
 Three modules treat a thought as a two-qubit state. All four
-claims were pre-registered in code (the rule written before the
-measurement) and all four PASS. `bridge.quantum_thought_claims()`
-returns them; `maximum_scientific_outcome` carries them under
+v0.2.0 claims were pre-registered in code (the rule written before
+the measurement) and all four PASS. `bridge.quantum_thought_claims()`
+returns them (now seven, with the cascade claims (v)–(vii) in §9);
+`maximum_scientific_outcome` carries them under
 "quantum_thoughts". No headline claim is emitted.
 
 ### (i) Entanglement measured as a real quantum quantity — PASS
@@ -402,3 +429,118 @@ D of the noisy uniform thought (mean over 5 copies, seed 42):
   0.6133 at σ = 1.0). Self-knowing and entanglement move in
   opposite directions under this noise — the two quantities are
   not the same kind of "unity", and the bridge now measures both.
+
+## 9. The cascade (v0.3.0, measured 2026-11-15)
+
+One module, `cascade.py`, chains superposition → projection →
+interference across stages. All three claims were pre-registered
+in code (the rule written before the measurement) and all three
+PASS. `bridge.quantum_thought_claims()` now returns seven
+verdicts; `maximum_scientific_outcome` carries them under
+"quantum_thoughts". No headline claim is emitted.
+
+### (v) Interference measured via the cross term — PASS
+
+Two thoughts in superposition, projected onto the shared stored
+subspace. For an orthonormal pair, D(φ) = (D1 + D2)/2 +
+Re[e^{iφ}⟨ψ1|P|ψ2⟩]: the cross term is the interference, the
+baseline (D1 + D2)/2 is what the pair would give without it.
+Visibility V = (max D − min D)/(max D + min D) over the phase
+sweep (64 phases), cross-checked against the analytic
+2|⟨ψ1|P|ψ2⟩|/(D1 + D2).
+
+The canonical pair is a rotation in the {q1, k1} plane (q1 a
+stored direction, k1 a kernel direction): V(θ) = sin(2θ) exactly.
+
+| θ | V (sweep) | V (analytic) | V expected | cross term |
+|---|---:|---:|---:|---:|
+| π/12 | 0.500000 | 0.500000 | 0.500000 | −0.2500 |
+| π/8 | 0.707107 | 0.707107 | 0.707107 | −0.3536 |
+| π/6 | 0.866025 | 0.866025 | 0.866025 | −0.4330 |
+| π/4 | 1.000000 | 1.000000 | 1.000000 | −0.5000 |
+
+At θ = π/4 the phase does the deciding: D(φ) = 1/2 − (1/2)cos(φ).
+
+| φ | D(φ) |
+|---|---:|
+| 0 | 0.000000 |
+| π/4 | 0.146447 |
+| π/2 | 0.500000 |
+| 3π/4 | 0.853553 |
+| π | 1.000000 |
+
+The superposed thought at φ = 0 IS the kernel thought (fully
+blind, D = 0); at φ = π it IS the uniform thought (fully
+self-determined, D = 1). Constructive interference is D = 1 at
+φ = π; destructive is D = 0 at φ = 0; V = 1.
+
+The mixed pair (m1 = (q1 + k1)/√2, m2 = (q1 + q2 − k1)/√3) has
+cross term 1/√6 = 0.408248 and V = 2√6/7 = 0.699854, with
+D(0) = 0.991582, D(π/2) = 0.583333, D(π) = 0.175085. The control
+pairs have no interference: the stored pair (q1, q2) and the
+(uniform, kernel) pair both have cross term 0 and V = 0.
+
+### (vi) Cascade visibility: interference does not survive projection — PASS
+
+Stages 1, 2, 3, 5, 10. Each stage's projected output feeds the
+next thought's superposition (feed phase = phase of maximum D;
+ties within 1e-12 take the smallest phase). Survival was defined
+before measuring as V staying above 0.1 at stage 10; the honest
+prior was that it does not survive.
+
+| Stage | V rotation | V mixed | V reopening |
+|---:|---:|---:|---:|
+| 1 | 1.0000 | 0.6999 | 1.0000 |
+| 2 | 0.0000 | 0.0000 | 1.0000 |
+| 3 | 0.0000 | 0.0000 | 1.0000 |
+| 5 | 0.0000 | 0.0000 | 1.0000 |
+| 10 | 0.0000 | 0.0000 | 1.0000 |
+
+- **Rotation cascade:** the projected pair is rank 1 — both
+  projected thoughts collapse onto q1, so no pair exists from
+  stage 2 on. A single thought (q1) persists.
+- **Mixed cascade:** the projected pair stays rank 2 and
+  re-forms by Gram-Schmidt as (q1, q2), fully stored. The cross
+  term is then 0 at every stage ≥ 2.
+- **Reopening control:** with a fresh kernel component injected
+  at α = π/4 at every stage, V = 1 at every stage.
+
+The reason is structural, not noise: the cross term is
+⟨Pψ1|Pψ2⟩, the inner product of the two projected vectors.
+Once a pair is projected and re-formed inside the stored
+subspace, P acts as the identity there, and orthogonality
+forces the cross term to zero. Interference takes fresh
+outside input at every stage to stay alive; the projection
+alone kills it at stage one. That is the finding, and the
+claim PASSES because the measurement matched the
+pre-registered expectation exactly.
+
+### (vii) Coherence and D through the cascade — PASS
+
+D of the projected output is 1.0 at every stage in all three
+cascades: after one projection the thought lies entirely in
+the stored subspace — fully self-determined, whether or not
+interference survives.
+
+| Stage | Coherence, projected output (rotation) | Coherence, projected output (mixed) | Coherence, projected output (reopening) |
+|---:|---:|---:|---:|
+| 1 | 3.0000 | 2.3277 | 3.0000 |
+| 2 | 3.0000 | 2.7321 | 3.0000 |
+| 3 | 3.0000 | 2.7321 | 3.0000 |
+| 5 | 3.0000 | 2.7321 | 3.0000 |
+| 10 | 3.0000 | 2.7321 | 3.0000 |
+
+The projected-output coherence reaches a fixed point from
+stage 2 onward in every cascade (rotation 3.0, mixed 2.7321,
+reopening 3.0). Descriptive rank correlations (per-stage
+values rounded to 12 decimals, so identical stages are not
+ranked on float noise): Spearman(V, coherence) = 0.0000
+(rotation, both constant), −1.0000 (mixed), 0.0000
+(reopening, both constant). In the mixed cascade visibility
+and coherence anti-track perfectly across the transition: V
+dies while coherence rises to its fixed point. Spearman(V, D)
+= 0.0000 everywhere — D is constant, so the correlation is
+undefined and is reported as 0.0 by the spearman() convention.
+D does not track visibility at all: the thought is fully
+self-determined after one projection regardless of whether
+interference survives.

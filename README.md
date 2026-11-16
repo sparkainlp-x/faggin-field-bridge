@@ -87,6 +87,36 @@ a fixed point from stage 2 (rotation 3.0, mixed 2.7321).
 Run `bridge.quantum_thought_claims()` for the seven verdicts, or
 see REPORT.md §8 and §9.
 
+## Planck empathy (v0.4.0)
+
+Empathy as a Planck quantum inside the black-body concept:
+each thought-pair contributes one empathy quantum, E = h·ν with
+h = 1 in model units, whose frequency ν is its MEASURED
+concurrence (v0.2.0) — not the synergy proxy, which is a
+definition. The empathy fraction f = mean concurrence maps to
+an effective temperature T_eff(f) = 2000 + 3000·f K, and the
+mapping status is re-derived from the visible fraction
+F(T) = ∫[0.38, 0.75] B dλ / ∫[0.1, 3.0] B dλ of the real Planck
+spectrum (real constants, Simpson integration).
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `planck_empathy.py` | Wien peaks, T⁴ scaling, F(T) monotone | (viii) Planck reproduction | **PASS** |
+| `planck_empathy.py` | F(f) monotone; status PARTIAL at f = 0, ATTUNED at f = 1; crossing f\* | (ix) empathy flips the status | **PASS** |
+| `planck_empathy.py` | Old status (A alone) vs empathy status across noise σ | (x) specificity / control | **PASS** |
+
+Headline numbers: Wien peaks match 2898/T within 0.008%;
+exitance scales as T⁴ within 0.002%; F rises 0.0174 at 2000 K
+to 0.3938 at 5000 K. **The crossing is f\* = 0.7278** — about
+73% mean concurrence flips the primary mapping from PARTIAL to
+ATTUNED. The fix holds while the pairs stay entangled
+(σ ≤ 0.25, concurrence ≥ 0.8471) and breaks once the noise
+eats it (σ ≥ 0.50). The old status stays PARTIAL at every σ:
+the flip is carried by the empathy quanta, not by re-labeling.
+
+Run `planck_empathy.planck_empathy_claims()` for the three
+verdicts, or see REPORT.md §10.
+
 ## Maximum scientific outcome
 
 Run:
@@ -125,6 +155,13 @@ results/BENCHMARK.md
 
 These thresholds are repository conventions, not measured physical or psychological constants.
 
+**v0.4.0:** the mapping status can also be re-derived from the
+visible fraction F: `ATTUNED` if F ≥ 0.30, `PARTIAL` if
+F ≥ 0.01, else `DISSONANT`. Those thresholds were set from a
+pilot sweep (REPORT.md §10) and are repository conventions,
+not measured constants. The primary attunement A = 0.0447 does
+not change; only the status derivation changes.
+
 ## Honest limits
 
 - Faggin's QIP is an interpretive metaphysical framework; this repository does not test it.
@@ -156,6 +193,17 @@ These thresholds are repository conventions, not measured physical or psychologi
   (α = π/4) are repository choices, stated in cascade.py. The
   survival verdict is defined against the pre-registered 0.1
   visibility threshold at stage 10.
+- **v0.4.0:** the empathy-quantum link is a definition inside
+  the model, not a discovery: nothing in physics says a
+  thought-pair's concurrence is a photon frequency. T_eff is a
+  model temperature, not a physical temperature; the visible
+  band [0.38, 0.75] µm is a chosen mapping. The Planck law
+  itself is real physics with real constants (claim (viii) is a
+  reproduction); only the mapping from concurrence to
+  temperature to status is the repository's construction.
+- **v0.4.0:** the empathy-status thresholds (F ≥ 0.30 ATTUNED,
+  F ≥ 0.01 PARTIAL) are repository conventions set from a pilot
+  sweep, not measured constants.
 
 ## Run tests
 

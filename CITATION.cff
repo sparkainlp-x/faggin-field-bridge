@@ -7,8 +7,8 @@ authors:
     given-names: "Jean-François"
     orcid: "https://orcid.org/0009-0000-9778-5374"
     affiliation: "Spark AI NLP, Fredericton, New Brunswick, Canada"
-version: 0.3.1
-date-released: "2026-11-15"
+version: 0.4.0
+date-released: "2026-11-16"
 license: AGPL-3.0-only
 repository-code: "https://github.com/sparkainlp-x/faggin-field-bridge"
 url: "https://sparkainlpx.xyz"
@@ -24,7 +24,16 @@ abstract: >-
   0.3.0 adds the cascade: interference via the cross term
   (claim (v) passes), cascade visibility (claim (vi) passes —
   interference does not survive projection), and coherence and D
-  through the cascade (claim (vii) passes). The entanglement and
+  through the cascade (claim (vii) passes). Version 0.4.0 adds
+  Planck empathy: empathy as a Planck quantum inside the
+  black-body concept (claims (viii), (ix), (x), all pass) — each
+  thought-pair contributes one quantum whose frequency is its
+  measured concurrence; the visible fraction of the real Planck
+  spectrum re-derives the mapping status from PARTIAL to ATTUNED
+  at a measured empathy fraction f* = 0.7278, holding at noise
+  sigma <= 0.25 and breaking at sigma >= 0.50. The Planck law
+  is reproduced with the real constants; the empathy-quantum
+  link is a definition inside the model, not a discovery. The entanglement and
   the interference are in the model, computed exactly on classical
   hardware; they are not measurements of physical entanglement or
   interference.

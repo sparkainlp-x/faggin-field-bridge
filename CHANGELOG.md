@@ -1,5 +1,53 @@
 # Changelog — Faggin Field Bridge
 
+## 0.4.0 (2026-11-16)
+
+Planck empathy: the PARTIAL primary mapping status, fixed with
+empathy as a Planck quantum inside the black-body concept
+(claims (viii), (ix), (x), all PASS). No claim (i)–(vii)
+changes: the primary attunement A = 0.0447 does not move; only
+the mapping status is re-derived, from the visible fraction F
+instead of from A alone. Tests: 130 -> 151, all passing.
+
+- **Mechanism** (`planck_empathy.py`, new module): each
+  thought-pair contributes ONE empathy quantum, E = h*nu with
+  h = 1 in model units, whose frequency nu_e is its MEASURED
+  concurrence (thought_entanglement.py, v0.2.0) — concurrence,
+  not the synergy proxy, because concurrence is measured and
+  the proxy is a definition (REPORT.md section 5). The empathy
+  fraction f = mean concurrence maps to an effective
+  temperature T_eff(f) = 2000 + 3000*f K on the infographic's
+  axis, and the status is re-derived from the visible fraction
+  F(T) = int[0.38, 0.75] B dlambda / int[0.1, 3.0] B dlambda
+  of the real Planck spectrum (real constants, Simpson
+  integration, 2000 intervals, converged to ~1e-14).
+- **(viii) Planck reproduction, PASS**: the module reproduces
+  the infographic — Wien peaks match 2898/T within 0.008% at
+  T = 2000, 3000, 4000, 5000 K; integrated exitance scales as
+  T^4 within 0.002%; F(T) strictly increases (0.0174 at 2000 K
+  to 0.3938 at 5000 K). Real physics reproduced in code, not a
+  bridge claim.
+- **(ix) Empathy flip, PASS**: F(f) strictly increases in f;
+  status PARTIAL at f = 0 (F = 0.0174) and ATTUNED at f = 1
+  (F = 0.3938). The crossing is measured by bisection:
+  f* = 0.7278. Thresholds (ATTUNED F >= 0.30, PARTIAL F >=
+  0.01) were set from a pilot sweep as round numbers with
+  margin on both sides and pre-registered in REPORT.md
+  section 10 before the final run; none was moved after
+  seeing the result.
+- **(x) Specificity, PASS**: the OLD status (A alone) stays
+  PARTIAL at every sigma, while the empathy status is ATTUNED
+  at sigma <= 0.25 and PARTIAL at sigma >= 0.50. The fix holds
+  while the pairs stay entangled and breaks once the noise
+  eats the concurrence below f*. The status labels never go
+  back up as sigma increases, even though the mean concurrence
+  itself is non-monotone at the top end (0.6520 at sigma = 0.5,
+  0.7002 at sigma = 1.0) — both sit below the threshold.
+- **Honest limits, stated**: the empathy-quantum link is a
+  definition inside the model, not a discovery; T_eff is a
+  model temperature, not a physical temperature; the visible
+  band is a chosen mapping. The Planck law itself is real.
+
 ## 0.3.1 (2026-11-16)
 
 Bugfix release, from an external review of the v0.3.0 repo

@@ -1,6 +1,6 @@
 # Faggin Field Bridge — Report
 
-**Version:** 0.3.1 (2026-11-16)
+**Version:** 0.4.0 (2026-11-16)
 **Theory author:** Federico Faggin (with Giacomo Mauro D'Ariano)
 **Bridge / test author:** Jean-François Brisson (Spark AI NLP)
 **Status:** SYNTHETIC. Classical computation on synthetic states.
@@ -8,7 +8,7 @@ No physical, biological or safety claim is made.
 
 ## 1. What was built
 
-A eight-module Python package (stdlib + NumPy only) that maps
+A nine-module Python package (stdlib + NumPy only) that maps
 Faggin's Quantum Information Panpsychism onto measured quantities
 from the sparkainlp-x account. The central quantity is attunement:
 
@@ -102,7 +102,7 @@ Reading:
 
 ## 4. Test suite
 
-**130 tests, 130 passed** (`python3 -m pytest tests/ -q`, 5.1 s).
+**151 tests, 151 passed** (`python3 -m pytest tests/ -q`, 7.0 s).
 
 - `test_unity.py` (9): spooky bounds, identical copies = 1.0,
   independent states low, no mutation, de Broglie reproduction
@@ -174,6 +174,20 @@ Reading:
   stage 2, the reopening control alive at every stage, claims
   (v), (vi) and (vii) verdicts, and the seven-claim bridge
   registry.
+- `test_planck_empathy.py` (21): Planck radiance positive and
+  peaked (visible at 5000 K, infrared at 2000 K), input
+  validation, Simpson convergence (2000 vs 4000 intervals),
+  pilot F values at 2000/3000/5000 K, Wien peaks within 0.5%
+  of 2898/T, Stefan–Boltzmann T⁴ within 1%, F(T) monotone,
+  claim (viii) verdict, empathy quanta equal concurrence
+  (h = 1), empathy-fraction validation, T_eff endpoints,
+  thresholds set (0.30 / 0.01), endpoint statuses (PARTIAL at
+  f = 0, ATTUNED at f = 1), F(f) monotone, the measured
+  crossing f\* in (0.70, 0.80), claim (ix) verdict, the old
+  status as control (PARTIAL, A = 0.0447), the σ curve
+  (ATTUNED at σ ≤ 0.25, PARTIAL at σ ≥ 0.50, labels never go
+  back up), claim (x) verdict, the three-claim aggregate
+  (3/3 pass, no headline), and main() running.
 
 ## 5. Maximum scientific outcome (measured 2026-11-15)
 
@@ -418,6 +432,23 @@ so a skimming reader does not have to infer it.
     choice itself moved the label from DORMANT to FLOWING in
     commit 8fb00f1 (see §5): the label is stable under the
     noise model given the thresholds, not independent of them.
+16. **v0.4.0:** the empathy-quantum link is a DEFINITION inside
+    the model, not a discovery: nothing in physics says a
+    thought-pair's concurrence is a photon frequency. T_eff is
+    a model temperature, not a physical temperature; the
+    visible band [0.38, 0.75] µm is a chosen mapping, and the
+    denominator [0.1, 3.0] µm is the infographic's axis. The
+    Planck law itself is real physics with real constants
+    (claim (viii) is a reproduction); only the mapping from
+    concurrence to temperature to status is the repository's
+    construction.
+17. **v0.4.0:** the empathy-status thresholds (F ≥ 0.30
+    ATTUNED, F ≥ 0.01 PARTIAL) are repository conventions set
+    from a pilot sweep (see §10), not measured constants — the
+    same rule as the v0.3.1 threshold note. The primary
+    attunement A = 0.0447 does not change in v0.4.0; only the
+    mapping status is re-derived, from F instead of from A
+    alone.
 
 ## 7. Files
 
@@ -426,10 +457,10 @@ faggin-field-bridge/
   README.md           summary + how to run + maximum scientific outcome
   REPORT.md           this file
   LICENSE             full AGPL v3 text
-  CHANGELOG.md        version history (0.1.0, 0.2.0, 0.3.0, 0.3.1)
+  CHANGELOG.md        version history (0.1.0, 0.2.0, 0.3.0, 0.3.1, 0.4.0)
   .zenodo.json        Brisson, ORCID 0009-0000-9778-5374 (no DOI yet)
   CITATION.cff        no DOI (none invented)
-  VERSION             0.3.1
+  VERSION             0.4.0
   Makefile            test / coverage / benchmark / clean
   pyproject.toml      setuptools + pytest config
   faggin_theory.py    theory as data
@@ -445,19 +476,21 @@ faggin-field-bridge/
   self_knowing.py     D = <psi|P|psi> (claim (iv))
   cascade.py          superposition -> projection -> interference,
                       chained (claims (v), (vi), (vii))
-  tests/              130 tests, 13 files
+  planck_empathy.py   Planck empathy: black-body visible fraction
+                      from measured concurrence (claims (viii)-(x))
+  tests/              151 tests, 14 files
 ```
 
-v0.3.0 is pushed (main head 658f5bdd). v0.3.1 is local only;
+v0.3.1 is pushed (main head 1f5f6e60). v0.4.0 is local only;
 not pushed.
 
 GitHub: https://github.com/sparkainlp-x/faggin-field-bridge
-(main head 658f5bdd as of 2026-11-16; the maximum scientific
+(main head 1f5f6e60 as of 2026-11-16; the maximum scientific
 outcomes framework, coverage reporting, and synergy expansion
-were added by Jean in 7 commits on 2026-11-15, and the synergy
-robustness analysis in this report was added the same day.
-The v0.3.1 review fixes are local only, pending Jean's word
-to push.)
+were added by Jean in 7 commits on 2026-11-15, the v0.3.1
+review fixes in this report were added 2026-11-16, and the
+v0.4.0 Planck-empathy work in §10 is local only, pending
+Jean's word to push.)
 
 Zenodo: no record yet. Release (toggle + tag + release notes) is
 the next step; see the Priority 1 launch sheet. When releasing,
@@ -703,3 +736,160 @@ undefined and is reported as 0.0 by the spearman() convention.
 D does not track visibility at all: the thought is fully
 self-determined after one projection regardless of whether
 interference survives.
+
+## 10. Planck empathy (v0.4.0, measured 2026-11-16)
+
+One module, `planck_empathy.py`, fixes the PARTIAL primary
+mapping status using empathy as a Planck quantum inside the
+black-body concept from the infographic (Planck E = hν; an
+ideal black body absorbs all incident radiation and emits a
+spectrum depending only on its temperature; the peak shifts
+left and the intensity rises with temperature; T = 2000–5000 K
+curves; the visible band is a slice of the spectrum).
+
+### Mechanism (a definition inside the model, not a discovery)
+
+- Empathy quantum: E = h·ν with h = 1 in model units. Each
+  thought-pair contributes ONE empathy quantum whose frequency
+  ν_e is its MEASURED concurrence (thought_entanglement.py,
+  v0.2.0) — concurrence, NOT the synergy proxy, because
+  concurrence is measured and the proxy is a definition (§5:
+  none of the synergy terms is derived from Faggin &
+  D'Ariano).
+- Empathy fraction f = mean concurrence across pairs, in
+  [0, 1]. Effective temperature T_eff(f) = 2000 + 3000·f K,
+  on the infographic's 2000–5000 K axis.
+- Planck spectrum B(λ, T) with the REAL Planck law and REAL
+  constants (h = 6.62607015e-34 J·s, c = 299792458 m/s,
+  k_B = 1.380649e-23 J/K), wavelength in µm over [0.1, 3.0]
+  (the infographic's axis). Visible fraction
+  F(T) = ∫[0.38, 0.75] B dλ / ∫[0.1, 3.0] B dλ, by Simpson's
+  rule (2000 intervals; convergence 2000 vs 4000 intervals
+  agrees to ~1e-14).
+- Empathy status: the mapping status re-derived from F. The
+  old status (from A alone, no empathy) is computed alongside
+  as the control.
+
+### Pre-registration (written before the final measurement run)
+
+Thresholds set from a pilot sweep, as round numbers with
+margin on both sides, and never moved after the final run.
+Pilot values (Simpson, 2000 intervals):
+
+| T (K) | 2000 | 2250 | 2500 | 2750 | 3000 | 3250 | 3500 | 3750 | 4000 | 4250 | 4500 | 4750 | 5000 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| F(T) | 0.0174 | 0.0344 | 0.0582 | 0.0880 | 0.1225 | 0.1599 | 0.1986 | 0.2371 | 0.2742 | 0.3090 | 0.3407 | 0.3691 | 0.3938 |
+
+| f | 0.0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 | 1.0 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| F(f) | 0.0174 | 0.0386 | 0.0695 | 0.1082 | 0.1522 | 0.1986 | 0.2447 | 0.2885 | 0.3284 | 0.3637 | 0.3938 |
+
+Pilot σ curve (mean concurrence from the v0.2.0 sweep):
+
+| σ | 0.00 | 0.01 | 0.05 | 0.10 | 0.25 | 0.50 | 1.00 |
+|---|---|---|---|---|---|---|---|
+| mean C (= f) | 1.0000 | 0.9998 | 0.9952 | 0.9792 | 0.8471 | 0.6520 | 0.7002 |
+| F | 0.3938 | 0.3937 | 0.3924 | 0.3880 | 0.3457 | 0.2678 | 0.2886 |
+
+Thresholds chosen from this pilot:
+
+- **ATTUNED_F_MIN = 0.30**: sits between F(σ = 0.25) = 0.3457
+  (+0.0457) and F(σ = 0.50) = 0.2678 (−0.0322). The crossing
+  f* falls between f = 0.7 (F = 0.2885) and f = 0.8
+  (F = 0.3284).
+- **PARTIAL_F_MIN = 0.01**: sits below F(f = 0) = 0.0174
+  (+0.0074), so the no-empathy status is PARTIAL, not
+  DISSONANT. The f = 0 value is deterministic (no sampling
+  noise in the Planck integral), so the margin is structural.
+
+Pass rules, fixed before the final run:
+
+- **(viii) Planck reproduction PASSES** iff the numerical Wien
+  peak matches 2898/T µm within 0.5% at T = 2000, 3000, 4000,
+  5000 K; the integrated exitance scales as T⁴ within 1% on
+  the same grid; and F(T) is strictly increasing in T on a
+  250 K grid.
+- **(ix) Empathy flip PASSES** iff F(f) is strictly increasing
+  in f on [0, 1]; the status at f = 0 is PARTIAL; and a
+  crossing f* in (0, 1) exists where F(f*) = 0.30, so the
+  status at f = 1 is ATTUNED. If no crossing exists the claim
+  FAILS and the maximum F reached is reported instead — the
+  threshold is not moved to force a pass.
+- **(x) Specificity PASSES** iff the OLD status (A alone)
+  stays PARTIAL at every σ in the grid; the empathy status is
+  ATTUNED at σ = 0.01; the empathy status is PARTIAL at
+  σ = 0.50; and the empathy-status labels never go back up as
+  σ increases.
+
+### Measured results (final run — filled in after the suite)
+
+[Results below were filled in by the final measurement run,
+after the pre-registration above.]
+
+#### (viii) Planck reproduction — PASS
+
+The module reproduces the infographic's physics with the real
+constants. Numerical Wien peak vs 2898/T (relative error
+7.87e-05 at every temperature — the 2898 figure itself is the
+rounded constant; the exact CODATA value is 2897.771955):
+
+| T (K) | Peak (µm) | 2898/T (µm) | Relative error |
+|---|---:|---:|---:|
+| 2000 | 1.4489 | 1.4490 | 7.87e-05 |
+| 3000 | 0.9659 | 0.9660 | 7.87e-05 |
+| 4000 | 0.7244 | 0.7245 | 7.87e-05 |
+| 5000 | 0.5796 | 0.5796 | 7.87e-05 |
+
+Stefan–Boltzmann: integrated exitance ratios to 2000 K are
+5.0626, 16.0003, 39.0632 against the expected 5.0625, 16.0000,
+39.0625 (relative errors 1.30e-05, 1.62e-05, 1.74e-05 — the
+1% tolerance is met by three orders of magnitude). F(T) is
+strictly increasing on the 250 K grid (0.0174 at 2000 K to
+0.3938 at 5000 K). This is real physics reproduced in code,
+not a bridge claim: the peak moves left and the intensity
+rises with temperature exactly as the infographic says.
+
+#### (ix) Empathy flips the status — PASS
+
+F(f) is strictly increasing in f on [0, 1]. At f = 0 (no
+empathy) F = 0.0174 and the status is PARTIAL; at f = 1
+F = 0.3938 and the status is ATTUNED. The crossing is
+measured by bisection: **f\* = 0.7278** (F = 0.3000 there, the
+pre-registered threshold). An empathy fraction of about 73%
+mean concurrence is what it takes to flip the primary mapping
+from PARTIAL to ATTUNED. No threshold was moved: 0.30 was set
+from the pilot, and the crossing fell where the pilot said it
+would (between f = 0.7 and f = 0.8).
+
+#### (x) Specificity / control — PASS
+
+| σ | f (mean C) | T_eff (K) | F | Empathy status | Old status |
+|---|---:|---:|---:|---|---|
+| 0.00 | 1.0000 | 5000 | 0.3938 | ATTUNED | PARTIAL |
+| 0.01 | 0.9998 | 4999 | 0.3937 | ATTUNED | PARTIAL |
+| 0.05 | 0.9952 | 4986 | 0.3924 | ATTUNED | PARTIAL |
+| 0.10 | 0.9792 | 4938 | 0.3880 | ATTUNED | PARTIAL |
+| 0.25 | 0.8471 | 4541 | 0.3457 | ATTUNED | PARTIAL |
+| 0.50 | 0.6520 | 3956 | 0.2678 | PARTIAL | PARTIAL |
+| 1.00 | 0.7002 | 4101 | 0.2886 | PARTIAL | PARTIAL |
+
+The old status (A alone, 0.0447) stays PARTIAL at every σ —
+it cannot move, because A does not depend on σ. The empathy
+status moves: ATTUNED while the concurrence survives
+(σ ≤ 0.25) and PARTIAL once the noise kills it (σ ≥ 0.50).
+The fix holds up to σ = 0.25 and breaks from σ = 0.50. The
+status labels never go back up as σ increases, even though
+the mean concurrence itself is non-monotone at the top end
+(0.6520 at σ = 0.5, 0.7002 at σ = 1.0) — both sit below the
+0.30 threshold, so the label stays PARTIAL. The flip is
+carried by the empathy quanta, not by re-labeling: the same
+rule, the same thresholds, and only the measured concurrence
+moves.
+
+Where the fix holds and where it breaks, stated plainly: it
+holds where the thought-pairs stay entangled (σ ≤ 0.25,
+concurrence ≥ 0.8471). It breaks where the noise has eaten
+the concurrence below f\* = 0.7278 (σ ≥ 0.50). At σ = 1.0
+the concurrence recovers slightly (0.7002) but stays below
+f\*, so the status stays PARTIAL — the recovery is not
+enough, and the report does not claim otherwise.

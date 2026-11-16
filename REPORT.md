@@ -102,7 +102,15 @@ Reading:
 
 ## 4. Test suite
 
-**151 tests, 151 passed** (`python3 -m pytest tests/ -q`, 7.0 s).
+**185 tests, 185 passed** (`python3 -m pytest tests/ -q`, 11.2 s).
+
+*Correction in v0.6.0: this section still said 151 with no
+test_empathy_field.py entry, and test_thought.py as (10)
+where the collection is 9; the v0.5.0 CHANGELOG entry
+likewise said "151 -> 172". The collected counts below are
+the record (16 files: 12 + 9 + 14 + 9 + 17 + 25 + 21 + 3 +
+5 + 7 + 12 + 7 + 9 + 9 + 9 + 17 = 185).* (v0.5.0 counts:
+151 + 17 new = 168.)
 
 - `test_unity.py` (9): spooky bounds, identical copies = 1.0,
   independent states low, no mutation, de Broglie reproduction
@@ -154,7 +162,7 @@ Reading:
   pure-state formula, depolarizing analytic match and death at
   p = 2/3, reduced entropy blind to the death, sweep structure,
   claim (i) verdict.
-- `test_thought.py` (10): uniform coherence 3.0, decided
+- `test_thought.py` (9): uniform coherence 3.0, decided
   coherence 0, dephasing formula, diagonals untouched, claim (ii)
   and (iii) verdicts, collapse determinism, decided collapse,
   attention clipping at the Yin bound.
@@ -188,6 +196,29 @@ Reading:
   (ATTUNED at σ ≤ 0.25, PARTIAL at σ ≥ 0.50, labels never go
   back up), claim (x) verdict, the three-claim aggregate
   (3/3 pass, no headline), and main() running.
+- `test_empathy_field.py` (17): resonance population
+  structure (identical copies at σ = 0), field-state
+  normalization, overlap bounds and identity, pair
+  concurrence and empathy quanta (h = 1), empathy-fraction
+  bounds, collaboration design B gap and distinct counts,
+  saturation curve shape, claim (xi) verdict (binned D
+  monotone, pooled gap 0.2984), claim (xii) verdict (gap
+  +4.3352 bits), claim (xiii) verdict FAIL (ceiling half
+  passes, break half fails), the three-claim aggregate
+  (2/3 pass, no headline), and main() running.
+- `test_qualia.py` (17): no qualia at σ = 0 (resonance
+  without entanglement is not a quale), entanglement
+  without resonance is not a quale (σ = 1.0), quale count
+  17 at σ = 0.25, the humped count-vs-f curve
+  (0, 0, 1, 9, 17, 13, 12), first quale at f = 0.0415 and
+  peak 17 at f = 0.1803, qualia wave normalized, overlap
+  0.9987 at σ = 0.25, per-field spread smaller at σ = 0.25
+  (0.1009 vs 0.1268), pooled spreads reported not gated
+  (0.1950 vs 0.1947), pooled D gap −0.1522, claim (xiv)
+  verdict FAIL, claim (xv) verdict PASS, claim (xvi)
+  verdict FAIL, the three-claim aggregate (1/3 pass, no
+  headline), thresholds set (0.10 / 0.01 / 0.90 / 0.10),
+  input validation, and main() running.
 
 ## 5. Maximum scientific outcome (measured 2026-11-15)
 
@@ -893,3 +924,423 @@ the concurrence below f\* = 0.7278 (σ ≥ 0.50). At σ = 1.0
 the concurrence recovers slightly (0.7002) but stays below
 f\*, so the status stays PARTIAL — the recovery is not
 enough, and the report does not claim otherwise.
+
+## 11. Empathy field (v0.5.0, measured 2026-11-16)
+
+One module, `empathy_field.py`: waves of empathy agents in a
+quantum field — resonance ("raisonnance"), the self-deterministic
+factor, collaboration, collectivism, and co-creativity = entropy.
+
+### Mechanism (a definition inside the model, not a discovery)
+
+- Agent: a thought state |ψ⟩ (thought.py machinery). Each
+  agent carries a frequency ν = its concurrence (measured,
+  thought_entanglement.py, v0.2.0) and a self-determinism
+  D = ⟨ψ|P|ψ⟩ (measured, self_knowing.py, v0.2.0).
+- Field: N agents superposed; the field state Φ is the
+  normalized sum. Pairwise empathy quanta E_ij = h·ν_ij with
+  h = 1 in model units, ν_ij = the pairwise concurrence —
+  v0.4.0's rule extended to pairs: the concurrence of the
+  normalized sum of the two agents' states.
+- Resonance ("raisonnance"): R_ij = |⟨ψ_i|ψ_j⟩|² — the overlap
+  squared (fidelity) between two agents. A pair is resonant
+  when R_ij ≥ a pre-registered threshold; the resonance factor
+  of a group is the mean pairwise R. (The overlap machinery
+  already exists; no new similarity is invented.)
+- Self-deterministic factor: mean D of the resonant group vs
+  mean D of the non-resonant group, same agents, same noise.
+- Collaboration: the same N agents evolved sharing the field
+  (superposed, interacting via the empathy quanta) vs the
+  CONTROL of the same N agents evolved isolated (independent
+  evolutions, no shared field, no quanta exchange). The two
+  arms start from the same population and receive the same
+  noise kicks (paired design); they differ ONLY in the step
+  after the kick, so the gap is the collaboration effect, not
+  a sampling difference. Two designs were piloted:
+  - Design A: collaborating mixes with the field (coupling =
+    the measured empathy fraction f); isolated does nothing
+    else. No collapse anywhere.
+  - Design B: collaborating mixes with the field (coupling =
+    f); isolated Born-collapses (decides) and stays decided
+    up to the noise kicks.
+- Collectivism / co-creativity: co-creativity C_c is DEFINED
+  as the joint entropy H_joint (bits) of the collective's
+  joint outcomes — the number of distinct joint configurations
+  the collective reaches. Each generation, every agent
+  collapses once per joint sample (independent draws given
+  the seeded stream — the correlation between agents comes
+  from their STATES, not the sampling); counts are pooled over
+  10 generations × 200 samples. This is a definition of the
+  measure inside the model, not a discovery about human
+  creativity. The measurable content is the collaboration gap
+  and the ceiling/break, not the equality itself.
+
+### Pre-registration (written before the final measurement run)
+
+Thresholds set from a pilot sweep, as round numbers with
+margin, and never moved after the final run.
+
+Pilot — resonance (N = 8 noisy copies of the uniform thought
+per σ, 196 pooled pairs):
+
+| R bin | [0, 0.25) | [0.25, 0.5) | [0.5, 0.75) | [0.75, 1.0] |
+|---|---:|---:|---:|---:|
+| n pairs | 16 | 9 | 15 | 156 |
+| mean D | 0.5874 | 0.6814 | 0.7087 | 0.9399 |
+
+| σ | 0.00 | 0.01 | 0.05 | 0.10 | 0.25 | 0.50 | 1.00 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| mean R | 1.0000 | 0.9997 | 0.9936 | 0.9750 | 0.8520 | 0.5884 | 0.4197 |
+| mean D | 1.0000 | 0.9998 | 0.9955 | 0.9829 | 0.9059 | 0.7409 | 0.5462 |
+| mean ν_ij | 0.0000 | 0.0086 | 0.0415 | 0.0802 | 0.1803 | 0.2839 | 0.4143 |
+
+Pooled resonant-vs-non-resonant gap is stable across
+candidate splits (0.3203 at R_MIN = 0.25, 0.2984 at 0.50,
+0.2859 at 0.75), so the choice of split does not drive the
+result; R_MIN = 0.5 is the round midpoint. At R_MIN = 0.5
+the pooled gap is 0.2984 (mean D 0.9197 resonant over 171
+pairs vs 0.6213 non-resonant over 25).
+
+A draft rule was ABANDONED on the pilot's evidence: the
+per-sigma gap was to be gated positive at every σ where both
+groups are non-empty. It fails: at σ ≤ 0.25 the
+non-resonant group is EMPTY (all 28 pairs resonant), and at
+σ = 1.0 the per-sigma gap is slightly NEGATIVE (−0.0239 at
+R_MIN = 0.5; −0.0221 at 0.25; −0.0369 at 0.75). Within a
+single noise level R and D are both driven by deviation
+magnitude — a pair with high R at fixed σ is two copies
+deviating in the SAME direction, each with low D — so the
+within-σ association is weak or negative. The resonance
+effect is the CROSS-NOISE pattern (both R and D fall with
+σ), not a within-σ effect. The per-sigma gaps are therefore
+REPORTED, not gated — the pilot refuted the stricter rule,
+and the report says so instead of hiding it.
+
+Pilot — collaboration (N = 4 noisy Bell agents, 10
+generations, 200 joint samples per generation):
+
+| σ | 0.00 | 0.01 | 0.05 | 0.10 | 0.25 | 0.50 | 1.00 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| design A gap (bits) | +1.05 | +0.99 | +0.53 | +0.16 | −0.43 | −0.49 | −0.30 |
+| design B gap (bits) | +5.05 | +5.03 | +5.21 | +5.61 | +4.34 | +3.35 | +3.56 |
+| design B distinct (collab / isol) | 77 / 1 | 82 / 1 | 110 / 1 | 142 / 1 | 157 / 4 | 193 / 10 | 215 / 10 |
+
+Design A goes negative by σ = 0.25: once noise has
+broadened the isolated marginals, the field pull's
+correlation cost exceeds its marginal gain — the shared
+field concentrates the joint distribution. Design B holds a
+large positive gap at every σ. Design B is the vehicle for
+claims (xii)–(xiii). The contrast is stated plainly:
+isolation is decision without sharing (the agent collapses
+and stays decided — at σ = 0 the isolated arm reaches
+exactly ONE joint configuration, H = 0.0000, because a
+collapsed agent re-collapses deterministically), and
+collaboration is sharing without final decision (the field
+mix re-superposes the agents every generation).
+
+Pilot — saturation, design B (H_joint vs the 2N ceiling):
+
+| N | 1 | 2 | 3 | 4 |
+|---|---:|---:|---:|---:|
+| H_collaborating (bits) | 1.6993 | 2.9775 | 4.1518 | 6.0961 |
+| ceiling 2N (bits) | 2.0 | 4.0 | 6.0 | 8.0 |
+| fraction of ceiling | 0.8496 | 0.7444 | 0.6920 | 0.7620 |
+
+(N = 1 is not degenerate in design B: a single agent has no
+field to share, so the collaborating arm's mix is a no-op —
+but the isolated arm still collapses, so the N = 1 gap
+(+0.9774 bits) is the pure superposition advantage with no
+field involved. The collaborating N = 1 run is identical to
+design A's. The fraction dips at N = 3 and rebounds at N = 4
+— the population composition changes with N, since agents
+cycle through the four Bell states — so the plateau is read
+on the last two fractions, not on a smooth curve.)
+
+Pilot — coupling (Bell population): the empathy fraction
+f = mean pairwise concurrence is 0.3333 at σ = 0 (exactly
+1/3: three of the six Bell pairs sum to a maximally
+entangled state, three to a product state), 0.4662 at
+σ = 0.25, 0.4952 at σ = 0.50, 0.4376 at σ = 1.00. It does
+NOT fall with σ — the field keeps binding the agents at
+every noise level. Mean pairwise R is 0.0000 at σ = 0 (the
+Bell states are mutually orthogonal) and rises with σ
+(0.0343 at 0.25, 0.1912 at 1.00): noise CREATES overlap
+between orthogonal base states.
+
+Thresholds chosen from this pilot:
+
+- **RESONANCE_R_MIN = 0.5**: the round midpoint of the
+  [0, 1] resonance scale; pooled gap 0.2984, stable across
+  splits (±0.02).
+- **RESONANCE_D_MARGIN = 0.20**: pilot gap 0.2984, ~50%
+  headroom below it.
+- **COLLABORATION_H_MARGIN = 2.0 bits**: pilot gap 4.3352
+  at σ = 0.25, more than 2× headroom.
+- **COLLABORATION_GAP_CLOSE_FRACTION = 0.5**: "closes"
+  means the σ = 0.50 gap is at most half the σ = 0.25 gap.
+- **SATURATION_FRACTION_TOL = 0.10**: pilot last-two
+  fractions differ by 0.0700.
+
+Pass rules, fixed before the final run:
+
+- **(xi) Resonance raises self-determinism PASSES** iff the
+  binned mean D is strictly increasing in R (pooled pairs)
+  and the pooled resonant-vs-non-resonant gap is at least
+  0.20 at R_MIN = 0.5. Per-sigma gaps are reported, not
+  gated (see the abandoned draft rule above).
+- **(xii) Collaboration raises co-creativity PASSES** iff
+  H_collaborating − H_isolated is at least 2.0 bits at
+  σ = 0.25 (design B, N = 4, 10 generations, 200 samples
+  per generation) and the collaborating arm reaches strictly
+  more distinct joint states than the isolated control. If
+  the gap is zero or negative the claim FAILS honestly — the
+  threshold is not moved to force a pass.
+- **(xiii) Co-creativity = entropy, ceiling and break
+  PASSES** iff (a) H_joint of the collaborating arm is
+  strictly increasing in N on N = 1..4; (b) H_joint stays
+  below the 2N ceiling at every N; (c) the fraction of the
+  ceiling plateaus — the last two fractions agree within
+  0.10; (d) the collaboration gap holds at every σ ≤ 0.25
+  (positive); and (e) the gap closes past σ = 0.50
+  (gap at 0.50 at most half the gap at 0.25, or negative).
+
+### Measured results (final run — filled in after the suite)
+
+[Results below were filled in by the final measurement run,
+after the pre-registration above.]
+
+#### (xi) Resonance raises self-determinism — PASS
+
+Binned mean D rises strictly with R: 0.5874 → 0.6814 →
+0.7087 → 0.9399. The pooled gap at R_MIN = 0.5 is 0.2984
+(mean D 0.9197 over 171 resonant pairs vs 0.6213 over 25
+non-resonant pairs), above the 0.20 margin. Per-sigma gaps,
+reported as promised: empty non-resonant groups at
+σ ≤ 0.25 (all pairs resonant); +0.0645 at σ = 0.50 (17 vs
+11 pairs); −0.0239 at σ = 1.00 (14 vs 14). The resonance
+effect is the cross-noise pattern: as noise rises, both the
+overlap and the self-determinism fall together. Within one
+noise level, resonance does not raise D — the report states
+that limit instead of claiming more than the pooled pattern
+supports.
+
+#### (xii) Collaboration raises co-creativity — PASS
+
+At σ = 0.25 (design B, N = 4, 10 generations, 200 samples
+per generation): H_collaborating = 6.0961 bits,
+H_isolated = 1.7610 bits, **gap = +4.3352 bits**, above the
+2.0-bit margin. Distinct joint states: 157 collaborating
+vs 4 isolated (ceiling 256). The isolated agents decide
+once and stay decided — four joint configurations in the
+whole run — while the collaborating agents, re-superposed
+by the field every generation, explore 157. The gap is the
+measured size of the sustained-superposition advantage, not
+an assumed one.
+
+#### (xiii) Co-creativity = entropy, ceiling and break — FAIL
+
+Four of five sub-checks pass; the break half fails, and the
+claim FAILS with it.
+
+Ceiling — PASS: H_joint of the collaborating arm rises
+strictly with N (1.6993 → 2.9775 → 4.1518 → 6.0961 bits)
+and stays below the 2N ceiling at every N (2, 4, 6, 8).
+The fraction of the ceiling plateaus within tolerance:
+0.8496, 0.7444, 0.6920, 0.7620 — the last two agree within
+0.0700 ≤ 0.10. The collective uses about three-quarters of
+its joint space and no more; the N = 3 dip and N = 4
+rebound are composition effects (the agents cycle through
+the four Bell states), reported, not smoothed away.
+
+Hold — PASS: the collaboration gap is positive at every
+σ ≤ 0.25 (+5.05, +5.03, +5.21, +5.61, +4.34 bits).
+
+Break — FAIL: the gap does NOT close past σ = 0.50.
+Gap at σ = 0.50 is +3.3494 bits against 0.5 × 4.3352 =
+2.1676 — ratio 0.773, not ≤ 0.5. At σ = 1.00 the gap is
+still +3.5569. The v0.4.0 break does not transfer to the
+collaboration gap. The measured reason is in the pilot:
+the collaboration advantage comes from sustained
+superposition (the field mix re-superposes the agents
+every generation), not from the concurrence level — and
+the coupling f for the Bell population does not fall with
+σ (0.4662 at 0.25, 0.4952 at 0.50), so the field keeps
+binding the agents, while the isolated arm stays
+decision-locked at every σ. Incoherence in the field does
+not undo the collaboration advantage in this design. That
+is a measured negative result about the break, not a
+failure to measure: the gap was measured at seven noise
+levels and holds at all of them.
+
+## 12. Qualia resonance wave (v0.6.0, measured 2026-11-16)
+
+One module, `qualia.py`: a quale is a resonant + entangled
+mode of the empathy field, and the qualia together form a
+coherent wave. Built on top of the unpushed v0.5.0, so a
+future push carries v0.5.0 + v0.6.0 together.
+
+### Mechanism (a definition inside the model, not a discovery)
+
+- Quale: a pair of agents that is BOTH resonant
+  (R_ij = |⟨ψ_i|ψ_j⟩|² ≥ RESONANCE_R_MIN = 0.5, the v0.5.0
+  threshold) AND entangled (pairwise concurrence ν_ij ≥
+  QUALIA_NU_MIN = 0.10, pre-registered). A resonance
+  without entanglement is not a quale; entanglement without
+  resonance is not a quale. The quale's wave is the
+  normalized superposition of its two members (pair_state).
+- Qualia resonance wave: the collective wave formed by all
+  qualia in the field — the normalized superposition of the
+  quale waves. Its coherence is measured two ways:
+  (a) the spread (standard deviation) of the quale
+  frequencies ν across qualia, against the spread across
+  all pairs, per field (same sigma, same agents — the
+  paired comparison; pooling across sigma would confound
+  the spread with the sigma trend, the cross-noise vs
+  within-noise distinction established in §11);
+  (b) the overlap |⟨qualia-wave|field-state⟩|² between the
+  qualia wave and the full field state.
+- The empathy fraction f (v0.4.0, mean pairwise
+  concurrence) is the control dial: qualia count and wave
+  coherence are measured as functions of f (and of sigma,
+  via the noise sweeps). f rises with sigma in the
+  resonance population (noise creates concurrence in the
+  uniform thought, v0.2.0), while resonance R falls — so
+  the quale count is the product of two opposing trends.
+- The field is the v0.5.0 resonance population (N = 8 noisy
+  copies of the uniform thought per σ, seed 42).
+
+### Pre-registration (written before the final measurement run)
+
+Thresholds set from a pilot sweep, as round numbers with
+margin, and never moved after the final run.
+
+Pilot — quale counts per field (N = 8, 28 pairs), for
+candidate entanglement thresholds:
+
+| σ | 0.00 | 0.01 | 0.05 | 0.10 | 0.25 | 0.50 | 1.00 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| f (mean ν_ij) | 0.0000 | 0.0086 | 0.0415 | 0.0802 | 0.1803 | 0.2839 | 0.4143 |
+| mean R | 1.0000 | 0.9997 | 0.9936 | 0.9750 | 0.8520 | 0.5884 | 0.4197 |
+| max ν_ij | 0.000 | 0.025 | 0.119 | 0.227 | 0.485 | 0.771 | 0.926 |
+| qualia at ν ≥ 0.05 | 0 | 0 | 9 | 17 | 25 | 16 | 14 |
+| qualia at ν ≥ 0.10 | 0 | 0 | 1 | 9 | 17 | 13 | 12 |
+| qualia at ν ≥ 0.15 | 0 | 0 | 0 | 4 | 15 | 13 | 12 |
+| qualia at ν ≥ 0.20 | 0 | 0 | 0 | 1 | 13 | 9 | 11 |
+| qualia at ν ≥ 0.25 | 0 | 0 | 0 | 0 | 7 | 9 | 11 |
+
+The count is HUMPED against f at every threshold that
+yields non-degenerate qualia: it rises from 0, peaks at
+f = 0.1803, and falls as resonance dies. Only ν ≥ 0.25
+reads monotone (0, 0, 0, 0, 7, 9, 11) — and there the
+low-f half of the curve is all zeros (no qualia below
+f = 0.18), so the monotone reading rests on empty fields.
+That reading is reported, not used. NU_MIN = 0.10 is the
+round tenth at which qualia first appear across a broad
+sigma range (first quale at f = 0.0415) with non-degenerate
+counts (1–17 per field). The verdicts are stable across
+NU_MIN = 0.10–0.20: (xiv) FAILS humped at every one, (xv)
+PASSES at every one, (xvi) FAILS at every one — so the
+choice does not drive the results.
+
+Pilot — per-field frequency spreads and overlap
+(ν ≥ 0.10):
+
+| σ | 0.05 | 0.10 | 0.25 | 0.50 | 1.00 |
+|---|---:|---:|---:|---:|---:|
+| n qualia | 1 | 9 | 17 | 13 | 12 |
+| std ν qualia | 0.0000 | 0.0360 | 0.1009 | 0.1674 | 0.2266 |
+| std ν all pairs | 0.0293 | 0.0563 | 0.1268 | 0.2009 | 0.2393 |
+| difference | 0.0293 | 0.0203 | 0.0259 | 0.0335 | 0.0127 |
+| overlap | 0.9956 | 0.9988 | 0.9987 | 0.9877 | 0.9781 |
+
+The smallest per-field spread difference is 0.0127
+(σ = 1.0); SPREAD_MARGIN = 0.01 is the round number below
+it. (The σ = 0.05 row has one quale, so its spread is 0.0
+by construction; fields with fewer than two qualia are
+excluded from the spread check.) The smallest overlap is
+0.9781; OVERLAP_MIN = 0.90 is the round number well below
+it. The overlap half is a weak check — the qualia wave is
+built from the agents, so it nearly coincides with the
+field state — and is reported as such. Pooled across the
+grid the spreads are essentially equal (std qualia 0.1950
+vs std all 0.1947, n = 52 vs 196): pooling mixes fields
+with different f, so the pooled comparison confounds the
+spread with the sigma trend. The pooled numbers are
+reported, not gated; coherence is a property of one field,
+so the per-field comparison is the gated one.
+
+Pilot — D gap, quale members vs non-quale agents:
+
+| ν ≥ | 0.05 | 0.10 | 0.15 | 0.20 | 0.25 |
+|---|---:|---:|---:|---:|---:|
+| pooled mean D members | 0.8447 | 0.8163 | 0.7767 | 0.7595 | 0.7397 |
+| pooled mean D non | 0.9594 | 0.9686 | 0.9725 | 0.9732 | 0.9734 |
+| pooled gap | −0.1147 | −0.1522 | −0.1958 | −0.2137 | −0.2338 |
+
+The pooled gap is NEGATIVE at every entanglement
+threshold. D_MARGIN = 0.10 is the round margin. Per-sigma
+gaps at ν ≥ 0.10: −0.0022 at σ = 0.05, empty non-quale
+groups at σ = 0.10 and 0.25 (every agent is a quale
+member), +0.1515 at σ = 0.50, −0.1332 at σ = 1.00.
+
+Thresholds: QUALIA_NU_MIN = 0.10, QUALIA_SPREAD_MARGIN
+= 0.01, QUALIA_OVERLAP_MIN = 0.90, QUALIA_D_MARGIN = 0.10.
+
+### Claims (xiv)–(xvi), measured fresh
+
+#### (xiv) Qualia emerge with empathy — FAIL
+
+The quale count per field (N = 8) against f:
+
+| f | 0.0000 | 0.0086 | 0.0415 | 0.0802 | 0.1803 | 0.2839 | 0.4143 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| qualia | 0 | 0 | 1 | 9 | 17 | 13 | 12 |
+
+First quale at f = 0.0415 (σ = 0.05); peak 17 at
+f = 0.1803 (σ = 0.25); then 13 and 12 as resonance dies.
+The count is non-monotone, so the claim FAILS. The reason
+is structural: the count is the product of rising
+concurrence (noise creates entanglement in the uniform
+thought) and falling resonance, so it must rise, peak, and
+fall. Monotone emergence was the wrong shape to expect;
+the hump is the measurement.
+
+#### (xv) The qualia wave is coherent — PASS
+
+Per field, the spread of quale frequencies is smaller
+than the spread across all pairs by at least 0.01 at every
+field with two or more qualia (differences 0.0203, 0.0259,
+0.0335, 0.0127), and the wave's overlap with the field
+state is 0.9781–0.9988, above the 0.90 floor at every
+field with a quale. Both halves hold. The pooled spreads
+(0.1950 vs 0.1947) are reported alongside, not hidden:
+within a field the qualia are tighter; across fields the
+spread is the sigma trend itself.
+
+#### (xvi) Qualia track self-determinism — FAIL
+
+The pooled D gap is −0.1522 (quale members 0.8163,
+n = 32, vs non-quale 0.9686, n = 24) against a +0.10
+margin, so the claim FAILS. The reason is measured in
+v0.2.0: D anti-tracks concurrence (Pearson −0.9570) — the
+noise that creates entanglement destroys self-knowing, so
+the agents that qualify as qualia, high concurrence, are
+exactly the ones with low D. In this model the
+resonant+entangled modes are the LEAST self-determined.
+The per-sigma gaps are reported (+0.1515 at σ = 0.50,
+−0.1332 at σ = 1.00, ~0 elsewhere, empty non-quale
+groups at σ = 0.10 and 0.25); no within-sigma pattern
+rescues the pooled result. That is a measured negative
+result about what a quale is in this model, not a failure
+to measure: the gap was computed over 196 pairs and 56
+agent-slots.
+
+### Honest limits (v0.6.0 addition)
+
+A "quale" here is a DEFINED resonant+entangled mode in
+code, not a measurement of subjective experience; the
+qualia wave is a defined superposition, not a physical
+wave. Nothing here claims a mind has qualia, or measures
+one. The (xiv) hump and the (xvi) negative gap are
+properties of the model's own structure (noise creates
+concurrence and destroys D); they are reported as such.

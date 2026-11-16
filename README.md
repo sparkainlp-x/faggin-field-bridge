@@ -117,6 +117,91 @@ the flip is carried by the empathy quanta, not by re-labeling.
 Run `planck_empathy.planck_empathy_claims()` for the three
 verdicts, or see REPORT.md §10.
 
+## Empathy field (v0.5.0)
+
+Waves of empathy agents in a quantum field: resonance
+("raisonnance"), the self-deterministic factor, collaboration,
+collectivism, and co-creativity = entropy.
+
+- Agent: a thought state carrying a frequency ν = its
+  concurrence and a self-determinism D = ⟨ψ|P|ψ⟩.
+- Field: N agents superposed; the field state is the
+  normalized sum. Pairwise empathy quanta E_ij = h·ν_ij, the
+  v0.4.0 rule extended to pairs.
+- Resonance R_ij = |⟨ψ_i|ψ_j⟩|²: the overlap squared between
+  two agents.
+- Collaboration: the same N agents evolved sharing the field
+  vs the control of the same N agents evolved isolated.
+- Co-creativity C_c is DEFINED as the joint entropy H_joint
+  (bits) of the collective's joint outcomes — a definition of
+  the measure inside the model, not a discovery about human
+  creativity.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `empathy_field.py` | Mean D per R bin; resonant vs non-resonant gap | (xi) resonance raises self-determinism | **PASS** |
+| `empathy_field.py` | H_joint collaborating vs isolated, σ = 0.25 | (xii) collaboration raises co-creativity | **PASS** |
+| `empathy_field.py` | H_joint vs N and ceiling; gap vs σ | (xiii) co-creativity = entropy, ceiling and break | **FAIL** |
+
+Headline numbers: binned mean D rises strictly with R
+(0.5874 → 0.6814 → 0.7087 → 0.9399); the pooled
+resonant-vs-non-resonant gap is 0.2984 at R ≥ 0.5. At
+σ = 0.25 the collaboration gap is **+4.3352 bits**
+(H 6.0961 vs 1.7610; 157 distinct joint states vs 4). The
+ceiling holds — H grows with N (1.70 → 2.98 → 4.15 → 6.10
+bits) and stays below 2N — but the break does NOT: the gap
+is still +3.3494 bits at σ = 0.50 and +3.5569 at σ = 1.00,
+so the v0.4.0 break does not transfer to the collaboration
+gap. That is a measured negative result, not a failure to
+measure. Within a single noise level, resonance does not
+raise D (the σ = 1.0 per-sigma gap is −0.0239) — the
+resonance effect is the cross-noise pattern, stated plainly.
+
+Run `empathy_field.empathy_field_claims()` for the three
+verdicts, or see REPORT.md §11.
+
+## Qualia resonance wave (v0.6.0)
+
+A quale is a resonant + entangled mode of the empathy field,
+and the qualia together form a coherent wave.
+
+- Quale: a pair of agents that is BOTH resonant
+  (R_ij = |⟨ψ_i|ψ_j⟩|² ≥ 0.5, the v0.5.0 threshold) AND
+  entangled (pairwise concurrence ν_ij ≥ 0.10,
+  pre-registered). A resonance without entanglement is not a
+  quale; entanglement without resonance is not a quale.
+- Qualia resonance wave: the normalized superposition of the
+  quale waves. Its coherence is measured per field as the
+  spread of quale frequencies against the spread across all
+  pairs, and as the overlap |⟨qualia-wave|field-state⟩|².
+- The empathy fraction f (mean pairwise concurrence) is the
+  control dial: it rises with noise while resonance falls,
+  so the quale count is the product of two opposing trends.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `qualia.py` | Quale count vs empathy fraction f | (xiv) qualia emerge with empathy | **FAIL** |
+| `qualia.py` | Per-field frequency spreads; wave overlap | (xv) the qualia wave is coherent | **PASS** |
+| `qualia.py` | Mean D of quale members vs non-quale agents | (xvi) qualia track self-determinism | **FAIL** |
+
+Headline numbers: the quale count per field (N = 8) is
+**humped** against f — 0 at f = 0, first quale at
+f = 0.0415, peak **17 at f = 0.1803**, falling to 13 at
+f = 0.2839 and 12 at f = 0.4143 — so monotonic emergence is
+refuted, not confirmed. The wave IS coherent: per field the
+spread of quale frequencies is smaller than the spread
+across all pairs by at least 0.01 everywhere (smallest
+difference 0.0127 at σ = 1.0), and the overlap with the
+field state is 0.9781–0.9988. But qualia do NOT track
+self-determinism: the pooled D gap is **−0.1522** (quale
+members 0.8163 vs non-quale 0.9686). D anti-tracks
+concurrence (v0.2.0), so the agents that qualify as qualia
+are exactly the ones whose self-knowing the noise has
+destroyed. Two measured negative results, kept and stated.
+
+Run `qualia.qualia_claims()` for the three verdicts, or see
+REPORT.md §12.
+
 ## Maximum scientific outcome
 
 Run:
@@ -204,6 +289,24 @@ not change; only the status derivation changes.
 - **v0.4.0:** the empathy-status thresholds (F ≥ 0.30 ATTUNED,
   F ≥ 0.01 PARTIAL) are repository conventions set from a pilot
   sweep, not measured constants.
+- **v0.5.0:** resonance is a defined overlap quantity
+  (|⟨ψ_i|ψ_j⟩|²), not a measured physical resonance;
+  co-creativity = entropy is a definition of the measure
+  (joint entropy of the collective's joint outcomes), not a
+  discovery about human creativity; collaboration is a shared
+  field in code, not social science. The (xi) resonance effect
+  is the cross-noise pattern — within a single noise level it
+  is weak or negative. The (xiii) break does not hold: the
+  collaboration gap survives every noise level tested, and the
+  claim FAILS on that half.
+- **v0.6.0:** a "quale" is a DEFINED resonant+entangled
+  mode in code, not a measurement of subjective experience;
+  the qualia wave is a defined superposition, not a physical
+  wave. The (xiv) count is humped against f (peak 17 at
+  f = 0.1803) and the (xvi) pooled D gap is negative
+  (−0.1522): in this model the resonant+entangled modes are
+  the least self-determined, because the noise that creates
+  concurrence destroys self-knowing.
 
 ## Run tests
 

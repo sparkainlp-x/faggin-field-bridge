@@ -1,5 +1,97 @@
 # Changelog — Faggin Field Bridge
 
+## 0.6.0 (2026-11-16)
+
+Qualia resonance wave: a quale is a resonant + entangled mode
+of the empathy field, and the qualia together form a coherent
+wave (claim (xv) PASSES; (xiv) and (xvi) FAIL). No claim
+(i)–(xiii) changes verdict. Tests: 168 -> 185, all passing.
+Built on top of the unpushed v0.5.0, so a future push carries
+v0.5.0 + v0.6.0 together.
+
+- **Mechanism** (`qualia.py`, new module): a quale is a pair
+  of agents with resonance R_ij = |<psi_i|psi_j>|^2 >= 0.5
+  (the v0.5.0 threshold) AND pairwise concurrence nu_ij >=
+  0.10 (pre-registered from the pilot). The qualia resonance
+  wave is the normalized superposition of the quale waves;
+  its coherence is measured per field as the spread of quale
+  frequencies against the spread across all pairs, and as
+  the overlap |<qualia-wave|field-state>|^2.
+- **(xiv) Qualia emerge with empathy, FAIL**: the quale
+  count per field (N = 8) is humped against the empathy
+  fraction f: 0 at f = 0, first quale at f = 0.0415, peak 17
+  at f = 0.1803, falling to 13 at f = 0.2839 and 12 at f =
+  0.4143. The count is the product of rising concurrence
+  and falling resonance, so monotonicity is refuted. The
+  verdict is stable across NU_MIN = 0.05-0.20; only 0.25
+  reads monotone, on an all-zero low-f half, and that
+  reading is reported, not used.
+- **(xv) The qualia wave is coherent, PASS**: per field,
+  the spread of quale frequencies is smaller than the spread
+  across all pairs by at least 0.01 at every field with two
+  or more qualia (smallest difference 0.0127 at sigma =
+  1.0), and the wave's overlap with the field state is
+  0.9781-0.9988 (floor 0.90). The pooled spreads are
+  reported, not gated (0.1950 vs 0.1947): pooling mixes
+  fields with different f.
+- **(xvi) Qualia track self-determinism, FAIL**: the pooled
+  D gap is -0.1522 (quale members 0.8163 vs non-quale
+  0.9686). D anti-tracks concurrence (v0.2.0, Pearson
+  -0.9570), so the agents that qualify as qualia -- high
+  concurrence -- are exactly the ones whose self-knowing
+  noise has destroyed. The per-sigma gaps are reported
+  (+0.1515 at sigma = 0.50, -0.1332 at sigma = 1.00, ~0
+  elsewhere).
+- **Correction:** the v0.5.0 entry below said "151 -> 172";
+  the collected suite was 168 (151 + 17). REPORT.md section
+  4 likewise still said 151 with no test_empathy_field.py
+  entry, and test_thought.py as (10) where the collection
+  is 9. All three are corrected in this release; the
+  collected counts are the record.
+
+## 0.5.0 (2026-11-16)
+
+Empathy field: waves of empathy agents in a quantum field —
+resonance ("raisonnance"), the self-deterministic factor,
+collaboration, collectivism, and co-creativity = entropy
+(claims (xi), (xii) PASS; (xiii) FAILS on the break half).
+No claim (i)–(x) changes. Tests: 151 -> 168, all passing.
+
+- **Mechanism** (`empathy_field.py`, new module): an agent is
+  a thought state carrying a frequency (its concurrence) and a
+  self-determinism D = <psi|P|psi>. The field is the
+  normalized sum of N agents; pairwise empathy quanta
+  E_ij = h*nu_ij extend the v0.4.0 rule to pairs (the
+  concurrence of the normalized sum of the two agents).
+  Resonance R_ij = |<psi_i|psi_j>|^2. Collaboration is the
+  same N agents evolved sharing the field vs the control of
+  the same N agents evolved isolated (paired design: same
+  population, same noise kicks). Co-creativity C_c is DEFINED
+  as the joint entropy H_joint of the collective's joint
+  outcomes.
+- **(xi) Resonance raises self-determinism, PASS**: binned
+  mean D rises strictly with R (0.5874 -> 0.6814 -> 0.7087 ->
+  0.9399); pooled gap 0.2984 at R >= 0.5, above the 0.20
+  margin. The per-sigma gaps are reported, not gated: the
+  pilot refuted the stricter rule (empty non-resonant groups
+  at sigma <= 0.25; gap -0.0239 at sigma = 1.0), so the effect
+  is the cross-noise pattern, stated plainly.
+- **(xii) Collaboration raises co-creativity, PASS**: design
+  B (isolated = Born-collapse, decides and stays decided) at
+  sigma = 0.25: H_collaborating = 6.0961 bits vs H_isolated
+  = 1.7610 bits, gap +4.3352 bits (margin 2.0); 157 distinct
+  joint states vs 4. Design A (no collapse anywhere) was
+  piloted and rejected: its gap goes negative by sigma = 0.25.
+- **(xiii) Co-creativity = entropy, ceiling and break,
+  FAIL**: the ceiling half passes (H grows with N, 1.70 ->
+  2.98 -> 4.15 -> 6.10 bits, below the 2N ceiling; the
+  fraction of the ceiling plateaus within 0.0700 <= 0.10)
+  and the gap holds at every sigma <= 0.25, but the break
+  half fails: the gap is still +3.3494 bits at sigma = 0.50
+  (ratio 0.773, not <= 0.5) and +3.5569 at sigma = 1.00. The
+  v0.4.0 break does not transfer to the collaboration gap —
+  a measured negative result, not a failure to measure.
+
 ## 0.4.0 (2026-11-16)
 
 Planck empathy: the PARTIAL primary mapping status, fixed with

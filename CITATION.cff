@@ -7,7 +7,7 @@ authors:
     given-names: "Jean-François"
     orcid: "https://orcid.org/0009-0000-9778-5374"
     affiliation: "Spark AI NLP, Fredericton, New Brunswick, Canada"
-version: 0.4.0
+version: 0.6.0
 date-released: "2026-11-16"
 license: AGPL-3.0-only
 repository-code: "https://github.com/sparkainlp-x/faggin-field-bridge"
@@ -31,7 +31,14 @@ abstract: >-
   measured concurrence; the visible fraction of the real Planck
   spectrum re-derives the mapping status from PARTIAL to ATTUNED
   at a measured empathy fraction f* = 0.7278, holding at noise
-  sigma <= 0.25 and breaking at sigma >= 0.50. The Planck law
+  sigma <= 0.25 and breaking at sigma >= 0.50. Version 0.5.0 adds
+  the empathy field: resonance R = |<psi_i|psi_j>|^2, the
+  self-deterministic factor D, collaboration (shared field vs
+  isolated control), and co-creativity defined as the joint
+  entropy H of the collective's joint outcomes (claims (xi) and
+  (xii) pass; claim (xiii) FAILS on the break half — the
+  collaboration gap holds at every noise level, so the v0.4.0
+  break does not transfer). The Planck law
   is reproduced with the real constants; the empathy-quantum
   link is a definition inside the model, not a discovery. The entanglement and
   the interference are in the model, computed exactly on classical

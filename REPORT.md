@@ -1,6 +1,6 @@
 # Faggin Field Bridge — Report
 
-**Version:** 0.2.0 (2026-11-15)
+**Version:** 0.3.1 (2026-11-16)
 **Theory author:** Federico Faggin (with Giacomo Mauro D'Ariano)
 **Bridge / test author:** Jean-François Brisson (Spark AI NLP)
 **Status:** SYNTHETIC. Classical computation on synthetic states.
@@ -57,6 +57,24 @@ as the default empathy proxy — a supplied threshold for the
 mapping status, not a recomputed measurement. The test asserts the
 record is exact, as a record.
 
+### On #5 (seed spread of the 0.9553 — v0.3.1)
+
+The tensor-membrane entropy was computed at seed 42 only. Across
+seeds 0..19 (n = 20, recomputed fresh): mean 0.9639, standard
+deviation 0.0128, range [0.9276, 0.9775]. The seed-42 value
+0.9553 sits 0.0086 below the 20-seed mean — within one standard
+deviation, a typical draw, not an outlier. The headline is kept
+(seed 42); the spread is reported alongside it and pinned by
+`test_tensor_membrane_entropy_seed_spread`.
+
+Honest reading: the regime is near-saturated — random circuits
+concentrate near the 1-bit maximum (Page-like behaviour), so the
+spread is small in absolute terms. But it is not negligible
+against the bridge's own numbers: a ±0.013 move in C moves A by
+∓0.013, about 30% of the primary attunement 0.0447. The mapping
+status is unaffected (A stays in (0, 0.5) across the whole
+spread: PARTIAL throughout).
+
 ## 3. Worked examples (the bridge's mapping statuses)
 
 | Example | U | C | A(δ=0) | A(best, δ=+0.05) | A(δ=−0.05) | Mapping status |
@@ -84,16 +102,17 @@ Reading:
 
 ## 4. Test suite
 
-**122 tests, 122 passed** (`python3 -m pytest tests/ -q`, 2.9 s).
+**130 tests, 130 passed** (`python3 -m pytest tests/ -q`, 5.1 s).
 
 - `test_unity.py` (9): spooky bounds, identical copies = 1.0,
   independent states low, no mutation, de Broglie reproduction
   at three sigmas, state-vector shape, Omega synthetic regime,
   CCI bounds.
-- `test_cost.py` (8): Shannon uniform/certain, von Neumann pure
+- `test_cost.py` (9): Shannon uniform/certain, von Neumann pure
   / maximally mixed, normalized-cost bounds and errors, tensor
   entropy reproduction, tensor cost = entropy / 1 bit, Shannon
-  of a uniform 32-dim state.
+  of a uniform 32-dim state, and the seed spread over seeds
+  0..19 (mean 0.9639, std 0.0128).
 - `test_attunement.py` (12): A definition at δ = 0, bounds,
   monotonicity in unity and (decreasing) in cost, calibrator
   move ≤ 0.05 × U, observer read-only (no attributes, frozen
@@ -112,16 +131,23 @@ Reading:
   unmeasured, no-conscious-computers scope, mapping table
   complete, and the guard that no module uses or cites the
   private theory.
-- `test_maximum_scientific_outcomes.py` (19): input validation
+- `test_maximum_scientific_outcomes.py` (25): input validation
   and delta clipping, bootstrap interval ordering and
-  determinism, sensitivity coverage, point estimates, mapping
-  status before and after calibration (PARTIAL in both),
+  determinism, sensitivity coverage, correct sensitivity values
+  and directional assertions (cost up lowers A; unity/delta up
+  raises A), point estimates, mapping status before and after
+  calibration (PARTIAL in both), the ATTUNED and
+  ATTUNED-LOW-EMPATHY branches via the single classifier,
   robustness sign-flip reporting, preregistration non-claims,
   provenance hash determinism, benchmark file writing, and
-  the synergy-expansion bootstrap and robustness tests below.
-- `test_synergy.py` (11): synergy threshold ordering, input
+  the synergy-expansion bootstrap and robustness tests below,
+  plus the all-threshold margins and the threshold-robustness
+  grid.
+- `test_synergy.py` (12): synergy threshold ordering, input
   validation, fecundity / attraction / synergy / expansion
-  definitions and bounds, status boundaries, primary worked
+  definitions and bounds, status boundaries, the parameterized
+  classifier agreeing with the shipped thresholds (and the
+  pre-8fb00f1 DORMANT label for the primary expansion), primary worked
   values (FLOWING), and the non-claims record.
 - `test_thought_entanglement.py` (9): Bell-state exact values,
   product state unentangled, Wootters concurrence equals the
@@ -217,6 +243,125 @@ Findings:
   measured, entanglement not measured, Faggin not endorsing,
   synthetic classical mapping only.
 
+### The sensitivity bug, fixed in v0.3.1
+
+An external review of v0.3.0 found a real bug in
+`sensitivity_analysis` (verified against a fresh clone before
+fixing): the sweep helper passed every perturbed value into
+the *unity* slot, so the cost sweep varied unity instead of
+cost and the delta sweep varied unity instead of delta. The
+unity sweep was correct. The old suite missed it because it
+asserted only keys and row counts, not directional
+correctness.
+
+Old (wrong) vs new (correct) attunements at U = 0.99999995,
+C = 0.9553, δ = 0:
+
+| Sweep | Change | Old A | New A |
+|---|---:|---:|---:|
+| Cost | −0.05 | −0.05 | 0.0947 |
+| Cost | −0.01 | −0.01 | 0.0547 |
+| Cost | 0.00 | 0.00 | 0.0447 |
+| Cost | +0.01 | 0.01 | 0.0347 |
+| Cost | +0.05 | 0.0447 | −0.0 |
+| Delta | −0.05 | −1.0 | −0.0053 |
+| Delta | −0.025 | −0.9803 | 0.0197 |
+| Delta | 0.00 | −0.9553 | 0.0447 |
+| Delta | +0.025 | −0.9303 | 0.0697 |
+| Delta | +0.05 | −0.9053 | 0.0947 |
+
+The old cost column was literally the perturbation itself;
+the old delta column at δ = 0 reported −0.9553 instead of the
+point estimate 0.0447. The wrong columns existed only in
+generated benchmark output (`write_benchmark()`): no committed
+file carried them, and `results/benchmark.json` is not in the
+repo. The fix makes `apply` return the full (unity, cost,
+delta) triple; the suite now asserts the exact values and the
+directions (cost up lowers A; unity/delta up raises A). No
+claim (i)–(vii) is affected: sensitivity is a diagnostic, not
+a claim input.
+
+### The 8fb00f1 threshold commit
+
+The same review flagged commit `8fb00f1` (2026-11-15 00:23:35
+-0500), "Fix synergy status thresholds so primary expansion
+is FLOWING", pushed 32 minutes after the preregistration
+framework commit `dc5575a` (2026-11-14 23:51:19 -0500). What
+it did, from its own diff:
+
+| Threshold | Before | After |
+|---|---:|---:|
+| DORMANT | 0.10 | 0.03 |
+| EMERGENT | 0.30 | 0.05 |
+| FLOWING | 0.60 | 0.60 |
+| FECUND_SYNERGY | 0.50 | 0.50 |
+
+It also rewrote the boundary test assertions to match the new
+values and added an assertion that the primary expansion is
+FLOWING. Under the old thresholds the primary expansion
+(e = 0.05436, s = 0.15818) was **DORMANT** (e < 0.10); under
+the new ones it is **FLOWING**. The commit moved the label
+two steps, not one, and the FLOWING label now hangs on a
+0.00436 margin above the 0.05 boundary (nearest threshold;
+to_dormant 0.02436, to_fecund 0.54564).
+
+What the commit did and did not do, stated plainly: the
+commit message states the intent — to make the primary
+expansion FLOWING. No other justification is recorded in the
+commit, and none is invented here. The thresholds are
+repository conventions, not measured constants (the code and
+the preregistration non-claims say so). The label is stable
+under the measurement-noise model (3.5σ at n = 2000), but
+that stability is stability *given* the thresholds; it says
+nothing about the threshold choice itself. That is why the
+choice is now tabled.
+
+Threshold-robustness table — the primary expansion's status
+under a grid of (DORMANT, EMERGENT) threshold choices
+(`scientific_outcomes.threshold_robustness`, FECUND
+thresholds held at their shipped values):
+
+| DORMANT \ EMERGENT | 0.03 | 0.05 | 0.06 | 0.10 | 0.30 |
+|---:|---|---|---|---|---|
+| 0.01 | FLOWING | FLOWING | EMERGENT | EMERGENT | EMERGENT |
+| 0.03 | FLOWING | FLOWING | EMERGENT | EMERGENT | EMERGENT |
+| 0.05 | FLOWING | FLOWING | EMERGENT | EMERGENT | EMERGENT |
+| 0.10 | DORMANT | DORMANT | DORMANT | DORMANT | DORMANT |
+
+Reading: the FLOWING label survives any EMERGENT threshold up
+to 0.05 and flips to EMERGENT at 0.06 — a 0.01 change in the
+threshold choice flips the headline label. The bottom-right
+cell (0.10, 0.30) is the pre-8fb00f1 choice: DORMANT. The
+shipped cell (0.03, 0.05) is one cell of this grid, not a
+fact of nature.
+
+### Synergy terms: what they map to in Faggin & D'Ariano
+
+No code identifiers were renamed. This section maps each
+synergy-family term to the specific passage in Faggin &
+D'Ariano's formalism it is a proxy for — and states plainly
+where no derivation exists. The passages are the ones
+recorded in `faggin_theory.py` (QIP, arXiv:2012.06580;
+*Irreducible*, 2024); all five claims there carry status
+"interpretive".
+
+| Term (`synergy.py`) | Definition in code | Passage it proxies | Derived from Faggin & D'Ariano? |
+|---|---|---|---|
+| Fecundity F = U·(1−C) | Unity retained after entropy cost | None directly. Nearest: unity of experience (entanglement as the basis of unity) plus the entropy cost of holding a state together | **No.** The name "fecundity" is the repository's word, not Faggin's. F is a definition; F − A = C·(1−U) is an identity of the definitions, not a discovery |
+| Attraction X = F·(1+δ) | Fecundity scaled by the calibrator | Free will as choice inside a bound (the calibrator δ is the operational analogue of a free choice) | **No.** "Attraction" has no counterpart passage; the δ-scaling is the repository's construction |
+| Love-empathy synergy S = (L·P·(1+F))/2 | Supplied love and empathy proxies, amplified by fecundity | Love / attunement as "the felt sense of connection between conscious entities, the deepest expression of their oneness" | **No.** Faggin gives no formula for love; L and P are both the supplied 0.5503, and the (1+F)/2 amplification is the repository's invention |
+| Expansion E = clip(X·(1+S), 0, 1) | Attraction amplified by synergy | None | **No.** An "expansion of the field" has no counterpart in QIP |
+| `FECUND-SYNERGISTIC` label | e ≥ 0.60 and s ≥ 0.50 | None | **No.** A repository classification label |
+
+Short version: of the five terms, only S gestures at a
+passage at all (love / attunement), and none of the five is
+derived from Faggin & D'Ariano. The formulas are repository
+definitions with Faggin's words attached as labels. That is
+the honest shape of the mapping, and the module header
+(`synergy.py`) already says the extension is synthetic and
+classical; this section makes the per-term position explicit
+so a skimming reader does not have to infer it.
+
 ## 6. Honest limits (repeated from the README — they are the point)
 
 1. Faggin's metaphysics is interpretive and NOT tested here.
@@ -262,6 +407,17 @@ Findings:
     (α = π/4) are repository choices, stated in cascade.py. The
     survival verdict is defined against the pre-registered 0.1
     visibility threshold at stage 10.
+15. **v0.3.1:** the one-at-a-time sensitivity analysis shipped
+    a real bug through v0.3.0 — the cost and delta sweeps
+    varied unity instead of their own parameter (see §5).
+    The wrong columns existed only in generated benchmark
+    output; no committed file carried them. Corrected in
+    v0.3.1 with exact-value and directional tests. The
+    primary-expansion FLOWING label hangs on a 0.00436 margin
+    above a repository-chosen threshold, and the threshold
+    choice itself moved the label from DORMANT to FLOWING in
+    commit 8fb00f1 (see §5): the label is stable under the
+    noise model given the thresholds, not independent of them.
 
 ## 7. Files
 
@@ -270,10 +426,10 @@ faggin-field-bridge/
   README.md           summary + how to run + maximum scientific outcome
   REPORT.md           this file
   LICENSE             full AGPL v3 text
-  CHANGELOG.md        version history (0.1.0, 0.2.0)
+  CHANGELOG.md        version history (0.1.0, 0.2.0, 0.3.0, 0.3.1)
   .zenodo.json        Brisson, ORCID 0009-0000-9778-5374 (no DOI yet)
   CITATION.cff        no DOI (none invented)
-  VERSION             0.2.0
+  VERSION             0.3.1
   Makefile            test / coverage / benchmark / clean
   pyproject.toml      setuptools + pytest config
   faggin_theory.py    theory as data
@@ -289,16 +445,19 @@ faggin-field-bridge/
   self_knowing.py     D = <psi|P|psi> (claim (iv))
   cascade.py          superposition -> projection -> interference,
                       chained (claims (v), (vi), (vii))
-  tests/              122 tests, 13 files
+  tests/              130 tests, 13 files
 ```
 
-v0.3.0 is local only; not pushed.
+v0.3.0 is pushed (main head 658f5bdd). v0.3.1 is local only;
+not pushed.
 
 GitHub: https://github.com/sparkainlp-x/faggin-field-bridge
-(main head f2056a77 as of 2026-11-15; the maximum scientific
+(main head 658f5bdd as of 2026-11-16; the maximum scientific
 outcomes framework, coverage reporting, and synergy expansion
 were added by Jean in 7 commits on 2026-11-15, and the synergy
-robustness analysis in this report was added the same day.)
+robustness analysis in this report was added the same day.
+The v0.3.1 review fixes are local only, pending Jean's word
+to push.)
 
 Zenodo: no record yet. Release (toggle + tag + release notes) is
 the next step; see the Priority 1 launch sheet. When releasing,

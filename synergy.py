@@ -93,21 +93,46 @@ def expansion(attraction_value: float, synergy_value: float) -> float:
     return _clip(x * (1.0 + s))
 
 
-def synergy_status(expansion_value: float, synergy_value: float) -> str:
-    """Repository-defined classification, not a physical or clinical label."""
+def synergy_status_with_thresholds(
+    expansion_value: float,
+    synergy_value: float,
+    dormant: float,
+    emergent: float,
+    fecund_expansion: float = FECUND_EXPANSION_THRESHOLD,
+    fecund_synergy: float = FECUND_SYNERGY_THRESHOLD,
+) -> str:
+    """Classification under explicit thresholds (same rule as
+    synergy_status, thresholds as arguments).
+
+    Used by the threshold-robustness table: it asks what label a
+    given expansion would carry if the repository's threshold
+    choices had been different. The thresholds are conventions,
+    not measured constants, so the label's dependence on them is
+    part of the result.
+    """
     e = _clip(expansion_value)
     s = _clip(synergy_value)
 
-    if e < DORMANT_EXPANSION_THRESHOLD:
+    if e < dormant:
         return "DORMANT"
-    elif e < EMERGENT_EXPANSION_THRESHOLD:
+    elif e < emergent:
         return "EMERGENT"
-    elif e < FECUND_EXPANSION_THRESHOLD:
+    elif e < fecund_expansion:
         return "FLOWING"
-    elif s >= FECUND_SYNERGY_THRESHOLD:
+    elif s >= fecund_synergy:
         return "FECUND-SYNERGISTIC"
     else:
         return "EXPANDING"
+
+
+def synergy_status(expansion_value: float, synergy_value: float) -> str:
+    """Repository-defined classification, not a physical or clinical label."""
+    return synergy_status_with_thresholds(
+        expansion_value,
+        synergy_value,
+        DORMANT_EXPANSION_THRESHOLD,
+        EMERGENT_EXPANSION_THRESHOLD,
+    )
 
 
 def maximum_synergy_outcome(

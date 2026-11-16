@@ -26,15 +26,18 @@ from typing import Any, Callable, Iterable
 import numpy as np
 
 from attunement import DELTA_MAX, DELTA_MIN, attunement
-from bridge import bridge, quantum_thought_claims
+from bridge import bridge, mapping_status, quantum_thought_claims
 from synergy import (
+    DORMANT_EXPANSION_THRESHOLD,
     EMERGENT_EXPANSION_THRESHOLD,
+    FECUND_EXPANSION_THRESHOLD,
     attraction,
     expansion,
     fecundity,
     love_empathy_synergy,
     maximum_synergy_outcome,
     synergy_status,
+    synergy_status_with_thresholds,
 )
 
 
@@ -115,18 +118,38 @@ def sensitivity_analysis(
     cost_range: Iterable[float] = (-0.05, -0.01, 0.0, 0.01, 0.05),
     delta_range: Iterable[float] = (-0.05, -0.025, 0.0, 0.025, 0.05),
 ) -> dict[str, list[dict[str, float]]]:
-    """One-at-a-time sensitivity of attunement to its inputs."""
+    """One-at-a-time sensitivity of attunement to its inputs.
+
+    Each sweep perturbs one parameter and holds the other two at
+    their base values. The ``apply`` callable returns the full
+    (unity, cost, delta) triple after the perturbation, so a
+    perturbation can never leak into the wrong slot.
+
+    NOTE (v0.3.1 fix): through v0.3.0 the sweep helper passed the
+    perturbed value into the unity slot for every parameter, so
+    the cost sweep varied unity instead of cost and the delta
+    sweep varied unity instead of delta. The unity sweep was
+    correct; the cost and delta columns were wrong (the cost
+    column was literally the perturbation itself). The fix makes
+    ``apply`` return the triple and passes all three values to
+    ``attunement``. See CHANGELOG 0.3.1 for the old -> new
+    numbers.
+    """
     base = validate_inputs(unity, cost)
 
-    def sweep(name: str, values: Iterable[float], apply: Callable[[float], float]) -> list[dict[str, float]]:
+    def sweep(
+        name: str,
+        values: Iterable[float],
+        apply: Callable[[float], tuple[float, float, float]],
+    ) -> list[dict[str, float]]:
         rows = []
         for change in values:
-            u = apply(change)
-            a = attunement(u, base["cost"], base["delta"])
+            u, c, d = apply(change)
+            a = attunement(u, c, d)
             rows.append({
                 "parameter": name,
                 "change": float(change),
-                "value": float(u),
+                "value": float({"unity": u, "cost": c, "delta": d}[name]),
                 "attunement": float(a),
             })
         return rows
@@ -135,17 +158,17 @@ def sensitivity_analysis(
         "unity": sweep(
             "unity",
             unity_range,
-            lambda x: _clip(base["unity"] + x, 0.0, 1.0),
+            lambda x: (_clip(base["unity"] + x, 0.0, 1.0), base["cost"], base["delta"]),
         ),
         "cost": sweep(
             "cost",
             cost_range,
-            lambda x: _clip(base["cost"] + x, 0.0, 1.0),
+            lambda x: (base["unity"], _clip(base["cost"] + x, 0.0, 1.0), base["delta"]),
         ),
         "delta": sweep(
             "delta",
             delta_range,
-            lambda x: _clip(x, DELTA_MIN, DELTA_MAX),
+            lambda x: (base["unity"], base["cost"], _clip(x, DELTA_MIN, DELTA_MAX)),
         ),
     }
 
@@ -157,13 +180,18 @@ def robustness(
     n_boot: int = 2000,
     seed: int = 42,
 ) -> dict[str, Any]:
-    """Assess whether the mapping status is stable under measurement noise."""
+    """Assess whether the mapping status is stable under measurement noise.
+
+    The bound statuses come from the single classifier
+    (bridge.mapping_status), so an ATTUNED case is reported as
+    ATTUNED rather than forced into DISSONANT/PARTIAL.
+    """
     result = bridge(unity, cost, empathy=empathy)
     before = result["mapping_status"]["label"]
     uncertainty = bootstrap_attunement(unity, cost, n_boot=n_boot, seed=seed)
 
-    lower_status = "DISSONANT" if uncertainty["lower"] < 0 else "PARTIAL"
-    upper_status = "DISSONANT" if uncertainty["upper"] < 0 else "PARTIAL"
+    lower_status = mapping_status(uncertainty["lower"], empathy)["label"]
+    upper_status = mapping_status(uncertainty["upper"], empathy)["label"]
 
     return {
         "reported_status": before,
@@ -227,6 +255,56 @@ def bootstrap_expansion(
     }
 
 
+def threshold_robustness(
+    unity: float,
+    cost: float,
+    love: float = 0.5503,
+    empathy: float = 0.5503,
+    delta: float = 0.05,
+    dormant_grid: Iterable[float] = (0.01, 0.03, 0.05, 0.10),
+    emergent_grid: Iterable[float] = (0.03, 0.05, 0.06, 0.10, 0.30),
+) -> dict[str, Any]:
+    """What label would this expansion carry under other thresholds?
+
+    The synergy thresholds are repository conventions, not measured
+    constants, so the reported status is only as robust as its
+    distance to the nearest threshold. This table classifies the
+    same point expansion under a grid of (DORMANT, EMERGENT)
+    threshold choices, holding the FECUND thresholds at their
+    shipped values. The shipped thresholds (0.03, 0.05) are one
+    cell of the grid; the pre-8fb00f1 thresholds (0.10, 0.30) are
+    another — under them the primary expansion was DORMANT, not
+    FLOWING (see REPORT.md §5, "The 8fb00f1 threshold commit").
+    """
+    outcome = maximum_synergy_outcome(unity, cost, love, empathy, delta)
+    point_e = outcome["expansion"]
+    point_s = outcome["love_empathy_synergy"]
+
+    dormant_list = list(dormant_grid)
+    emergent_list = list(emergent_grid)
+    statuses = [
+        [
+            synergy_status_with_thresholds(point_e, point_s, d, e)
+            for e in emergent_list
+        ]
+        for d in dormant_list
+    ]
+
+    return {
+        "expansion": float(point_e),
+        "love_empathy_synergy": float(point_s),
+        "shipped_thresholds": {
+            "dormant": DORMANT_EXPANSION_THRESHOLD,
+            "emergent": EMERGENT_EXPANSION_THRESHOLD,
+            "fecund_expansion": FECUND_EXPANSION_THRESHOLD,
+        },
+        "shipped_status": outcome["synergy_status"],
+        "dormant_grid": [float(d) for d in dormant_list],
+        "emergent_grid": [float(e) for e in emergent_list],
+        "statuses": statuses,
+    }
+
+
 def synergy_robustness(
     unity: float,
     cost: float,
@@ -256,9 +334,16 @@ def synergy_robustness(
     lower_status = synergy_status(uncertainty["lower"], point_s)
     upper_status = synergy_status(uncertainty["upper"], point_s)
 
-    # Margin to the nearest threshold that would change the status.
+    # Margin to every expansion threshold that could change the
+    # status. The nearest one decides stability; the full dict
+    # shows how far each boundary sits. (The FECUND-synergy
+    # threshold is not listed: it can only change the status once
+    # the expansion is already past the FECUND expansion
+    # threshold, which it is not here.)
     margins = {
+        "to_dormant": abs(point_e - DORMANT_EXPANSION_THRESHOLD),
         "to_emergent": abs(point_e - EMERGENT_EXPANSION_THRESHOLD),
+        "to_fecund": abs(point_e - FECUND_EXPANSION_THRESHOLD),
     }
     nearest_margin = min(margins.values())
 
@@ -275,12 +360,16 @@ def synergy_robustness(
         "status_at_lower_bound": lower_status,
         "status_at_upper_bound": upper_status,
         "status_stable_under_uncertainty": lower_status == upper_status == point_status,
+        "margins": {key: float(value) for key, value in margins.items()},
         "margin_to_nearest_threshold": float(nearest_margin),
         "margin_in_standard_deviations": float(
             nearest_margin / uncertainty["standard_deviation"]
         )
         if uncertainty["standard_deviation"] > 0
         else float("inf"),
+        "threshold_robustness": threshold_robustness(
+            unity, cost, love, empathy, delta
+        ),
         "fecundity_minus_attunement": float(f_point - a_point),
         "fecundity_minus_attunement_identity": "C * (1 - U)",
     }
@@ -300,7 +389,7 @@ def preregistration() -> dict[str, Any]:
             "DISSONANT": "A < 0",
             "PARTIAL": "0 <= A < 0.5",
             "ATTUNED": "A >= 0.5 and empathy >= 0.5",
-            "ATTUNED_LOW_EMPATHY": "A >= 0.5 and empathy < 0.5",
+            "ATTUNED-LOW-EMPATHY": "A >= 0.5 and empathy < 0.5",
         },
         "calibration_bound": [DELTA_MIN, DELTA_MAX],
         "success_criterion": "Reproduce the declared input values and report uncertainty and sensitivity.",
@@ -356,14 +445,11 @@ def maximum_scientific_outcome(
 
     before_status = bridge_result["mapping_status"]["label"]
 
-    # Recompute the uncalibrated status directly.
+    # Recompute the uncalibrated status with the single classifier
+    # (bridge.mapping_status) — the same function bridge() uses, so
+    # the label can never drift between the two call sites.
     uncalibrated_a = attunement(validated["unity"], validated["cost"], 0.0)
-    if uncalibrated_a < 0:
-        uncalibrated_status = "DISSONANT"
-    elif uncalibrated_a < 0.5:
-        uncalibrated_status = "PARTIAL"
-    else:
-        uncalibrated_status = "ATTUNED" if empathy >= 0.5 else "ATTUNED_LOW_EMPATHY"
+    uncalibrated_status = mapping_status(uncalibrated_a, empathy)["label"]
 
     return {
         "point_estimate": {

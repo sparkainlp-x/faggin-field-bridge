@@ -60,6 +60,32 @@ def test_tensor_membrane_entropy_reproduces():
     assert abs(value - cost.TENSOR_MEMBRANE_ENTROPY_REPORTED) < 0.02
 
 
+def test_tensor_membrane_entropy_seed_spread():
+    """The 0.9553 headline is one draw: spread over seeds 0..19.
+
+    Mean 0.9639, standard deviation 0.0128 (n = 20). The seed-42
+    value 0.9553 sits 0.0086 below the 20-seed mean — within one
+    standard deviation — so the headline is a typical draw, not
+    an outlier. But the spread is real: it is near-saturated,
+    Page-like behaviour (random circuits concentrate near the
+    1-bit maximum), and a +-0.013 move in C moves A by -+0.013,
+    about 30% of the primary attunement 0.0447. The headline is
+    kept (seed 42); the spread is reported alongside it.
+    """
+    import statistics
+
+    values = [cost.tensor_membrane_mean_entropy(seed=s) for s in range(20)]
+    mean = statistics.mean(values)
+    std = statistics.stdev(values)
+    print(f"\nseed spread (n=20): mean {mean:.4f}, std {std:.4f}, "
+          f"min {min(values):.4f}, max {max(values):.4f}")
+    assert mean == pytest.approx(0.9639, abs=1e-3)
+    assert std == pytest.approx(0.0128, abs=1e-3)
+    assert min(values) == pytest.approx(0.9276, abs=1e-3)
+    assert max(values) == pytest.approx(0.9775, abs=1e-3)
+    assert abs(cost.tensor_membrane_mean_entropy(seed=42) - mean) < std
+
+
 def test_tensor_membrane_cost_is_entropy_over_one_bit():
     """Single-qubit maximum is 1 bit, so C = S here."""
     assert abs(cost.tensor_membrane_cost()

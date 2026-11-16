@@ -177,4 +177,5 @@ make benchmark
 
 ## License
 
+Copyright (c) 2026 Jean-Francois Brisson (Spark AI NLP).
 AGPL-3.0-only. See `LICENSE`.

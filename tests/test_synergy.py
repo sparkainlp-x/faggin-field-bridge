@@ -1,4 +1,7 @@
 # Tests for fecundity-driven attraction expansion and love-empathy synergy.
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (c) 2026 Jean-Francois Brisson (Spark AI NLP)
 
 import pytest
 
@@ -13,6 +16,7 @@ from synergy import (
     love_empathy_synergy,
     maximum_synergy_outcome,
     synergy_status,
+    synergy_status_with_thresholds,
     validate_synergy_inputs,
 )
 
@@ -76,6 +80,20 @@ def test_synergy_status_boundaries():
     assert synergy_status(0.50, 0.9) == "FLOWING"
     assert synergy_status(0.80, 0.9) == "FECUND-SYNERGISTIC"
     assert synergy_status(0.80, 0.4) == "EXPANDING"
+
+
+def test_synergy_status_with_thresholds_matches_shipped():
+    """The parameterized classifier agrees with the shipped one,
+    and reproduces the pre-8fb00f1 label for the primary expansion:
+    DORMANT under (0.10, 0.30), FLOWING under (0.03, 0.05)."""
+    for e, s in [(0.02, 0.9), (0.04, 0.9), (0.05, 0.9), (0.80, 0.9)]:
+        assert synergy_status_with_thresholds(
+            e, s,
+            DORMANT_EXPANSION_THRESHOLD,
+            EMERGENT_EXPANSION_THRESHOLD,
+        ) == synergy_status(e, s)
+    assert synergy_status_with_thresholds(0.05436, 0.15818, 0.10, 0.30) == "DORMANT"
+    assert synergy_status_with_thresholds(0.05436, 0.15818, 0.03, 0.05) == "FLOWING"
 
 
 def test_maximum_synergy_outcome_primary_values():

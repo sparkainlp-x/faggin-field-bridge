@@ -3,10 +3,15 @@
 # The bridge: observer -> calibrator -> attunement -> mapping status.
 #
 # SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (c) 2026 Jean-Francois Brisson (Spark AI NLP)
 
 import attunement as at
 import cost
 import unity
+
+# No headline claim is emitted by this package. The claims below
+# are measured statements with pre-registered rules, not headlines.
+HEADLINE_ALLOWED = False
 
 
 ATTUNEMENT_THRESHOLD = 0.5
@@ -83,6 +88,40 @@ def bridge_from_entropy(
         max_entropy_bits,
     )
     return bridge(observation.unity, observation.cost, empathy=empathy)
+
+
+def quantum_thought_claims():
+    """The four quantum-thought claims (i)-(iv), measured fresh.
+
+    (i)   entanglement measured as a real quantum quantity
+          (thought_entanglement.py): concurrence of a two-thought
+          Bell state, computed exactly.
+    (ii)  coherence half-life measured (thought.py).
+    (iii) collapse cost measured (thought.py).
+    (iv)  self-knowing measured via D (self_knowing.py).
+
+    Each claim carries its pre-registered rule and verdict. No
+    headline claim is emitted: HEADLINE_ALLOWED is False.
+    """
+    import self_knowing
+    import thought
+    import thought_entanglement as te
+
+    claim_i = te.claim_entanglement_verdict()
+    claim_ii = thought.claim_coherence_verdict()
+    claim_iii = thought.claim_collapse_verdict()
+    claim_iv = self_knowing.claim_self_knowing_verdict()
+    verdicts = [claim_i, claim_ii, claim_iii, claim_iv]
+    return {
+        "headline_allowed": HEADLINE_ALLOWED,
+        "claim_i_entanglement": claim_i,
+        "claim_ii_coherence": claim_ii,
+        "claim_iii_collapse": claim_iii,
+        "claim_iv_self_knowing": claim_iv,
+        "n_claims": len(verdicts),
+        "n_passed": sum(1 for v in verdicts if v["passed"]),
+        "all_pass": all(v["passed"] for v in verdicts),
+    }
 
 
 def worked_example():

@@ -1,6 +1,6 @@
 # Faggin Field Bridge — Report
 
-**Version:** 0.1.0 (2026-11-14)
+**Version:** 0.2.0 (2026-11-15)
 **Theory author:** Federico Faggin (with Giacomo Mauro D'Ariano)
 **Bridge / test author:** Jean-François Brisson (Spark AI NLP)
 **Status:** SYNTHETIC. Classical computation on synthetic states.
@@ -8,7 +8,7 @@ No physical, biological or safety claim is made.
 
 ## 1. What was built
 
-A five-module Python package (stdlib + NumPy only) that maps
+A eight-module Python package (stdlib + NumPy only) that maps
 Faggin's Quantum Information Panpsychism onto measured quantities
 from the sparkainlp-x account. The central quantity is attunement:
 
@@ -84,7 +84,7 @@ Reading:
 
 ## 4. Test suite
 
-**80 tests, 80 passed** (`python3 -m pytest tests/ -q`, 1.34 s).
+**108 tests, 108 passed** (`python3 -m pytest tests/ -q`, 1.5 s).
 
 - `test_unity.py` (9): spooky bounds, identical copies = 1.0,
   independent states low, no mutation, de Broglie reproduction
@@ -123,6 +123,22 @@ Reading:
   validation, fecundity / attraction / synergy / expansion
   definitions and bounds, status boundaries, primary worked
   values (FLOWING), and the non-claims record.
+- `test_thought_entanglement.py` (9): Bell-state exact values,
+  product state unentangled, Wootters concurrence equals the
+  pure-state formula, depolarizing analytic match and death at
+  p = 2/3, reduced entropy blind to the death, sweep structure,
+  claim (i) verdict.
+- `test_thought.py` (10): uniform coherence 3.0, decided
+  coherence 0, dephasing formula, diagonals untouched, claim (ii)
+  and (iii) verdicts, collapse determinism, decided collapse,
+  attention clipping at the Yin bound.
+- `test_self_knowing.py` (7): exact D values (1, 1/3, 0, 1/2),
+  gap complement, Spearman exactness, claim (iv) verdict.
+- `test_quantum_thought_claims.py` (3): the unified claims
+  (4/4 pass, no headline), the maximum-outcome registry
+  (entanglement in the model True, physical False), and the
+  preregistration non-claims (original wording kept, model
+  scope added).
 
 ## 5. Maximum scientific outcome (measured 2026-11-15)
 
@@ -206,6 +222,22 @@ Findings:
    (0.837 vs 0.9005); see §2.
 8. The mapping-status thresholds (A ≥ 0.5, E ≥ 0.5) are chosen cut
    points, not measured constants.
+9. **v0.2.0:** entanglement is now measured — as a quantity of
+   the model (concurrence of a two-thought Bell state, computed
+   exactly with NumPy). It is not a measurement of physical
+   entanglement in hardware; the machine running the code is
+   classical. The claims registry distinguishes the two:
+   `entanglement_measured` (physical) stays False,
+   `entanglement_measured_in_model` is True.
+10. **v0.2.0:** a "thought" is a two-qubit state vector over four
+    basis concepts whose labels ("attention", "memory", "self",
+    "other") are arbitrary repository conventions. No measured
+    quantity depends on the labels, and nothing here claims a
+    human thought is a qubit state or measures a mind.
+11. **v0.2.0:** D measures how much of an outcome the system's
+    own stored subspace determines. The stored subspace is built
+    by the programmer; D is a number computed from that
+    construction, not a measurement of self-awareness.
 
 ## 7. Files
 
@@ -214,9 +246,10 @@ faggin-field-bridge/
   README.md           summary + how to run + maximum scientific outcome
   REPORT.md           this file
   LICENSE             full AGPL v3 text
+  CHANGELOG.md        version history (0.1.0, 0.2.0)
   .zenodo.json        Brisson, ORCID 0009-0000-9778-5374 (no DOI yet)
   CITATION.cff        no DOI (none invented)
-  VERSION             0.1.0
+  VERSION             0.2.0
   Makefile            test / coverage / benchmark / clean
   pyproject.toml      setuptools + pytest config
   faggin_theory.py    theory as data
@@ -224,10 +257,16 @@ faggin-field-bridge/
   cost.py             entropy
   attunement.py       A, observer, calibrator, empathy proxy
   bridge.py           wiring + mapping status + worked examples
+                      + quantum_thought_claims() (claims (i)-(iv))
   scientific_outcomes.py  maximum scientific outcomes framework
   synergy.py          fecundity-driven attraction expansion
-  tests/              80 tests, 8 files
+  thought_entanglement.py  concurrence + reduced entropy (claim (i))
+  thought.py          superposition, coherence, collapse (claims (ii), (iii))
+  self_knowing.py     D = <psi|P|psi> (claim (iv))
+  tests/              108 tests, 12 files
 ```
+
+v0.2.0 is local only; not pushed.
 
 GitHub: https://github.com/sparkainlp-x/faggin-field-bridge
 (main head f2056a77 as of 2026-11-15; the maximum scientific
@@ -240,3 +279,126 @@ the next step; see the Priority 1 launch sheet. When releasing,
 tag the current head — the repo has moved past the v0.1.0
 originally pushed, and the release should archive the work as
 it stands.
+
+## 8. Quantum thoughts (v0.2.0, measured 2026-11-15)
+
+Three modules treat a thought as a two-qubit state. All four
+claims were pre-registered in code (the rule written before the
+measurement) and all four PASS. `bridge.quantum_thought_claims()`
+returns them; `maximum_scientific_outcome` carries them under
+"quantum_thoughts". No headline claim is emitted.
+
+### (i) Entanglement measured as a real quantum quantity — PASS
+
+Concurrence (Wootters, exact) and reduced-state von Neumann
+entropy of a two-thought Bell state |Φ+⟩ = (|00⟩ + |11⟩)/√2.
+Same-noise comparison: the same noisy copies feed concurrence
+and spooky U (vector noise, seed 42, 5 copies).
+
+| σ | mean C | min C | mean S (bits) | spooky U |
+|---|---:|---:|---:|---:|
+| 0.00 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
+| 0.01 | 0.9998 | 0.9996 | 0.9997 | 0.9998 |
+| 0.05 | 0.9952 | 0.9881 | 0.9931 | 0.9958 |
+| 0.10 | 0.9792 | 0.9449 | 0.9703 | 0.9822 |
+| 0.25 | 0.8471 | 0.5392 | 0.7953 | 0.8713 |
+| 0.50 | 0.6520 | 0.1476 | 0.5922 | 0.6344 |
+| 1.00 | 0.7002 | 0.1874 | 0.6270 | 0.4418 |
+
+Depolarizing channel ρ(p) = (1−p)ρ + pI/4: concurrence
+reproduces max(0, 1 − 3p/2) exactly (1.0000, 0.8500, 0.6250,
+0.2500 at p = 0, 0.1, 0.25, 0.5; 0 at p = 2/3, 0.75, 1.0) while
+the reduced entropy stays 1 bit at every p.
+
+Findings:
+
+- **Entanglement survives the de Broglie noise level**: mean
+  concurrence 0.9998 at σ = 0.01, where spooky is 0.9998.
+- **Spooky and concurrence part ways.** Spooky first falls
+  below 0.9 at σ = 0.25; mean concurrence under vector noise
+  never falls below 0.6520 — and is non-monotone (0.6520 at
+  σ = 0.5, 0.7002 at σ = 1.0), because vector noise keeps the
+  state pure and generic pure states are entangled. At σ = 1.0
+  spooky (0.4418) is BELOW concurrence (0.7002). This is the
+  measured reason spooky was never entanglement: the two
+  quantities respond differently to the same noise.
+- **Only mixed-state noise kills concurrence**, and it dies at
+  a finite level (p = 2/3), exactly as the analytic form says.
+- **Reduced entropy cannot see the death**: it stays 1 bit
+  under depolarizing at every p, including where C = 0. For
+  mixed states it is not an entanglement measure.
+
+### (ii) Coherence half-life measured — PASS
+
+A thought is a state vector over four basis concepts
+("attention", "memory", "self", "other" — arbitrary labels).
+l1-coherence of the uniform thought is 3.0 (the 4-dim maximum);
+a decided thought has 0. Dephasing multiplies off-diagonals by
+(1 − p) per step, so coherence decays as (1 − p)^n.
+
+| p | half-life measured (steps) | half-life analytic | C(3 steps) |
+|---|---:|---:|---:|
+| 0.05 | 14 | 13.51 | 2.5721 |
+| 0.10 | 7 | 6.58 | 2.1870 |
+| 0.25 | 3 | 2.41 | 1.2656 |
+| 0.50 | 1 | 1.00 | 0.3750 |
+
+Measured half-life within 1 step of analytic ln(1/2)/ln(1−p)
+on the whole grid; coherence after n steps equals
+C(0)(1−p)^n within 1e-9.
+
+### (iii) Collapse cost measured — PASS
+
+| Quantity | Measured |
+|---|---:|
+| Entropy of the fully dephased uniform thought | 2.0000 bits |
+| Entropy of a collapsed thought | 0 bits |
+| Decision entropy before collapse (uniform thought) | 2.0000 bits |
+| Decision entropy after collapse | 0 bits |
+| Attention bias at δ = +0.05 | +0.018739 |
+| Attention bias at δ = −0.05 | −0.018738 |
+
+The collapse (Born-rule sampling, seed 42) resolves exactly
+the decision entropy: 2 bits in, 0 out. Holding the
+superposition costs up to 2 bits of entropy as it decoheres;
+the decided thought costs nothing. The calibrator δ (the Yin
+bound, ±0.05) biases the attended concept's Born probability
+symmetrically, +0.018739 / −0.018738.
+
+### (iv) Self-knowing measured via D — PASS
+
+D = ⟨ψ|P|ψ⟩, the self-determinism factor vendored from the
+symmetry-entropy package (own implementation, provenance
+cited). The stored subspace is the span of the uniform thought
+and the focused thought |00⟩.
+
+| Thought | D |
+|---|---:|
+| Uniform (stored) | 1.000000 |
+| Focused \|00⟩ (stored) | 1.000000 |
+| Non-stored basis state \|11⟩ | 0.333333 (= 1/3) |
+| Kernel thought (\|01⟩ − \|10⟩)/√2 | 0.000000 |
+| Maximally mixed state I/4 | 0.500000 |
+
+D of the noisy uniform thought (mean over 5 copies, seed 42):
+
+| σ | mean D | mean coherence | mean concurrence |
+|---|---:|---:|---:|
+| 0.00 | 1.0000 | 3.0000 | 0.0000 |
+| 0.01 | 0.9998 | 2.9991 | 0.0124 |
+| 0.05 | 0.9955 | 2.9779 | 0.0635 |
+| 0.10 | 0.9823 | 2.9099 | 0.1298 |
+| 0.25 | 0.8966 | 2.4159 | 0.3212 |
+| 0.50 | 0.7107 | 2.0361 | 0.4732 |
+| 1.00 | 0.5196 | 2.1935 | 0.6133 |
+
+- Spearman(σ, D) = −1.0000: D decays monotonically with noise.
+- Spearman(D, coherence) = 0.9643: D tracks coherence.
+  Pearson(D, coherence) = 0.8730 (reported, not gated).
+- **Surprise, measured: D anti-tracks concurrence**,
+  Pearson(D, concurrence) = −0.9570. The uniform thought is a
+  product state (concurrence 0 at σ = 0); the noise that
+  destroys self-knowing creates entanglement in it (concurrence
+  0.6133 at σ = 1.0). Self-knowing and entanglement move in
+  opposite directions under this noise — the two quantities are
+  not the same kind of "unity", and the bridge now measures both.

@@ -5,9 +5,12 @@
 # This module adds reproducibility, uncertainty, sensitivity,
 # preregistration, provenance, and benchmark reporting. It does NOT
 # test consciousness, validate Quantum Information Panpsychism, or
-# measure quantum entanglement.
+# measure physical quantum entanglement. (Entanglement as a quantity
+# of the model is measured in thought_entanglement.py; see the
+# quantum-thought claims below.)
 #
 # SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (c) 2026 Jean-Francois Brisson (Spark AI NLP)
 
 from __future__ import annotations
 
@@ -23,7 +26,7 @@ from typing import Any, Callable, Iterable
 import numpy as np
 
 from attunement import DELTA_MAX, DELTA_MIN, attunement
-from bridge import bridge
+from bridge import bridge, quantum_thought_claims
 from synergy import (
     EMERGENT_EXPANSION_THRESHOLD,
     attraction,
@@ -306,6 +309,10 @@ def preregistration() -> dict[str, Any]:
             "This does not measure quantum entanglement.",
             "This does not validate Faggin's Quantum Information Panpsychism.",
             "Thresholds are repository conventions, not measured constants.",
+            "Entanglement is measured only as a quantity of the model "
+            "(concurrence of a two-thought Bell state, computed exactly "
+            "on classical hardware); it is not a measurement of physical "
+            "entanglement in hardware.",
         ],
     }
 
@@ -405,10 +412,16 @@ def maximum_scientific_outcome(
         ),
         "claims": {
             "consciousness_tested": False,
+            # Physical entanglement in hardware is not measured.
+            # Entanglement as a quantity of the model IS measured
+            # (concurrence, thought_entanglement.py) and reported
+            # under "quantum_thoughts" below.
             "entanglement_measured": False,
+            "entanglement_measured_in_model": True,
             "faggin_endorsed": False,
             "mapping_reproduced": True,
         },
+        "quantum_thoughts": quantum_thought_claims(),
     }
 
 

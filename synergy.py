@@ -13,6 +13,7 @@
 #   Expansion E = clip(X * (1 + S), 0, 1)
 #
 # SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (c) 2026 Jean-Francois Brisson (Spark AI NLP)
 
 from __future__ import annotations
 

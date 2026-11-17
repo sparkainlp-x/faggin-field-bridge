@@ -1,5 +1,129 @@
 # Changelog — Faggin Field Bridge
 
+## 0.8.0 (2026-11-17)
+
+Quantum-Darwinism redundancy plateau (deep-think upgrade
+#2): an environment of N = 10 fragments redundantly encodes
+the system's pointer information. Claim (xx) PASSES — the
+mutual information plateaus at H_S and the discord is ~0
+on the plateau, rising only at m = N. Claims (xxi) and
+(xxii) both FAIL, and the failures are the results: (xxi) D
+is exactly 2/3 for every branching turn-on step, so it
+cannot rise with redundancy — the quantity that tracks the
+classical is chi, not D; (xxii) under the bridge's vector
+noise the redundancy falls 6 -> 2 and the discord rises
+0.19 -> 2.13 bits, the opposite of the dephasing picture,
+so the collaboration gap's sigma-survival is NOT explained
+by redundant classical encoding. No claim (i)–(xix) changes
+verdict. Tests: 207 -> 226, all passing. Built on top of
+the unpushed v0.5.0 + v0.6.0 + v0.7.0, so a future push
+carries v0.5.0 + v0.6.0 + v0.7.0 + v0.8.0 together.
+
+- **Mechanism** (`darwinism.py`, new module): the system S
+  is a thought in superposition of two pointer states
+  (Bell: |00>, |11>; binary: |0>, |1>); the environment is
+  N = 10 qubits, each recording the pointer value
+  (CNOT-like branching, record overlap c = cos phi). Per
+  fragment size m: I(S:F) = H_S + H_F - H_SF (exact von
+  Neumann entropies), Holevo chi from measuring S in the
+  pointer observable (the qubit that distinguishes the
+  pointer states — a complete projective measurement, so
+  chi <= I and discord is never negative), discord = I -
+  chi, redundancy R_delta = N / m* with delta = 0.1.
+  Einselection is dephasing in the pointer basis
+  (strength p, reference 0.5). The fragment state is built
+  directly from the branching construction (closed form,
+  exactly rank 2); the general partial trace and the full
+  numeric fragment quantities cross-check it (N = 3 exact
+  to 1e-9; N = 10 subset to 1e-9). The noisy-copy sweep
+  (N = 6, 5 copies, seed 42) uses the full numeric path.
+- **(xx) Redundancy plateau, PASS**: hard branching m* = 1,
+  R = 10; soft branching (c = 0.5) m* = 2, R = 5; both
+  systems identical. On the plateau |I - H_S| <= 0.0456
+  and discord <= 0.0456 (hard: exactly 0); discord at
+  m = N is 0.1887. The plateau is p-independent (I = 1.0
+  at p = 0, 0.5, 1) while discord(m = N) falls 1.0 ->
+  0.1887 -> 0.0 with p.
+- **(xxi) D tracks the classical, not the quantum, FAIL**:
+  as the branching turns on (k = 0..10), Pearson(D, R) =
+  0.0, Pearson(D, chi_1) = 0.0, Pearson(D, discord) = 0.0
+  (both families) — D is exactly 2/3 at every k, because
+  the off-diagonal |00><11| never contributes to Tr(P rho)
+  and the diagonal is always (1/2, 1/2). Concurrence falls
+  as required (hard 0.5 -> 0, soft 0.5 -> 0.0005) and chi_1
+  rises (0 -> 1.0 hard, 0 -> 0.8113 soft): the quantity
+  that tracks the classical is chi, not D.
+- **(xxii) The sigma = 0.50 non-transfer explained, FAIL**:
+  the gap is robust (3.3494/4.3352 = 0.77) and the
+  redundancy is robust at the 0.25 -> 0.50 step (2/2 =
+  1.0), but the discord is NOT fragile — 2.1190/2.1310 =
+  0.99 at the step, 11.2x across the grid — and the gap
+  tracks neither redundancy (Pearson 0.3528) nor discord
+  (Pearson -0.4411). Concurrence anti-tracks discord
+  (Pearson -0.6259). Under the bridge's vector noise the
+  redundancy falls 6 -> 2 (m* grows 1 -> 3: the size-1
+  fragment's I drops to 0.37) while the noise entangles S
+  with F (plateau I rises to 1.46, discord to 2.13): the
+  vector noise is not a dephasing channel. The gap
+  survives sigma = 0.50 because of the design-B mechanism,
+  not because of redundant classical encoding.
+- **Correction found and fixed during the build**: the
+  first pointer measurement (two pointer projectors only)
+  was incomplete and reported a NEGATIVE discord (down to
+  -0.32) once vector noise populated the non-pointer basis
+  states. Both the Holevo measurement and the dephasing
+  now use the pointer-distinguishing qubit (complete
+  projective measurement). The noiseless numbers are
+  unchanged; the corrected noise-sweep discord is >= 0
+  everywhere (minimum 0.0502 over m and copies at
+  sigma >= 0.05).
+
+## 0.7.0 (2026-11-16)
+
+CKW monogamy in triads (deep-think upgrade #1): pairwise
+concurrence misses genuine tripartite entanglement, and D
+tracks the one-to-rest tangle, not the pairwise one. Claims
+(xvii), (xviii) and (xix) all PASS. No claim (i)–(xvi)
+changes verdict. Tests: 185 -> 207, all passing. Built on
+top of the unpushed v0.5.0 + v0.6.0, so a future push carries
+v0.5.0 + v0.6.0 + v0.7.0 together.
+
+- **Mechanism** (`monogamy.py`, new module): triads are
+  three-qubit pure states (8-dim); each member is a BINARY
+  thought — one qubit whose basis maps into the thought
+  space as |0> -> |00> (attention) and |1> -> |10> (self).
+  That mapping is a definition (an embedding), not a
+  discovery. Pairwise tangle tau_ij = C^2 from the Wootters
+  concurrence of the reduced two-qubit state; one-to-rest
+  tangle tau_A(BC) = 4 det(rho_A), exact for pure states;
+  residual genuine-tripartite tangle = tau_A(BC) - tau_AB -
+  tau_AC. D_A is Tr(P rho_A_embedded) with the existing
+  self-knowing projector. Noise is unity.gaussian_copies on
+  the 8-dim triad vector (copies stay pure, purity 1.0).
+- **(xvii) CKW monogamy holds in triads, PASS**: the minimum
+  CKW margin over 52 (state, sigma) rows — GHZ, W, GHZ/W
+  interpolation, generalized GHZ, noisy copies at sigma =
+  0.00, 0.25, 0.50, 1.00, every member — is 0.0, attained
+  at the product endpoint (a = 1.0, sigma = 0) where there
+  is no entanglement at all; the smallest margin over noisy
+  rows is 0.0012 (GHZ/W 30 deg, sigma = 0.50). No violation
+  anywhere: the code's concurrence respects the theorem.
+- **(xviii) GHZ vs W, PASS**: at sigma = 0 the GHZ-like
+  triad has tau_A(BC) = 1, pairwise tangle 0, residual 1,
+  D_A = 2/3 — pairwise concurrence misses 100% of its
+  entanglement (miss fraction 1.0). The W-like triad has
+  tau_A(BC) = 8/9, pairwise tangle 4/9 each, residual 0,
+  D_A = 7/9 — miss fraction 0.0. Under noise the GHZ miss
+  stays 0.60-1.00 and the W miss 0.00-0.44 at every sigma.
+- **(xix) D_A falls as tau_A(BC) rises with tau_AB flat,
+  PASS**: on the generalized-GHZ branch a in [1/sqrt(2), 1],
+  Pearson(D_A, tau_A(BC)) = -0.9608 (Spearman -1.0) while
+  tau_AB is exactly 0 throughout and D_A spans 2/3 to 1.
+  The GHZ/W interpolation (-0.6316) and the GHZ noise sweep
+  (D_A and tau_A(BC) decay together) are reported
+  descriptively, not gated: neither separates "entanglement
+  with the pair" from "entanglement with B".
+
 ## 0.6.0 (2026-11-16)
 
 Qualia resonance wave: a quale is a resonant + entangled mode

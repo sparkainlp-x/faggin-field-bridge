@@ -202,6 +202,90 @@ destroyed. Two measured negative results, kept and stated.
 Run `qualia.qualia_claims()` for the three verdicts, or see
 REPORT.md §12.
 
+## CKW monogamy in triads (v0.7.0)
+
+Triads are three-qubit pure states (8-dim); each member is a
+BINARY thought — one qubit whose basis maps into the thought
+space as |0> → |00> (attention) and |1> → |10> (self). That
+mapping is a definition (an embedding), not a discovery.
+Pairwise tangle τ_ij = C² from the Wootters concurrence of
+the reduced two-qubit state; one-to-rest tangle
+τ_A(BC) = 4 det(ρ_A), exact for pure states; residual
+genuine-tripartite tangle = τ_A(BC) − τ_AB − τ_AC. D_A is
+Tr(P ρ_A_embedded) with the existing self-knowing projector.
+Noise is `unity.gaussian_copies` on the 8-dim triad vector
+(copies stay pure).
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `monogamy.py` | CKW margin τ_A(BC) − τ_AB − τ_AC over every triad and sigma | (xvii) CKW monogamy holds in triads | **PASS** |
+| `monogamy.py` | GHZ vs W tangles, residual, and the pairwise miss fraction | (xviii) GHZ vs W: pairwise concurrence misses tripartite entanglement | **PASS** |
+| `monogamy.py` | D_A vs τ_A(BC) on the generalized-GHZ branch (τ_AB = 0) | (xix) D_A falls as τ_A(BC) rises with τ_AB flat | **PASS** |
+
+Headline numbers: the minimum CKW margin over 52
+(state, σ) rows is **0.0**, attained at the product endpoint
+(a = 1.0, σ = 0) where there is no entanglement at all; the
+smallest margin over noisy rows is 0.0012 — the code's
+concurrence respects the theorem everywhere. At σ = 0 the
+GHZ-like triad has τ_A(BC) = 1, pairwise tangle 0, residual 1,
+D_A = 2/3, so pairwise concurrence misses **100%** of its
+entanglement; the W-like triad has τ_A(BC) = 8/9, pairwise
+tangle 4/9 each, residual 0, D_A = 7/9, so it misses **0%**.
+Under noise the GHZ miss stays 0.60–1.00 and the W miss
+0.00–0.44. On the generalized-GHZ branch, D_A falls as
+τ_A(BC) rises with Pearson **−0.9608** (Spearman −1.0) while
+τ_AB is exactly 0 throughout and D_A spans 2/3 to 1: D tracks
+entanglement with the pair, not with B. The interpolation
+(−0.6316) and the GHZ noise sweep (D_A and τ_A(BC) decay
+together) are reported descriptively, not gated.
+
+Run `monogamy.monogamy_claims()` for the three verdicts, or see
+REPORT.md §13.
+
+## Quantum-Darwinism redundancy plateau (v0.8.0)
+
+An environment of N = 10 fragments redundantly encodes the
+system's pointer information. The system S is a thought in
+superposition of two pointer states (Bell: |00⟩, |11⟩;
+binary: |0⟩, |1⟩); each environment qubit records the pointer
+value (CNOT-like branching). Per fragment size m: I(S:F) =
+H_S + H_F − H_SF, Holevo χ from measuring S in the pointer
+observable, discord = I − χ, redundancy R_δ = N / m* with
+δ = 0.1. Einselection is dephasing in the pointer basis
+(strength p, reference 0.5). Grounding: Zhu et al.
+(arXiv:2504.00781 / Science Advances 2025, 12 superconducting
+qubits: mutual information saturates at H_S, discord → 0 for
+small fragments); Brandão et al., emergent classicality
+(Quantum 2021).
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `darwinism.py` | I, χ, discord per fragment size m; redundancy | (xx) Redundancy plateau: I plateaus at H_S, discord ~0 on the plateau, rising only at m = N | **PASS** |
+| `darwinism.py` | D, concurrence, χ, redundancy as the branching turns on (k = 0..N) | (xxi) D tracks the classical, not the quantum | **FAIL** |
+| `darwinism.py` | Gap, redundancy, discord, concurrence across the σ grid | (xxii) The σ = 0.50 non-transfer explained | **FAIL** |
+
+Headline numbers: hard branching m* = 1, R = 10; soft
+branching (overlap 0.5) m* = 2, R = 5; both systems
+identical. On the plateau |I − H_S| ≤ 0.0456 and discord ≤
+0.0456 (hard: exactly 0); discord at m = N is 0.1887. The
+plateau is p-independent (I = 1.0 at p = 0, 0.5, 1) while
+discord(m = N) falls 1.0 → 0.1887 → 0.0 with p. The (xxi)
+FAIL is exact: D is 2/3 for every branching turn-on step, so
+Pearson(D, R) = Pearson(D, χ_1) = Pearson(D, discord) = 0.0
+while concurrence falls (0.5 → 0 hard, 0.5 → 0.0005 soft) —
+the quantity that tracks the classical is χ, not D. The
+(xxii) FAIL is the more interesting one: under the bridge's
+vector noise the redundancy falls 6 → 2 and the discord
+rises 0.19 → 2.13 bits, the opposite of the dephasing
+picture, while the gap stays robust (3.3494/4.3352 = 0.77)
+and tracks neither redundancy (Pearson 0.3528) nor discord
+(Pearson −0.4411). The gap survives σ = 0.50 because of the
+design-B mechanism, not because of redundant classical
+encoding.
+
+Run `darwinism.darwinism_claims()` for the three verdicts, or see
+REPORT.md §14.
+
 ## Maximum scientific outcome
 
 Run:
@@ -307,6 +391,27 @@ not change; only the status derivation changes.
   (−0.1522): in this model the resonant+entangled modes are
   the least self-determined, because the noise that creates
   concurrence destroys self-knowing.
+- **v0.7.0:** monogamy is an established theorem (CKW 2000;
+  Osborne & Verstraete 2006) applied to the model's states;
+  the triads are defined in code, not physical systems, and
+  the binary-thought embedding is a definition, not a
+  discovery. The (xvii) PASS checks the code's concurrence
+  against the theorem; it does not test the theorem. The
+  (xix) PASS is about the model's own D against the model's
+  own tangles, not about human self-knowing.
+- **v0.8.0:** quantum Darwinism is an established theory
+  (Zurek 2009; Zhu et al. 2025) applied to the model's
+  states; the environment is defined in code, not a physical
+  system. The (xx) PASS checks the code's entropies against
+  the branching construction's analytic form, not the
+  theory. The (xxi) and (xxii) FAILs are about the model's
+  own D, redundancy, and discord under the model's own
+  noise; they do not show anything about human self-knowing
+  or about why real collaborations survive noise. The
+  vector noise is not a dephasing channel: it entangles the
+  system with the environment, so the classical/quantum
+  split under σ is not the einselection picture — that
+  picture holds for the dephasing parameter p.
 
 ## Run tests
 

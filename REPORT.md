@@ -102,13 +102,13 @@ Reading:
 
 ## 4. Test suite
 
-**226 tests, 226 passed** (`python3 -m pytest tests/ -q`, 36.45 s).
+**244 tests, 244 passed** (`python3 -m pytest tests/ -q`, 37.07 s).
 
-*Correction in v0.8.0: this section said 207 with no
-test_darwinism.py entry. The collected counts below are the
-record (18 files: 12 + 9 + 14 + 9 + 19 + 17 + 25 + 22 + 21 +
-17 + 3 + 5 + 7 + 12 + 7 + 9 + 9 + 9 = 226).* (v0.7.0 counts:
-207 + 19 new = 226.)
+*Correction in v0.9.0: this section said 226 with no
+test_malus.py entry. The collected counts below are the
+record (19 files: 12 + 9 + 14 + 9 + 19 + 17 + 18 + 25 + 22 +
+21 + 17 + 3 + 5 + 7 + 12 + 7 + 9 + 9 + 9 = 244).* (v0.8.0 counts:
+226 + 18 new = 244.)
 
 *Correction in v0.6.0: this section still said 151 with no
 test_empathy_field.py entry, and test_thought.py as (10)
@@ -1815,3 +1815,150 @@ distinction matters: the einselection parameter p is the
 one with the classical-robust / quantum-fragile split.
 Classical emulation throughout; Faggin's metaphysics stays
 interpretive.
+
+## 15. Malus three-polarizer paradox (v0.9.0, measured 2026-11-17)
+
+One module, `malus.py`: the 8-seed exploration's Malus
+item (ranked #2 after the Lyapunov build, which shipped
+as membrane-arena-3x3 v0.3.0). Built on top of the pushed
+v0.7.0 + v0.8.0 (head 1346aa8c), so a future push carries
+v0.9.0 alone.
+
+### Mechanism (a definition inside the model, not a discovery)
+
+- A polarizer at angle theta is the rank-1 projector
+  P(theta) = |theta><theta| on a 2D Jones vector
+  |theta> = (cos theta, sin theta). The transmission of a
+  pure state is <psi|P(theta)|psi> = |<theta|psi>|^2 --
+  the same functional form as the bridge's self-knowing
+  factor D = <psi|P|psi>, with the projector rotated to
+  the polarizer axis. Malus's law is D measured along a
+  rotated axis.
+- Unpolarized input (intensity I0 = 1) transmits 1/2
+  through the first polarizer and outputs that polarizer's
+  axis state; each later polarizer transmits cos^2 of the
+  relative angle and outputs its own axis state. A pure
+  input transmits |<theta|psi>|^2 at each step. The state
+  after each polarizer is the projected and renormalized
+  state (the cascade's project_state semantics), or None
+  when the projection is numerically zero.
+- The chain (0, 45, 90) degrees with unpolarized input
+  gives (1/2) x cos^2(45) x cos^2(45) = 1/8; with input
+  polarized at 0 degrees it gives cos^2(45) x cos^2(45)
+  = 1/4. The general middle-angle curve for (0, phi, 90)
+  is T(phi) = (1/2) cos^2(phi) sin^2(phi)
+  = (1/8) sin^2(2 phi). The evenly stepped N-polarizer
+  chain from 0 to 90 degrees transmits
+  (1/2) cos^(2(N-1))(step) with step = 90/(N-1) degrees,
+  rising with N toward 1/2.
+
+### Pre-registration (directional assertions, frozen before the final run)
+
+Thresholds are the exact tolerances EXACT_TOL = 1e-9:
+every gated number is an exact analytic prediction
+(I0/8, 1/4, 1/2, cos^2), so the freeze is the analytic
+value itself, never moved after the final measurement
+run. Directions, written before the run:
+
+- (xxiii) adding the middle polarizer RAISES transmission
+  from 0 to 1/8 -- more filtering, more light.
+- (xxiv) T rises as the middle angle goes from 0 to 45
+  degrees and falls as it goes from 45 to 90 degrees.
+- (xxv) the middle step's output state is what the
+  second projection acts on; the bypass control (first
+  state straight through 90 degrees) is zero, so the
+  middle step is necessary.
+
+### Claims (xxiii)–(xxv), measured fresh
+
+#### (xxiii) Crossed polarizers transmit 0; 45-degree middle yields I0/8 — PASS
+
+| Quantity | Measured | Expected |
+|---|---:|---:|
+| crossed (0, 90), unpolarized | 0.000000 | 0 |
+| triple (0, 45, 90), unpolarized | 0.125000 | 1/8 |
+| pair (0, 45), unpolarized | 0.250000 | 1/4 |
+| 45 -> 90, input \|45> | 0.500000 | 1/2 |
+| crossed (0, 90), polarized at 0 deg | 0.000000 | 0 |
+| triple (0, 45, 90), polarized at 0 deg | 0.250000 | 1/4 |
+
+All four checks pass within 1e-9. The paradox direction
+is measured, not asserted: adding a filter raises the
+transmission from 0 to 1/8.
+
+#### (xxiv) Reopening is angle-selective — PASS
+
+| phi (deg) | T(phi) | (1/8) sin^2(2 phi) |
+|---:|---:|---:|
+| 0 | 0.000000 | 0.000000 |
+| 15 | 0.031250 | 0.031250 |
+| 30 | 0.093750 | 0.093750 |
+| 45 | 0.125000 | 0.125000 |
+| 60 | 0.093750 | 0.093750 |
+| 75 | 0.031250 | 0.031250 |
+| 90 | 0.000000 | 0.000000 |
+
+Hand recomputation of one swept row, per the sweep-wiring
+rule: T(30 deg) = (1/2) cos^2(30) sin^2(30)
+= (1/2)(3/4)(1/4) = 3/32 = 0.09375, matching the helper
+exactly. The fine grid (0.5-degree steps) peaks at 45.0
+degrees with T = 0.125; T is monotone non-decreasing on
+[0, 45] and non-increasing on [45, 90] on the grid. All
+four checks pass within 1e-9.
+
+#### (xxv) The middle step's output state is what the second projection acts on — PASS
+
+- The recorded state after the middle polarizer overlaps
+  |45 deg> at 1.000000000000 (gate: >= 1 - 1e-9).
+- Step transmissions recomputed from the recorded
+  intermediate states alone -- each evaluated on the
+  recorded state entering that step, never on the angle
+  list -- are 0.5, 0.5, 0.5, multiplying to 0.125000
+  (gate: 1/8 within 1e-9).
+- Bypass control: the state after the first polarizer
+  sent directly through 90 degrees transmits 0.000000,
+  so the middle step is necessary.
+- Cascade contrast, recomputed live from cascade.py:
+  the rotation cascade's visibility at stage 2 is
+  0.000000 while the Malus reopened transmission is
+  0.125000 > 0.1. The same project-and-renormalize
+  operation gives opposite outcomes because a pair
+  collapses onto one stored direction (rank 1, cross term
+  dies) while a single state rotates into a direction
+  with nonzero overlap with the final axis. A projection
+  does not create energy: it discards the orthogonal
+  component, and the surviving component happens to
+  overlap the next axis.
+
+### Descriptive: the stepped N-polarizer chain
+
+| N | T(N) |
+|---:|---:|
+| 2 | 0.000000 |
+| 3 | 0.125000 |
+| 4 | 0.210938 |
+| 5 | 0.265395 |
+| 10 | 0.379574 |
+| 200 | 0.493839 |
+
+T(N) = (1/2) cos^(2(N-1))(step) rises monotonically
+with N toward the 1/2 limit (N = 200 is within 0.01 of
+1/2). Projection applied repeatedly keeps reopening the
+channel -- the same mechanism as (xxiii), iterated.
+Not gated; the values are exact analytic predictions,
+checked in the tests to 1e-12 on the formula.
+
+### Honest limits (v0.9.0 addition)
+
+Malus's law is classical optics, computed exactly; the
+polarizers are ideal (no absorption beyond the
+projection, no depolarization) and the input is either
+unpolarized or a pure Jones vector. The (xxiii)–(xxv)
+PASSes check the code's projectors against the analytic
+Malus formulas, not the theory. The cascade contrast in
+(xxv) is structural: a pair collapses under projection
+while a single state rotates -- it does not show that
+projection "creates" anything in a physical sense, only
+that the surviving component overlaps the next axis.
+Classical emulation throughout; Faggin's metaphysics
+stays interpretive.

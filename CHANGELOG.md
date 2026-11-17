@@ -1,5 +1,38 @@
 # Changelog — Faggin Field Bridge
 
+## 0.9.0 (2026-11-17)
+
+Malus three-polarizer paradox (deep-think 8-seed upgrade
+#2, ranked after Lyapunov): classical optics, Malus's law.
+Claims (xxiii), (xxiv) and (xxv) ALL PASS, exactly at the
+analytic values: crossed polarizers transmit 0, inserting
+the 45-degree middle polarizer yields I0/8 for unpolarized
+input (I0/4 for input polarized at 0 degrees); the
+reopening is angle-selective, T(phi) = (1/8) sin^2(2 phi),
+peaking at 45 degrees and vanishing at 0/90 degrees; and
+the middle step's output state is exactly |45 degrees>,
+the total recomputed from the recorded intermediate states
+is 1/8, the bypass control is 0, and the cascade contrast
+holds live (stage-2 visibility 0 vs reopened 1/8). The
+counter-case to v0.3.0: the same project-and-renormalize
+operation reopens a channel here because a single state
+rotates under projection while a pair collapses. No claim
+(i)–(xxii) changes verdict. Tests: 226 -> 244, all passing.
+Built on top of the pushed v0.7.0 + v0.8.0 (head 1346aa8c),
+so a future push carries v0.9.0 alone.
+
+- **Mechanism** (`malus.py`, new module): a polarizer is a
+  rank-1 projector P(theta) = |theta><theta| on a 2D Jones
+  vector; transmission of a pure state is
+  <psi|P(theta)|psi>, the same functional form as the
+  bridge's D. Unpolarized input transmits 1/2 through the
+  first polarizer and cos^2 of the relative angle at each
+  later step; the state after each polarizer is the
+  projected and renormalized state (cascade semantics).
+  Descriptive: the evenly stepped N-polarizer chain from 0
+  to 90 degrees rises with N toward 1/2 (0.125 at N = 3,
+  0.2109 at N = 4, 0.3796 at N = 10, 0.4938 at N = 200).
+
 ## 0.8.0 (2026-11-17)
 
 Quantum-Darwinism redundancy plateau (deep-think upgrade

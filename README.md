@@ -286,6 +286,47 @@ encoding.
 Run `darwinism.darwinism_claims()` for the three verdicts, or see
 REPORT.md §14.
 
+## Malus three-polarizer paradox (v0.9.0)
+
+Classical optics, Malus's law: a polarizer transmits the
+component along its axis, so a polarized beam through a
+polarizer at relative angle θ emerges with cos²(θ) of its
+intensity. Two crossed polarizers (0° and 90°) transmit 0 —
+but insert a third polarizer at 45° between them and light
+gets through: I₀/8 for unpolarized input, I₀/4 for input
+polarized at 0°. The middle projection CREATES transmission
+out of a closed channel. A polarizer IS a projector:
+P(θ) = |θ⟩⟨θ| is the 2D analogue of the bridge's
+stored-subspace projector, and transmission is
+⟨ψ|P(θ)|ψ⟩ — the same functional form as the bridge's
+self-knowing factor D. Malus's law is D measured along a
+rotated axis. This is the counter-case to the v0.3.0
+cascade finding (interference does NOT survive projection):
+the same project-and-renormalize operation here reopens a
+channel instead of closing one, because a single state
+rotates under projection while a pair collapses onto one
+direction.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `malus.py` | Transmission through crossed pair vs triple; decomposition | (xxiii) Crossed polarizers transmit 0; 45° middle yields I₀/8 | **PASS** |
+| `malus.py` | Transmission vs middle angle φ | (xxiv) Reopening is angle-selective: peaks at 45°, vanishes at 0/90° | **PASS** |
+| `malus.py` | Recorded intermediate states; bypass control; cascade contrast | (xxv) The middle step's output state is what the second projection acts on | **PASS** |
+
+Headline numbers: crossed (0°, 90°) transmits exactly 0;
+the triple (0°, 45°, 90°) transmits 0.125 = I₀/8, as
+(1/2)·(1/2)·(1/2) from the recorded states; the angle
+curve is T(φ) = (1/8) sin²(2φ) on the whole grid, peaking
+at 45°; the bypass control is 0, so the middle step is
+necessary. Descriptive: the evenly stepped N-polarizer
+chain from 0° to 90° rises with N — 0.125 at N = 3,
+0.2109 at N = 4, 0.3796 at N = 10, 0.4938 at N = 200 —
+toward the 1/2 limit: projection applied repeatedly keeps
+reopening the channel.
+
+Run `malus.main()` for the tables and the three verdicts, or see
+REPORT.md §15.
+
 ## Maximum scientific outcome
 
 Run:
@@ -412,6 +453,17 @@ not change; only the status derivation changes.
   system with the environment, so the classical/quantum
   split under σ is not the einselection picture — that
   picture holds for the dephasing parameter p.
+- **v0.9.0:** Malus's law is classical optics, computed
+  exactly; the polarizers are ideal and the input is either
+  unpolarized or a pure Jones vector. The (xxiii)–(xxv)
+  PASSes check the code's projectors against the analytic
+  Malus formulas, not the theory. The cascade contrast in
+  (xxv) is structural: a pair collapses under projection
+  while a single state rotates — it does not show that
+  projection "creates" anything in a physical sense, only
+  that the surviving component overlaps the next axis.
+  Classical emulation throughout; Faggin's metaphysics stays
+  interpretive.
 
 ## Run tests
 

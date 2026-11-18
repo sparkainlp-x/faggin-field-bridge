@@ -1,5 +1,122 @@
 # Changelog — Faggin Field Bridge
 
+## 0.13.0 (2026-11-18)
+
+Kuramoto bounded-coherence / stochastic-resonance scan
+(deep-think upgrade #4): standard Kuramoto (N = 8,
+omega ~ N(0, 1), Euler-Maruyama dt = 0.05, T = 40)
+wired into the bridge by giving each agent the (xxxiv)
+slide state at its phase relative to the field mean.
+All four claims FAIL, and the failures are the result:
+(xxxvi) the count peak is interior on seeds 42 and
+2026 (K = 0.5) but at K = 0 on seeds 7 and 1234, and
+falls to a floor of 6 at high K on every seed;
+(xxxvii) joint entropy is flat (~10.4-13.1 bits, no
+trend); (xxxviii) R_K at the count peak is 0.31-0.36
+on every seed, far below the Phillips band [0.5, 0.8]
+and below f* = 0.7278 — the count optimum sits at LOW
+coherence; (xxxix) sigma* wanders across seeds (1.0,
+0.10, 0.25, 0.05) with counts swinging 3-19, and seed
+42 peaks at the grid edge. The gap A is large positive
+(+9.3 to +12.8 bits) and flat. What survives: the
+Kuramoto transition itself (R_K 0.29 -> 0.99,
+K_c ~ 1.6-2.5), the count floor of 6, and the count
+exceeding sigma = 0 on every seed at K = 1.0.
+Thresholds frozen from the calibration pilot, which
+already contradicted the spec on several points
+(disclosed in the preregistration). No claim
+(i)–(xxxv) changes verdict. Tests: 305 -> 315, all
+passing.
+
+- **Mechanism** (`kuramoto.py`, new module): Kuramoto
+  dynamics with slide states from relative phases;
+  quale count via existing qualia_count, joint entropy
+  exact/analytic, gap A by paired arms mirroring
+  run_collaboration design B (mixing at coupling R_K,
+  isolated Born-collapses once; H_isolated = 0 exactly
+  in the single-shot measurement, so A =
+  H_collaborating). Pre-registration in
+  docs/preregistration-v0.13.0.md, written before the
+  evaluation run; thresholds frozen from calibration
+  seeds 42 and 7, evaluation on held-out seeds 1234
+  and 2026.
+
+## 0.12.1 (2026-11-18)
+
+The (xxxii) diagnosis and the robust rank form. Claim
+(xxxii) failed on held-out seed 2026 (Pearson -0.8828,
+bar -0.90); the diagnosis, measured and recomputed in
+code (`diagnose_sigma_one_break()`), is
+boundary/saturation plus finite-sample noise: at
+sigma = 1.0 both D and C sit at their random-state
+plateaus (D -> 0.5, C -> ~0.51), the true rise of mean
+C from sigma = 0.5 to 1.0 is ~0.003 while a 5-copy
+mean carries SEM ~0.128, and with n = 200 copies the
+dip vanishes and Pearson passes on all four original
+seeds (-0.9289 to -0.9053). But claim (xxxv) — the
+robust rank form, Spearman <= -0.90 on every seed in
+{42, 7, 1234, 2026, 5, 99}, preregistered before the
+fresh-seed run — FAILS honestly on the fresh seeds:
+seed 5 Spearman -0.8929 (bar -0.90), seed 99 D range
+0.2445 (bar 0.25). Both are 5-copy sampling draws
+(at n = 200: seed 5 Spearman -0.9643, seed 99 D range
+0.4101), yet the linear form stays fragile even at
+n = 200 (seed 5 Pearson -0.8971). The direction is
+real on average; the per-seed guarantee does not hold
+on this 5-copy sweep, in either form. Thresholds not
+moved. No claim (i)–(xxxiv) changes verdict. Tests:
+301 -> 305, all passing.
+
+- **Mechanism** (`observer_cycle.py`, extended):
+  `diagnose_sigma_one_break()` recomputes the n = 5
+  sweep, the n = 200 sweep, the extended sigma grid
+  to 3.0, Pearson excluding sigma = 1.0, and the
+  per-copy SEMs; `claim_robust_rank_verdict()`
+  evaluates (xxxv) on six seeds including fresh seeds
+  5 and 99. Pre-registration in
+  docs/preregistration-v0.12.1.md, written before the
+  fresh-seed evaluation run.
+
+## 0.12.0 (2026-11-18)
+
+The observer cycle (Jean's claim, stated 2026-11-18:
+"self determination factor observer opposite direction =
+necessary for self-cycle self Knowing. Lack of love is
+absence of Knowing"): love = concurrence, knowing =
+overlap R, self-determination = D, observer direction =
+which reference state the overlap is measured against.
+Claim (xxxii) FAILS, and the failure is the result: the
+linear anti-tracking of D and concurrence is
+seed-fragile — Pearson -0.9570 (seed 42), -0.9397 (seed
+7), -0.9720 (seed 1234), but -0.8828 on held-out seed
+2026, above the frozen bar -0.90 — while the monotone
+tracking holds on all four seeds (Spearman -1.0000 to
+-0.9643). The threshold was not moved. Claim (xxxiii)
+PASSES on the generalized-Bell branch against a fixed
+Phi+ observer (Pearson(R, C) = 1.0000, Spearman(R, D) =
+-1.0000), but the noise-axis control inverts the
+relation (Pearson(R, nu_ij) = -0.5528, n = 196 pairs),
+so noise-created concurrence is not knowing. Claim
+(xxxiv) PASSES exactly: the slide runs D = 1, C = 0 to
+D = 0, C = 1 with C + D = 1 at every grid point (max
+identity error 4.44e-16) and the overlap split flipping
+sign exactly at the midpoint theta = pi/4. No claim
+(i)–(xxxi) changes verdict. Tests: 282 -> 301, all
+passing.
+
+- **Mechanism** (`observer_cycle.py`, new module): the
+  stored direction (uniform thought, D = 1, C = 0) and
+  the opposite direction (kernel thought, D = 0, C = 1,
+  a Bell state) are exact values already in the bridge;
+  (xxxii) reuses the self_knowing sweep, (xxxiii) the
+  generalized-Bell branch against a fixed Phi+ observer,
+  (xxxiv) the slide psi(theta) = cos(theta)|stored> +
+  sin(theta)|kernel>. Pre-registration in
+  docs/preregistration-v0.12.0.md, written before the
+  evaluation run; thresholds frozen from calibration
+  seeds 42 and 7, evaluation on held-out seeds 1234 and
+  2026.
+
 ## 0.11.0 (2026-11-17)
 
 Landauer-cost ledger + Planck spectral falsification

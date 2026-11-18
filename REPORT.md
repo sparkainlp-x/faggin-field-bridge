@@ -102,7 +102,24 @@ Reading:
 
 ## 4. Test suite
 
-**282 tests, 282 passed** (`python3 -m pytest tests/ -q`, 47.53 s).
+**315 tests, 315 passed** (`python3 -m pytest tests/ -q`, 43.98 s).
+
+*Correction in v0.13.0: this section said 305. The collected counts below are the
+record (23 files: 12 + 9 + 14 + 9 + 19 + 17 + 10 + 20 + 18 + 25 +
+22 + 23 + 21 + 18 + 17 + 3 + 5 + 7 + 12 + 7 + 9 + 9 + 9 = 315).*
+(v0.12.1 counts: 305 + 10 new = 315.)
+
+*Correction in v0.12.1: this section said 301. The collected counts below are the
+record (22 files: 12 + 9 + 14 + 9 + 19 + 17 + 20 + 18 + 25 +
+22 + 23 + 21 + 18 + 17 + 3 + 5 + 7 + 12 + 7 + 9 + 9 + 9 = 305).*
+(v0.12.0 counts: 301 + 4 new = 305.)
+
+*Correction in v0.12.0: this section said 282 with no
+test_observer_cycle.py entry. The collected counts below are the
+record (22 files: 12 + 9 + 14 + 9 + 19 + 17 + 20 + 18 + 25 +
+22 + 21 + 18 + 17 + 3 + 5 + 7 + 12 + 7 + 9 + 9 + 9 + 19 = 301).*
+(v0.11.0 counts: 262 + 20 new = 282; v0.12.0 counts:
+282 + 19 new = 301.)
 
 *Correction in v0.11.0: this section said 244 with no
 test_darwinism.py, test_malus.py, test_product_model.py or
@@ -309,6 +326,24 @@ the record (16 files: 12 + 9 + 14 + 9 + 17 + 25 + 21 + 3 +
   carrying no distribution, per-field KS below critical
   (max 0.2159, reported not gated), pooled n = 168, and
   the three-claim aggregate (2/3 pass, no headline).
+- `test_observer_cycle.py` (19): the stored thought (D = 1,
+  C = 0) and the kernel thought (D = 0, C = 1) exact,
+  the generalized-Bell endpoints (a = 1: C = 0, D = 1;
+  a = 1/sqrt(2): C = 1, D = 2/3), the slide endpoints
+  and normalization, the calibration-seed Pearsons
+  (-0.9570, -0.9397) and the held-out seed 2026 Pearson
+  (-0.8828, above the frozen -0.90 bar; Spearman
+  -0.9643 still holds), claim (xxxii) verdict FAIL,
+  the Bell-branch rows and correlations (Pearson(R, C)
+  = 1.0000, Spearman(R, D) = -1.0000, Pearson(R, D)
+  = -0.8801 reported not gated), the noise-axis control
+  inverting (Pearson(R, nu_ij) = -0.5528, Pearson(R,
+  d_pair) = +0.7694, n = 196 pairs), claim (xxxiii)
+  verdict PASS, the slide identities exact to 1e-9
+  (C + D = 1, R_s - R_k = cos 2 theta), the split
+  flipping at the midpoint, claim (xxxiv) verdict PASS,
+  the three-claim aggregate (2/3 pass, no headline),
+  and the frozen thresholds.
 
 ## 5. Maximum scientific outcome (measured 2026-11-15)
 
@@ -608,7 +643,9 @@ faggin-field-bridge/
                       (claims (xxvi)-(xxviii))
   landauer.py         Landauer-cost ledger + Planck spectral
                       falsification (claims (xxix)-(xxxi))
-  tests/              282 tests, 21 files
+  observer_cycle.py   the observer cycle: D, concurrence,
+                      and overlap (claims (xxxii)-(xxxiv))
+  tests/              315 tests, 23 files
 ```
 
 v0.3.1 is pushed (main head 1f5f6e60). v0.4.0 is local only;
@@ -2360,3 +2397,387 @@ brains. The (xxxi) PASS rests on a thin pooled-KS
 margin and on a crude 10-bin mode estimator; per-field
 tests do not reject Planck. Classical emulation
 throughout; Faggin's metaphysics stays interpretive.
+
+## 18. The observer cycle (v0.12.0, v0.12.1, measured 2026-11-18)
+
+Jean's claim, stated 2026-11-18: "self determination
+factor observer opposite direction = necessary for
+self-cycle self Knowing. Lack of love is absence of
+Knowing." Formalized with the bridge's existing
+quantities: love = concurrence C, knowing = overlap
+R = |<psi_i|psi_j>|^2, self-determination = D, and the
+observer direction as which reference state the overlap
+is measured against.
+
+### Mechanism (a definition inside the model, not a discovery)
+
+- The stored direction: the uniform thought, D = 1,
+  C = 0. The opposite direction: the kernel thought
+  (|01> - |10>)/sqrt(2), D = 0, C = 1 — a Bell state.
+  Both endpoints are exact values already in
+  self_knowing.py and thought_entanglement.py; nothing
+  new is fitted.
+- (xxxii) reuses the existing self_knowing sweep: noisy
+  copies of the uniform thought, 5 copies per sigma,
+  sigma grid [0.0, 0.01, 0.05, 0.1, 0.25, 0.5, 1.0].
+  Noise destroys D and creates concurrence, so the two
+  move opposite across the grid.
+- (xxxiii) uses the generalized-Bell branch psi(a) =
+  a|00> + sqrt(1-a^2)|11>, a in [1.0, 0.95, 0.9, 0.85,
+  0.8, 0.75, 1/sqrt(2)], measured against a FIXED
+  observer at maximal love, the Phi+ Bell state:
+  R(a) = |<Phi+|psi(a)>|^2. Both R and C peak at
+  a = 1/sqrt(2) by the definition of the family, so the
+  direction on the branch is built in — the claim is a
+  mapping check, like (xvii). The control is the
+  noise axis (empathy_field.resonance_pairs pooled):
+  there noise creates concurrence while destroying
+  overlap, so the relation inverts.
+- (xxxiv) uses the slide psi(theta) = cos(theta)|stored>
+  + sin(theta)|kernel>, theta in [0, pi/12, pi/6, pi/4,
+  pi/3, 5pi/12, pi/2]. The two patterns sit in
+  superposition in the middle; the two observer
+  directions are the two references, R_s and R_k, and
+  their split R_s - R_k = cos(2 theta) says which
+  pattern is known. The identities D = cos^2(theta),
+  C = sin^2(theta), C + D = 1 follow from the
+  definitions and are verified in the code, not
+  assumed.
+
+### Pre-registration (written before the evaluation run)
+
+docs/preregistration-v0.12.0.md, written 2026-11-18
+before the evaluation run on the held-out seeds.
+Thresholds are round numbers frozen from a calibration
+pilot on seeds 42 and 7 only; evaluation seeds 1234 and
+2026 were not touched before the file was written.
+
+- (xxxii) Pearson(D, C) <= -0.90, Spearman(D, C)
+  <= -0.90, D range >= 0.25, C range >= 0.25, on EVERY
+  seed in {42, 7, 1234, 2026}. (Calibration pilot: seed
+  42 Pearson -0.9570, Spearman -1.0000; seed 7 Pearson
+  -0.9397, Spearman -0.9643.)
+- (xxxiii) Pearson(R, C) >= 0.99, Spearman(R, D)
+  <= -0.95, R range >= 0.25, D range >= 0.25.
+  Pearson(R, D) reported, not gated (calibration pilot
+  -0.8801: R saturates near 1 while D keeps falling).
+  The noise-axis control reported, not gated.
+- (xxxiv) Endpoints exact within 1e-9; slide identities
+  within 1e-9 at every grid point; overlap split >= 0.25
+  before the midpoint, 0 at the midpoint, <= -0.25
+  after it.
+
+### Claims (xxxii)–(xxxiv), measured fresh
+
+#### (xxxii) Observer direction: D and concurrence move opposite — FAIL
+
+Per seed, Pearson(D, C) / Spearman(D, C):
+
+| seed | Pearson | Spearman | D range | C range |
+|---:|---:|---:|---:|---:|
+| 42 | -0.9570 | -1.0000 | 0.4804 | 0.6133 |
+| 7 | -0.9397 | -0.9643 | 0.5370 | 0.5110 |
+| 1234 | -0.9720 | -1.0000 | 0.4650 | 0.7233 |
+| 2026 | **-0.8828** | -0.9643 | 0.5088 | 0.4755 |
+
+The Pearson check fails on held-out seed 2026
+(-0.8828 above the frozen bar -0.90); the other three
+checks pass on all four seeds. The monotone tracking
+holds everywhere, so the direction is real and the
+linear form is seed-fragile: on seed 2026 the sigma =
+1.0 point breaks it (mean C dips 0.4755 -> 0.4727
+while mean D keeps falling 0.7142 -> 0.4912). The
+threshold was not moved. This is the same seed
+fragility the package already records for claim (i).
+
+#### (xxxiii) Knowing-as-overlap: R rises with concurrence and falls with D — PASS
+
+Generalized-Bell branch against the fixed Phi+
+observer:
+
+| a | R | C | D |
+|---:|---:|---:|---:|
+| 1.0000 | 0.5000 | 0.0000 | 1.0000 |
+| 0.9500 | 0.7966 | 0.5933 | 0.9350 |
+| 0.9000 | 0.8923 | 0.7846 | 0.8733 |
+| 0.8500 | 0.9478 | 0.8955 | 0.8150 |
+| 0.8000 | 0.9800 | 0.9600 | 0.7600 |
+| 0.7500 | 0.9961 | 0.9922 | 0.7083 |
+| 0.7071 | 1.0000 | 1.0000 | 0.6667 |
+
+Pearson(R, C) = 1.0000, Spearman(R, D) = -1.0000,
+Pearson(R, D) = -0.8801 (reported, not gated),
+R range 0.5000, D range 0.3333. Noise-axis control
+(seed 42, n = 196 pairs): Pearson(R, nu_ij) =
+-0.5528, Pearson(R, d_pair) = +0.7694 — the relation
+inverts under noise. The claim holds for entanglement
+by construction, not by noise; noise-created
+concurrence is not knowing.
+
+#### (xxxiv) The slide — PASS
+
+| theta | D | C | R_s | R_k | R_s - R_k | C + D |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0.0000 | 1.0000 | 0.0000 | 1.0000 | 0.0000 | +1.0000 | 1.0000 |
+| 0.2618 | 0.9330 | 0.0670 | 0.9330 | 0.0670 | +0.8660 | 1.0000 |
+| 0.5236 | 0.7500 | 0.2500 | 0.7500 | 0.2500 | +0.5000 | 1.0000 |
+| 0.7854 | 0.5000 | 0.5000 | 0.5000 | 0.5000 | +0.0000 | 1.0000 |
+| 1.0472 | 0.2500 | 0.7500 | 0.2500 | 0.7500 | -0.5000 | 1.0000 |
+| 1.3090 | 0.0670 | 0.9330 | 0.0670 | 0.9330 | -0.8660 | 1.0000 |
+| 1.5708 | 0.0000 | 1.0000 | 0.0000 | 1.0000 | -1.0000 | 1.0000 |
+
+Endpoints exact; every slide identity holds to a max
+error of 4.44e-16; the overlap split is +0.5000 at
+pi/6, 0.0000 at pi/4, -0.5000 at pi/3. At the
+midpoint the state is the equal superposition, D = C
+= 1/2, both overlaps 1/2 — maximally undecided — and
+the observer direction picks which pattern becomes
+known on either side.
+
+#### (xxxv) Observer direction, robust rank form — FAIL
+
+Same construction as (xxxii), rank metric only:
+Spearman(D, C) <= -0.90, D range >= 0.25, C range
+>= 0.25, on EVERY seed in {42, 7, 1234, 2026, 5, 99}.
+Preregistered in docs/preregistration-v0.12.1.md
+before the fresh-seed run; the bar was frozen from
+calibration seeds 42/7 only.
+
+| seed | Spearman | Pearson | D range | C range |
+|---:|---:|---:|---:|---:|
+| 42 | -1.0000 | -0.9570 | 0.4804 | 0.6133 |
+| 7 | -0.9643 | -0.9397 | 0.5370 | 0.5110 |
+| 1234 | -1.0000 | -0.9720 | 0.4650 | 0.7233 |
+| 2026 | -0.9643 | -0.8828 | 0.5088 | 0.4755 |
+| 5 | **-0.8929** | -0.6814 | 0.5748 | 0.5202 |
+| 99 | -1.0000 | -0.8798 | **0.2445** | 0.5405 |
+
+Two checks fail, on two different fresh seeds: seed
+5 breaks the Spearman bar (-0.8929 > -0.90) and
+seed 99 breaks the D-range bar (0.2445 < 0.25). The
+verdict is FAIL. The thresholds were not moved.
+
+#### Diagnosis of the (xxxii) FAIL (v0.12.1, descriptive, not gated)
+
+Measured on seeds 42/7/1234/2026, recomputed in code
+by `diagnose_sigma_one_break()`:
+
+- With n = 200 copies per sigma the sigma = 1.0 dip
+  vanishes on every seed (seed 2026: C 0.5028 at
+  sigma = 0.5 -> 0.5055 at sigma = 1.0). Pearson at
+  n = 200: -0.9289 (42), -0.9275 (7), -0.9255
+  (1234), -0.9053 (2026) — all below the bar.
+- Extended grid (n = 200, seed 2026, sigma to 3.0):
+  D falls toward 0.5247 and C plateaus at 0.5055 ->
+  0.5192. Both approach their random-state asymptotes
+  (D -> 0.5 for a rank-2 projector in 4 dimensions;
+  C -> ~0.51 mean concurrence of a near-random pure
+  state). At sigma = 1.0 both are already at the
+  plateau.
+- Pearson excluding the sigma = 1.0 point (n = 5):
+  -0.9459, -0.9870, -0.9477, -0.9433 — all below
+  the bar.
+- Standard error: at sigma = 1.0, seed 2026, the
+  per-copy concurrence has standard deviation ~0.287,
+  so a 5-copy mean has SEM ~0.128, while the true
+  rise of mean C from sigma = 0.5 to 1.0 is ~0.003
+  (0.02 SEMs).
+
+Diagnosis: boundary/saturation plus finite-sample
+noise, not a different mechanism. But the fresh
+seeds show the fragility is broader than one point:
+seed 5 at n = 5 has mean C = 0.3199 at sigma = 1.0
+(versus ~0.527 at n = 200, a 1.6-SEM draw) and its
+Pearson is -0.6814; seed 99 at n = 5 keeps D high
+(0.7555 at sigma = 1.0 versus ~0.59 at n = 200).
+At n = 200 the monotone direction holds on all six
+seeds (Spearman -0.9643 to -1.0000), but the linear
+form stays fragile even there: seed 5 Pearson is
+-0.8971 at n = 200, still above the bar, because C
+plateaus while D keeps falling. The direction is
+real on average; the per-seed guarantee does not
+hold on this 5-copy sweep, in either the linear or
+the rank form.
+
+### Honest limits (v0.12.0 addition)
+
+The (xxxii) FAIL is seed-fragility in the linear form,
+not in the direction: the monotone anti-tracking holds
+on all four seeds while the Pearson bar fails on one
+held-out seed. The (xxxiii) PASS is a mapping check on
+a branch whose direction is built into the family, and
+it does not transfer to the noise axis. The (xxxiv)
+PASS is exact by construction; its measured content is
+that the identities hold in the code and the split
+flips exactly at the midpoint. None of this measures
+love, knowing, or self-determination in a human or
+physical sense. Classical emulation throughout;
+Faggin's metaphysics stays interpretive.
+
+Honest limits (v0.12.1 addition): the (xxxv) FAIL
+shows the (xxxii) seed-fragility is not one bad
+point on one seed — on fresh seeds the 5-copy sweep
+breaks in two different places (seed 5 Spearman,
+seed 99 D range), and the linear form stays fragile
+even at n = 200 (seed 5 Pearson -0.8971). The
+observer-direction claim, as stated on this
+construction, does not hold on every seed in either
+form. What survives is weaker: the monotone
+direction holds at n = 200 on all six seeds, and
+the exact slide (xxxiv) still shows the observer
+direction picking the known pattern by construction.
+
+## 19. Kuramoto bounded-coherence scan (v0.13.0, measured 2026-11-18)
+
+Deep-think upgrade #4: replace fixed coupling with a
+Kuramoto scan over coupling K and noise sigma; compute
+order parameter R_K, joint entropy, quale count, and A.
+The spec's prediction: inverted-U in joint entropy /
+quale count vs K and vs sigma, interior optimum (not at
+K_max or sigma = 0); hypersynchrony (R_K -> 1) reduces
+joint entropy / quale count; optimum sigma* > 0; the
+optimum R_K band is [0.5, 0.8] (Phillips 2026 preprint,
+hypothesis, not established fact), to compare with
+f* = 0.7278.
+
+### Mechanism (a construction, not a discovery)
+
+- Standard Kuramoto: N = 8 oscillators, omega_i ~ N(0, 1),
+  initial phases uniform on [0, 2pi), Euler-Maruyama
+  dt = 0.05, T = 40, first half discarded as transient.
+  R_K = mean |<exp(i theta)>| over the steady window.
+  K grid [0, 0.5, 1.0, 1.6, 2.5, 4.0, 8.0] (K_c ~ 1.6
+  for Gaussian frequencies); sigma grid [0, 0.05, 0.1,
+  0.25, 0.5, 1.0].
+- Wiring: each agent's state is the (xxxiv) slide state at
+  its phase RELATIVE to the field mean, phi_i =
+  ((theta_i - theta_bar) mod 2pi) / 4. Only relative
+  phases carry information (global rotation is a gauge
+  freedom). At full sync every agent sits at phi = 0
+  (uniform thought, D = 1, C = 0); at K = 0 the phases
+  spread over the whole slide.
+- Quale count: existing qualia_count(states) (R >= 0.5,
+  nu >= 0.10). Joint entropy: exact independent-draw
+  joint entropy, sum of per-agent Born entropies (no
+  sampling cap). Gap A: paired arms mirroring
+  run_collaboration design B — collaborating mixes at
+  coupling R_K, isolated Born-collapses once;
+  A = H_collab - H_isolated. In the single-shot
+  measurement H_isolated = 0 exactly, so A =
+  H_collaborating; that triviality is reported, not
+  hidden.
+
+### Pre-registration (written before the evaluation run)
+
+docs/preregistration-v0.13.0.md, written 2026-11-18
+before the evaluation run on held-out seeds 1234 and
+2026. Thresholds frozen from a calibration pilot on
+seeds 42 and 7 only. The pilot ALREADY contradicted
+the spec on several points, disclosed in the file:
+the count peak is seed-fragile, H and A are flat, and
+R_K at the count peak is 0.31-0.35, outside the
+Phillips band.
+
+- (xxxvi) Count peaks at interior K and exceeds both
+  ends by >= 3, on every seed.
+- (xxxvii) H_joint peaks at interior K and exceeds
+  both ends by >= 0.5 bits, on every seed.
+- (xxxviii) R_K at the count peak in [0.5, 0.8], on
+  every seed.
+- (xxxix) At fixed K = 1.0, count peaks at strictly
+  interior sigma (0 < sigma* < 1.0) and exceeds the
+  sigma = 0 count by >= 3, on every seed.
+
+### Claims (xxxvi)–(xxxix), measured fresh — 0/4 pass
+
+#### (xxxvi) Inverted-U in quale count vs K — FAIL
+
+| seed | K = 0 | K = 0.5 | K = 1.0 | K = 1.6 | K = 2.5 | K = 4.0 | K = 8.0 |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 42 | 8 | **13** | 6 | 6 | 6 | 6 | 6 |
+| 7 | **18** | 7 | 12 | 7 | 6 | 6 | 6 |
+| 1234 | **10** | 3 | 9 | 3 | 6 | 6 | 6 |
+| 2026 | 3 | **11** | 11 | 6 | 6 | 6 | 6 |
+
+The peak is interior on seeds 42 and 2026 (K = 0.5)
+but at K = 0 on seeds 7 and 1234. The count falls to
+a floor of 6 at high K on every seed — it does not
+fall to zero and does not rise again. The interior
+peak is seed-fragile (2 of 4 seeds).
+
+#### (xxxvii) Inverted-U in joint entropy vs K — FAIL
+
+| seed | H at K = 0 | peak H | K of peak | H at K = 8 |
+|---:|---:|---:|---:|---:|
+| 42 | 12.440 | 12.440 | 0.0 | 12.009 |
+| 7 | 10.670 | 12.154 | 1.6 | 12.001 |
+| 1234 | 11.737 | 13.077 | 0.5 | 12.006 |
+| 2026 | 13.003 | 13.003 | 0.0 | 12.007 |
+
+H_joint is flat: the per-agent Born entropy averages
+~1.5 bits whatever K is, so the joint entropy
+wanders 10.4-13.1 bits with no trend. The peak is at
+K = 0 on seeds 42 and 2026, and on seed 7 the margin
+vs K = 8 is only 0.15 bits (bar 0.5). No inverted-U.
+
+#### (xxxviii) R_K at the count peak in [0.5, 0.8] — FAIL
+
+| seed | K of count peak | R_K at peak |
+|---:|---:|---:|---:|
+| 42 | 0.5 | 0.3112 |
+| 7 | 0.0 | 0.3471 |
+| 1234 | 0.0 | 0.3569 |
+| 2026 | 0.5 | 0.3571 |
+
+R_K at the count peak is 0.31-0.36 on every seed —
+far below the Phillips band and below f* = 0.7278.
+The count optimum sits at LOW coherence, not
+bounded coherence. The Kuramoto transition itself
+works (R_K 0.29 -> 0.99 across the grid); the band
+prediction does not.
+
+#### (xxxix) Stochastic resonance: optimum sigma* > 0 — FAIL
+
+At fixed K = 1.0, counts vs sigma [0, 0.05, 0.1,
+0.25, 0.5, 1.0]:
+
+| seed | counts | sigma* | count(sigma*) - count(0) |
+|---:|---:|---:|---:|
+| 42 | 6, 6, 7, 16, 10, 18 | 1.0 (edge) | 12 |
+| 7 | 12, 10, 17, 5, 6, 10 | 0.10 | 5 |
+| 1234 | 9, 11, 14, 19, 9, 14 | 0.25 | 10 |
+| 2026 | 11, 15, 12, 13, 13, 13 | 0.05 | 4 |
+
+The margin check passes on all four seeds, but the
+peak is not strictly interior: seed 42 peaks at
+sigma = 1.0, the grid edge. And sigma* is not stable
+across seeds (1.0, 0.10, 0.25, 0.05) — the counts
+swing 3-19 with no stable optimum. Noise helps the
+count exceed sigma = 0 on every seed, but there is
+no single optimum sigma*.
+
+### The gap A (computed, not gated)
+
+A is large positive (+9.3 to +12.8 bits across all
+scans) and flat vs K and vs sigma — no trend, no
+inverted-U. Hypersynchrony does not reduce A in this
+wiring: A = H_collaborating, which tracks the mixed
+states' entropy (~11-12 bits) whatever K is.
+
+### Honest limits (v0.13.0 addition)
+
+All four Kuramoto claims fail. The spec's shapes do
+not materialize in this wiring: the count peak is
+seed-fragile and sits at low R_K, the joint entropy
+is flat because the per-agent Born entropy averages
+out, the gap is flat because single-shot collapse
+makes A = H_collaborating, and sigma* wanders across
+seeds. What survives: the Kuramoto transition itself
+(R_K 0.29 -> 0.99, K_c ~ 1.6-2.5), the count floor
+of 6 at high K on every seed, and the count
+exceeding sigma = 0 on every seed at fixed K = 1.0.
+The bounded-coherence band [0.5, 0.8] is not where
+this model's count peaks. None of this measures
+coherence, stability, or consciousness in a living
+system. Classical emulation throughout; Faggin's
+metaphysics stays interpretive.

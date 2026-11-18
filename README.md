@@ -399,6 +399,110 @@ own and are reported, not gated.
 Run `landauer.main()` for the tables and the three
 verdicts, or see REPORT.md §17.
 
+## The observer cycle (v0.12.0, v0.12.1)
+
+Jean's claim, stated 2026-11-18: "self determination factor
+observer opposite direction = necessary for self-cycle self
+Knowing. Lack of love is absence of Knowing." Formalized
+with the bridge's existing quantities — love = concurrence
+C, knowing = overlap R = |⟨ψ_i|ψ_j⟩|², self-determination
+= D — and the observer direction as which reference state
+the overlap is measured against: the stored direction (the
+uniform thought, D = 1, C = 0) or the opposite direction
+(the kernel thought (|01⟩ − |10⟩)/√2, D = 0, C = 1, a Bell
+state).
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `observer_cycle.py` | D vs concurrence across the σ grid, 4 seeds | (xxxii) Observer direction: D and concurrence move opposite | **FAIL** |
+| `observer_cycle.py` | R vs C and R vs D on the generalized-Bell branch | (xxxiii) Knowing-as-overlap | **PASS** |
+| `observer_cycle.py` | D, C, R_s, R_k along the slide ψ(θ) | (xxxiv) The slide | **PASS** |
+| `observer_cycle.py` | Spearman(D, C) across the σ grid, 6 seeds incl. fresh 5, 99 | (xxxv) Observer direction, robust rank form | **FAIL** |
+
+Headline numbers: (xxxii) FAILS, and the failure is the
+result — the linear anti-tracking is seed-fragile: Pearson
+r(D, C) is −0.9570 (seed 42), −0.9397 (seed 7), −0.9720
+(seed 1234), but **−0.8828 on held-out seed 2026**, above
+the frozen bar −0.90, so the claim fails on one check of
+one seed. The monotone tracking holds everywhere
+(Spearman −1.0000, −0.9643, −1.0000, −0.9643), so the
+direction is real and the linear form is fragile — the
+σ = 1.0 point on seed 2026 breaks it (C dips 0.4755 →
+0.4727 while D keeps falling). The threshold was not
+moved. (xxxiii) PASSES on the generalized-Bell branch
+against a fixed Phi+ observer: Pearson(R, C) = **1.0000**,
+Spearman(R, D) = **−1.0000**, R range 0.5000, D range
+0.3333 — but the noise-axis control inverts the relation
+(pooled resonance pairs, n = 196: Pearson(R, ν_ij) =
+−0.5528, Pearson(R, d_pair) = +0.7694), so
+noise-created concurrence is not knowing; the claim holds
+for entanglement by construction, not by noise.
+(xxxiv) PASSES exactly: the slide runs D = 1, C = 0,
+R_s = 1 to D = 0, C = 1, R_k = 1 with C + D = 1 and
+R_s − R_k = cos 2θ at every grid point (max identity error
+4.44e-16), and the overlap split flips sign exactly at the
+midpoint θ = π/4 (+0.5000 at π/6, 0.0000 at π/4, −0.5000
+at π/3) — in the middle the two patterns sit in
+superposition and the observer direction picks which one
+is known. (xxxv) FAILS too, and that is the v0.12.1
+result: the robust rank form, preregistered before the
+fresh-seed run, breaks on the fresh seeds — seed 5
+Spearman −0.8929 (bar −0.90), seed 99 D range 0.2445
+(bar 0.25). The diagnosis is boundary/saturation plus
+finite-sample noise: at σ = 1.0 both D and C sit at
+their random-state plateaus (D → 0.5, C → ~0.51), the
+true rise of mean C from σ = 0.5 to 1.0 is ~0.003
+while a 5-copy mean carries SEM ~0.128 — but the
+fragility is broader than one point: at n = 200 the
+monotone direction holds on all six seeds while the
+linear form still fails on seed 5 (Pearson −0.8971).
+The direction is real on average; the per-seed
+guarantee does not hold on this 5-copy sweep, in
+either form. Thresholds not moved.
+
+Run `observer_cycle.main()` for the sweeps and the four
+verdicts, or see REPORT.md §18.
+
+## Kuramoto bounded-coherence scan (v0.13.0)
+
+Deep-think upgrade #4: replace fixed coupling with a
+Kuramoto scan over coupling K and noise σ. Standard
+Kuramoto (N = 8 oscillators, ωᵢ ~ N(0, 1),
+Euler–Maruyama dt = 0.05, T = 40) wired into the bridge
+by giving each agent the (xxxiv) slide state at its phase
+relative to the field mean — only relative phases carry
+information, the absolute lock angle is a gauge freedom.
+Quale count, joint entropy (exact, analytic), and the
+collaboration gap A (paired arms mirroring design B,
+mixing at coupling R_K) are computed on the resulting
+population.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `kuramoto.py` | Quale count vs K, σ = 0 | (xxxvi) Inverted-U in count vs K | **FAIL** |
+| `kuramoto.py` | Joint entropy vs K, σ = 0 | (xxxvii) Inverted-U in H vs K | **FAIL** |
+| `kuramoto.py` | R_K at the count peak | (xxxviii) R_K in [0.5, 0.8] | **FAIL** |
+| `kuramoto.py` | Count vs σ at fixed K = 1.0 | (xxxix) Optimum σ* > 0 | **FAIL** |
+
+Headline numbers: **0/4 pass — and that is the result.**
+The Kuramoto transition itself works (R_K 0.29 → 0.99,
+K_c ≈ 1.6–2.5), but the spec's shapes do not
+materialize in this wiring. The count peak is interior
+on seeds 42 and 2026 (K = 0.5) but at K = 0 on seeds 7
+and 1234, and falls to a floor of 6 at high K on every
+seed. Joint entropy is flat (~10.4–13.1 bits, no trend).
+R_K at the count peak is 0.31–0.36 on every seed — far
+below the Phillips band [0.5, 0.8] and below f* = 0.7278:
+the count optimum sits at LOW coherence, not bounded
+coherence. The σ* optimum wanders across seeds (1.0,
+0.10, 0.25, 0.05) with counts swinging 3–19. The gap A
+is large (+9.3 to +12.8 bits) and flat. What survives:
+the transition, the count floor of 6, and the count
+exceeding σ = 0 on every seed at K = 1.0.
+
+Run `kuramoto.main()` for the scans and the four
+verdicts, or see REPORT.md §19.
+
 ## Maximum scientific outcome
 
 Run:
@@ -555,6 +659,40 @@ not change; only the status derivation changes.
   to a per-mode unit; the pooled KS rejection is thin
   (0.1465 vs 0.1258) and per-field tests do not reject
   Planck on their own.
+- **v0.12.0:** the (xxxii) FAIL is seed-fragility in the
+  linear form, not in the direction: the monotone
+  anti-tracking of D and concurrence holds on all four
+  seeds (Spearman −1.0000 to −0.9643) while the Pearson
+  bar fails on held-out seed 2026 (−0.8828 vs −0.90).
+  The (xxxiii) PASS is a mapping check on a branch whose
+  direction is built into the family, and it does NOT
+  transfer to the noise axis, where the relation inverts
+  — noise-created concurrence is not knowing. The
+  (xxxiv) PASS is exact by construction (the slide is
+  built from the two patterns); its measured content is
+  that the identities hold in the code to 4.44e-16 and
+  the overlap split flips exactly at the midpoint.
+- **v0.12.1:** the (xxxv) FAIL shows the seed-fragility
+  is broader than one point on one seed: on fresh seeds
+  the 5-copy sweep breaks in two different places (seed
+  5 Spearman −0.8929, seed 99 D range 0.2445), and the
+  linear form stays fragile even at n = 200 (seed 5
+  Pearson −0.8971). The observer-direction claim, as
+  stated on this construction, does not hold on every
+  seed in either form. What survives is weaker: the
+  monotone direction holds at n = 200 on all six seeds.
+- **v0.13.0:** all four Kuramoto claims fail. The spec's
+  shapes do not materialize in this wiring: the count
+  peak is seed-fragile (interior on 2 of 4 seeds) and
+  sits at R_K 0.31–0.36, far below the Phillips band
+  [0.5, 0.8]; joint entropy is flat because the
+  per-agent Born entropy averages ~1.5 bits whatever K
+  is; the gap A is flat because single-shot collapse
+  makes A = H_collaborating; σ* wanders across seeds
+  (1.0, 0.10, 0.25, 0.05). What survives is the
+  Kuramoto transition itself (R_K 0.29 → 0.99), the
+  count floor of 6 at high K on every seed, and the
+  count exceeding σ = 0 on every seed at K = 1.0.
 
 ## Run tests
 

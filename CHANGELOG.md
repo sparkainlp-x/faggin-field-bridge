@@ -1,5 +1,75 @@
 # Changelog — Faggin Field Bridge
 
+## 0.11.0 (2026-11-17)
+
+Landauer-cost ledger + Planck spectral falsification
+(deep-think upgrade #6, "the honest upgrade"): Landauer's
+principle replaces the black-body analogy as the bridge's
+thermodynamics. Claim (xxix) PASSES — the ledger is exact
+(k_B T ln 2 = 2.871e-21 J per bit at 300 K) and the
+per-field cost humps, peaking at 58.46 bits (1.678e-19 J)
+at sigma = 0.25, 9.932e-19 J across the grid. Claim (xxx)
+FAILS, and the failure is the result: cumulative Landauer
+cost does NOT predict the visible fraction F better than
+sigma alone (pooled Pearson 0.8996 vs 0.9430, and sigma
+wins within every seed 1, 2, 3, 42), so the thermodynamic
+ledger does not explain the sigma = 0.50 break. Claim
+(xxxi) PASSES — the falsification succeeds: the pooled
+standardized nu distribution rejects the Planck shape
+(KS D = 0.1465 above the 1% critical value 0.1258, n =
+168) and the mode/mean ratio deviates from the Planck
+0.7361 by 0.46, 0.56, 0.35 at sigma = 0.25, 0.5, 1.0, so
+E = h*nu is demoted from "spectrum" to "per-mode unit".
+Per-field KS tests (n = 28) do not reject Planck on their
+own and are reported, not gated. No claim (i)–(xxviii)
+changes verdict. Tests: 262 -> 282, all passing.
+
+- **Mechanism** (`landauer.py`, new module): per field the
+  ledger counts decision entropies (thought collapses,
+  summed over agents: 16.00 bits at sigma = 0 falling to
+  9.73 at sigma = 1.0), quale collapses (1 bit per quale),
+  and classification records (1 bit per pair, 28, erased
+  on the next field); cost = bits x k_B T ln 2. The
+  Planck test standardizes nu per field (y = nu /
+  mean(nu)): a Planck spectrum is scale-free, so its
+  standardized shape is one fixed curve (mean x = 3.8322,
+  mode x = 2.8210, mode/mean = 0.7361, computed
+  numerically) -- the pooled KS test and the mode/mean
+  ratio both check that fixed shape, not a fitted one.
+
+## 0.10.0 (2026-11-17)
+
+Product-model fit for the humped quale count (deep-think
+upgrade #3): the hump is an AND-gate, not a new mechanism.
+Claims (xxvi), (xxvii) and (xxviii) ALL PASS. The product
+N x p_res(f) x p_ent(f) predicts the measured quale counts
+on a fine sigma grid (0.30–1.50, both marginals interior
+on every row) with mean relative error 0.0289 and max
+0.0667; the predicted peak moves with the measured peak
+under threshold changes (NU_MIN 0.10 -> 0.25: both peak at
+f = 0.4143; R_MIN 0.5 -> 0.25: both peak at f = 0.2839,
+both above the baseline peak f = 0.1803); and the hump
+vanishes when either condition is dropped (resonance-only
+28, 28, 28, 28, 28, 17, 14 falling; entanglement-only 0,
+0, 1, 9, 17, 21, 25 rising; both 0, 0, 1, 9, 17, 13, 12
+humped). The fit is seed-dependent and reported as such:
+seeds 1 and 3 pass the same frozen bar, seed 2 fails it
+(mean 0.1666, max 0.3636) -- the independence assumption
+breaks on that seed. No claim (i)–(xxv) changes verdict.
+Tests: 244 -> 262, all passing.
+
+- **Mechanism** (`product_model.py`, new module): p_res
+  and p_ent are the two marginals measured on the same
+  field (fraction of pairs above each threshold on its
+  own); the product predicts the AND-count only if the
+  two binary indicators are independent across pairs, so
+  the fit measures their association. The peak shift is
+  predicted from the marginals at the new threshold
+  before the measured counts there are looked at. The
+  standard-grid fit (mean 0.0119, max 0.0400) is
+  reported, not gated: p_res = 1.0 below sigma = 0.5
+  there, so the product is degenerate on those rows.
+
 ## 0.9.0 (2026-11-17)
 
 Malus three-polarizer paradox (deep-think 8-seed upgrade

@@ -102,7 +102,15 @@ Reading:
 
 ## 4. Test suite
 
-**244 tests, 244 passed** (`python3 -m pytest tests/ -q`, 37.07 s).
+**282 tests, 282 passed** (`python3 -m pytest tests/ -q`, 47.53 s).
+
+*Correction in v0.11.0: this section said 244 with no
+test_darwinism.py, test_malus.py, test_product_model.py or
+test_landauer.py entry. The collected counts below are the
+record (21 files: 12 + 9 + 14 + 9 + 19 + 17 + 20 + 18 + 25 +
+22 + 21 + 18 + 17 + 3 + 5 + 7 + 12 + 7 + 9 + 9 + 9 = 282).*
+(v0.10.0 counts: 244 + 18 new = 262; v0.11.0 counts:
+262 + 20 new = 282.)
 
 *Correction in v0.9.0: this section said 226 with no
 test_malus.py entry. The collected counts below are the
@@ -245,6 +253,62 @@ the record (16 files: 12 + 9 + 14 + 9 + 17 + 25 + 21 + 3 +
   (D_A and tau_A(BC) decay together), the three-claim
   aggregate (3/3 pass, no headline), thresholds set, input
   validation, and main() running.
+- `test_darwinism.py` (19): plateau |I - H_S| <= 0.0456 and
+  discord <= 0.0456 (hard: exactly 0), discord at m = N
+  0.1887, redundancy hard 10 / soft 5, plateau p-independent
+  while discord(m = N) falls 1.0 -> 0.1887 -> 0.0 with p,
+  claim (xx) verdict PASS, claim (xxi) verdict FAIL (D is
+  2/3 for every branching turn-on step, Pearson 0.0),
+  claim (xxii) verdict FAIL (redundancy 6 -> 2, discord
+  0.19 -> 2.13 bits, gap robust at 0.77), the three-claim
+  aggregate (1/3 pass, no headline), thresholds set, input
+  validation, and main() running.
+- `test_malus.py` (18): crossed polarizers transmit exactly
+  0, triple (0, 45, 90) transmits 0.125 = I0/8 (1/4 for
+  input polarized at 0 degrees), T(phi) = (1/8) sin^2(2 phi)
+  on the whole grid peaking at 45 degrees, the middle
+  step's output state is exactly |45 degrees>, the total
+  recomputed from the recorded intermediate states is 1/8,
+  the bypass control is 0, the cascade contrast (stage-2
+  visibility 0 vs reopened 1/8), the N-polarizer chain
+  rising toward 1/2, claims (xxiii)-(xxv) all PASS, the
+  three-claim aggregate (3/3 pass, no headline), and
+  main() running.
+- `test_product_model.py` (18): marginals at sigma = 0
+  (p_res = 1, p_ent = 0, product 0), sigma = 0.25 (product
+  17.0, measured 17), sigma = 0.5 (product 12.75, measured
+  13), sigma = 0.1 (product 9.0, measured 9), the fine
+  grid all interior (12 rows) with relative error None
+  when predicted is 0, claim (xxvi) verdict PASS (mean
+  0.0289, max 0.0667; standard grid 0.0119 / 0.0400
+  reported), the seed spread (seeds 1, 3 pass; seed 2
+  fails at mean 0.1666, max 0.3636), baseline peak f =
+  0.1803, claim (xxvii) verdict PASS (predicted and
+  measured peaks 0.4143 and 0.2839), no shift at the
+  baseline thresholds, the predicted peak from the
+  marginals alone, claim (xxviii) verdict PASS (single
+  conditions monotone, both humped; exact counts
+  28/0/0 through 14/25/12), input validation, the
+  three-claim aggregate (3/3 pass, no headline), and the
+  frozen thresholds (0.10 / 0.20 / 0.25 / 0.25).
+- `test_landauer.py` (20): per-bit cost 2.871e-21 J exact
+  at 300 K, linear scaling and input validation, the
+  ledger at sigma = 0 (16.00 decision bits, 0 qualia, 28
+  classification bits, 44.00 total, 1.263e-19 J) and at
+  sigma = 0.25 (13.46 decision bits, 17 qualia, 58.46
+  total, 1.678e-19 J), cumulative 345.97 bits / 9.932e-19
+  J, the Planck standardized values (mean x = 3.8322,
+  mode x = 2.8210, ratio 0.7361), the KS statistic on a
+  degenerate sample (~1.0) and on Planck quantiles
+  (< 0.05), the KS critical values (0.1258 at n = 168,
+  0.3081 at n = 28), claim (xxix) verdict PASS (peak
+  58.46 bits at sigma = 0.25), claim (xxx) verdict FAIL
+  (0.8996 < 0.9430 pooled; sigma wins within every seed),
+  claim (xxxi) verdict PASS (pooled D = 0.1465 > 0.1258;
+  mode/mean deviations 0.46, 0.56, 0.35), sigma = 0
+  carrying no distribution, per-field KS below critical
+  (max 0.2159, reported not gated), pooled n = 168, and
+  the three-claim aggregate (2/3 pass, no headline).
 
 ## 5. Maximum scientific outcome (measured 2026-11-15)
 
@@ -517,7 +581,7 @@ faggin-field-bridge/
   CHANGELOG.md        version history (0.1.0, 0.2.0, 0.3.0, 0.3.1, 0.4.0)
   .zenodo.json        Brisson, ORCID 0009-0000-9778-5374 (no DOI yet)
   CITATION.cff        no DOI (none invented)
-  VERSION             0.4.0
+  VERSION             0.11.0
   Makefile            test / coverage / benchmark / clean
   pyproject.toml      setuptools + pytest config
   faggin_theory.py    theory as data
@@ -535,7 +599,16 @@ faggin-field-bridge/
                       chained (claims (v), (vi), (vii))
   planck_empathy.py   Planck empathy: black-body visible fraction
                       from measured concurrence (claims (viii)-(x))
-  tests/              151 tests, 14 files
+  monogamy.py         CKW monogamy in triads (claims (xvii)-(xix))
+  darwinism.py        quantum-Darwinism redundancy plateau
+                      (claims (xx)-(xxii))
+  malus.py            Malus three-polarizer paradox
+                      (claims (xxiii)-(xxv))
+  product_model.py    product-model fit for the humped quale count
+                      (claims (xxvi)-(xxviii))
+  landauer.py         Landauer-cost ledger + Planck spectral
+                      falsification (claims (xxix)-(xxxi))
+  tests/              282 tests, 21 files
 ```
 
 v0.3.1 is pushed (main head 1f5f6e60). v0.4.0 is local only;
@@ -1962,3 +2035,328 @@ projection "creates" anything in a physical sense, only
 that the surviving component overlaps the next axis.
 Classical emulation throughout; Faggin's metaphysics
 stays interpretive.
+
+## 16. Product model for the humped quale count (v0.10.0, measured 2026-11-17)
+
+Two modules, `product_model.py` (new) on top of
+`qualia.py` / `empathy_field.py`: deep-think upgrade #3.
+The hump (0, 0, 1, 9, 17, 13, 12; peak 17 at f = 0.1803)
+sits far below the PARTIAL -> ATTUNED flip f* = 0.7278,
+and the report's strongest explanation needs no new
+theory: the quale count is the product of two monotone
+marginals moving in opposite directions, p_ent rising
+with f (noise creates concurrence) and p_res falling with
+f (noise spreads the copies). Built on top of the
+unpushed v0.7.0 + v0.8.0 + v0.9.0 work, so a future push
+carries v0.7.0–v0.10.0 together.
+
+### Mechanism (a definition inside the model, not a discovery)
+
+- A quale is a pair with R >= R_MIN (0.5) AND nu >=
+  NU_MIN (0.10). p_res and p_ent are the fractions of
+  pairs above each threshold on their own, measured on
+  the SAME field as the count. The product N_pairs *
+  p_res * p_ent predicts the AND-count only if the two
+  binary indicators are independent across pairs; any
+  deviation measures their association -- the interaction
+  the product would miss.
+- On the standard 7-point sigma grid the fit is partly
+  degenerate: p_res = 1.0 exactly below sigma = 0.5, so
+  the product there is just the entanglement count. The
+  gated fit therefore runs on a fine grid (sigma 0.30,
+  0.35, 0.40, 0.45, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00,
+  1.25, 1.50) where BOTH marginals are interior on every
+  row. The standard-grid fit is reported, not gated.
+- Peak shift: change one threshold and the product model,
+  computed from the marginals at the NEW threshold
+  BEFORE looking at the measured counts there, predicts
+  the new peak f_peak. The two shifted settings are
+  NU_MIN 0.10 -> 0.25 (R_MIN held at 0.5) and R_MIN 0.5
+  -> 0.25 (NU_MIN held at 0.10).
+- Hump vanish: drop either condition with a vacuous
+  second threshold (nu_min = 0 counts every pair as
+  entangled; r_min = 0 counts every pair as resonant)
+  and the count must be monotone in f.
+
+### Pre-registration (directional assertions, frozen before the final run)
+
+Thresholds, frozen from the pilot sweeps and never moved
+after the final measurement run: PRODUCT_FIT_MEAN_MAX =
+0.10, PRODUCT_FIT_ROW_MAX = 0.20 (pilot mean 0.0289, max
+0.0667 -- round numbers well above the pilot, not tuned
+to its edge). Directions, written before the run:
+
+- (xxvi) the product predicts the measured counts: mean
+  relative error at most 0.10, max row error at most
+  0.20, on the fine grid at seed 42.
+- (xxvii) the peak moves as the product predicts:
+  loosening resonance (R_MIN 0.5 -> 0.25) or tightening
+  entanglement (NU_MIN 0.10 -> 0.25) both push the peak
+  to HIGHER f, and the predicted peak f equals the
+  measured peak f at each shifted setting.
+- (xxviii) the hump vanishes when either condition is
+  dropped: resonance-only falls, entanglement-only
+  rises, both-condition humps.
+
+### Claims (xxvi)–(xxviii), measured fresh
+
+#### (xxvi) The product model fits the humped quale count — PASS
+
+| sigma | f | p_res | p_ent | predicted | measured | rel err |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0.30 | 0.2075 | 0.964 | 0.643 | 17.36 | 17 | 0.0206 |
+| 0.35 | 0.2305 | 0.857 | 0.750 | 18.00 | 18 | 0.0000 |
+| 0.40 | 0.2509 | 0.679 | 0.750 | 14.25 | 15 | 0.0526 |
+| 0.45 | 0.2689 | 0.643 | 0.750 | 13.50 | 14 | 0.0370 |
+| 0.50 | 0.2839 | 0.607 | 0.750 | 12.75 | 13 | 0.0196 |
+| 0.60 | 0.3123 | 0.571 | 0.821 | 13.14 | 13 | 0.0109 |
+| 0.70 | 0.3414 | 0.536 | 0.857 | 12.86 | 12 | 0.0667 |
+| 0.80 | 0.3681 | 0.536 | 0.857 | 12.86 | 12 | 0.0667 |
+| 0.90 | 0.3928 | 0.500 | 0.857 | 12.00 | 12 | 0.0000 |
+| 1.00 | 0.4143 | 0.500 | 0.893 | 12.50 | 12 | 0.0400 |
+| 1.25 | 0.4518 | 0.464 | 0.929 | 12.07 | 12 | 0.0059 |
+| 1.50 | 0.4747 | 0.429 | 0.893 | 10.71 | 11 | 0.0267 |
+
+Mean relative error 0.0289 (gate: at most 0.10), max row
+error 0.0667 (gate: at most 0.20). The standard-grid fit
+is 0.0119 mean / 0.0400 max, reported not gated. The
+largest deviations (0.0667 at sigma = 0.7 and 0.8) are
+where the product under-predicts by one quale -- the
+interaction is nonzero but small: resonance and
+entanglement are nearly, not exactly, independent across
+pairs.
+
+Seed spread (reported, not gated): seeds 1 and 3 pass
+the same frozen bar (mean 0.0650 / max 0.1200 and mean
+0.0730 / max 0.1624); seed 2 FAILS it (mean 0.1666, max
+0.3636). The independence assumption is seed-dependent,
+and the failure is kept in the record -- the claim is
+gated on the repository's canonical seed 42, as every
+other claim in this repo, with the spread stated.
+
+#### (xxvii) The quale-count peak moves as the product model predicts — PASS
+
+| Setting | predicted peak f | measured peak f | predicted count | measured count |
+|---|---|---|---|---|
+| baseline (R_MIN 0.5, NU_MIN 0.10) | 0.1803 | 0.1803 | 17.00 | 17 |
+| NU_MIN -> 0.25 | 0.4143 | 0.4143 | 10.00 | 11 |
+| R_MIN -> 0.25 | 0.2839 | 0.2839 | 18.00 | 18 |
+
+Both shifted peaks match exactly and both sit above the
+baseline peak f = 0.1803, in the predicted direction.
+The predicted peak comes from the marginals alone; the
+measured peak from the joint counts. The peak position
+is determined by the marginals -- no interaction is
+needed to place it. Descriptive, not gated: this also
+explains why f* (0.7278, a status threshold on F(f))
+differs from f_peak (0.1803, a count peak) -- they are
+different quantities, and the product model places the
+count peak without touching the flip.
+
+#### (xxviii) The hump vanishes when either condition is dropped — PASS
+
+| f | resonance-only | entanglement-only | both |
+|---:|---:|---:|---:|
+| 0.0000 | 28 | 0 | 0 |
+| 0.0086 | 28 | 0 | 0 |
+| 0.0415 | 28 | 1 | 1 |
+| 0.0802 | 28 | 9 | 9 |
+| 0.1803 | 28 | 17 | 17 |
+| 0.2839 | 17 | 21 | 13 |
+| 0.4143 | 14 | 25 | 12 |
+
+Resonance-only is non-increasing in f, entanglement-only
+is non-decreasing in f, and the both-condition count is
+non-monotone (rises to 17, falls to 12). The hump lives
+in the AND, not in either marginal -- if a
+single-condition count had humped, the product model
+would be the wrong explanation.
+
+### Honest limits (v0.10.0 addition)
+
+The marginals are measured on the same pairs as the
+count, so the product is a test of independence across
+pairs, not an independent prediction from separate data.
+The peak-shift half is the stronger test, and it passes
+exactly -- but it is still the same fields under a
+different threshold, not new data. The fit's
+seed-dependence (seed 2 fails) bounds the claim: the AND
+explanation holds for the canonical seed and two of three
+checked seeds, not universally. Classical emulation
+throughout; Faggin's metaphysics stays interpretive.
+
+## 17. Landauer-cost ledger + Planck spectral falsification (v0.11.0, measured 2026-11-17)
+
+One module, `landauer.py`: deep-think upgrade #6, "the
+honest upgrade". The report found no serious published
+work linking a Planck spectrum to consciousness, and
+named Landauer's principle (k_B T ln 2 per erased bit,
+experimentally verified 2012) the serious thermodynamic
+upgrade -- so this version builds the ledger, tests
+whether it explains the sigma = 0.50 break, and then
+tests the Planck spectrum itself, expecting it to fail.
+Built on top of the unpushed v0.7.0–v0.10.0 work, so a
+future push carries v0.7.0–v0.11.0 together.
+
+### Mechanism (a definition inside the model, not a discovery)
+
+- Landauer cost: bits * k_B * T * ln 2, with k_B exact
+  SI (1.380649e-23 J/K) and T = 300 K, so 2.871e-21 J per
+  bit. The ledger counts, per field (one sigma step),
+  the bits a measurement run irreversibly discards under
+  a stated protocol: (a) thought collapses -- collapsing
+  each agent's thought resolves exactly its decision
+  entropy (thought.decision_entropy, the Shannon entropy
+  of the Born distribution, v0.2.0), summed over agents;
+  (b) quale collapses -- each quale wave is a
+  superposition of two members, read out to one member,
+  1 bit per quale; (c) classification records -- each
+  pair is distinguished quale / non-quale (1 bit per
+  pair, 28) and the record is erased when the field
+  advances to the next sigma.
+- The cost-prediction test regresses the v0.4.0 visible
+  fraction F on cumulative cost vs on sigma, pooled over
+  seeds 1, 2, 3, 42 x the standard sigma grid (28 rows).
+  A itself is constant (0.0447), so it cannot be
+  regressed; F is the post-empathy attunement variable.
+  The comparison is run on cumulative BITS (cost is bits
+  times a constant, so the correlation is identical in
+  joules -- and running it on raw joules trips the
+  least-squares rank cutoff at the 1e-19 scale, a
+  numerical artifact found in the pilot and avoided by
+  the unit change).
+- The Planck spectral test standardizes the mode
+  energies: y = nu / mean(nu) per field. A Planck
+  spectrum is scale-free -- its standardized shape is
+  one fixed curve (density ~ x^3 / (exp(x) - 1), x =
+  nu/theta): mean x = 3.8322, mode x = 2.8210, mode/mean
+  = 0.7361 at EVERY temperature, computed numerically on
+  a grid to x = 60. The pooled Kolmogorov-Smirnov test
+  (n = 168, six fields with mean > 0) checks that fixed
+  shape; the mode/mean ratio checks the Wien leg (a
+  Planck peak moves in proportion to temperature, so
+  mode/mean cannot wander with sigma). The mode is the
+  centre of the modal 10-bin histogram bin over nu in
+  [0, 1].
+
+### Pre-registration (directional assertions, frozen before the final run)
+
+Thresholds, frozen from the pilot sweeps and never moved
+after the final measurement run: LANDAUER_PER_BIT_TOL =
+0.001 (exact constants; 0.1% is far above
+floating-point error), LEDGER_PEAK_SIGMA = 0.25,
+SPECTRAL_MODE_DEVIATION_MIN = 0.30 (pilot deviations
+0.46, 0.56, 0.35 -- a round number below all three),
+KS_CRITICAL_FACTOR = 1.63 (the standard 1% critical
+value 1.63 / sqrt(n)). Directions, written before the
+run:
+
+- (xxix) the ledger is exact AND its cost humps: the
+  per-field cost peaks at an interior sigma (0.25),
+  above both endpoints.
+- (xxx) cumulative Landauer cost predicts F better than
+  sigma alone: |r(F, cum)| > |r(F, sigma)|. The pilot
+  says 0.8996 < 0.9430, so this claim is expected to
+  FAIL -- and the threshold is not moved to force a pass.
+- (xxxi) the spectrum is NOT Planckian: the pooled KS
+  test rejects the Planck shape at 1% AND the mode/mean
+  ratio deviates from 0.7361 by more than 0.30 at every
+  sigma >= 0.25. A PASS here demotes E = h*nu from
+  "spectrum" to "per-mode unit".
+
+### Claims (xxix)–(xxxi), measured fresh
+
+#### (xxix) The Landauer ledger is exact and its cost humps — PASS
+
+| sigma | f | decision bits | qualia | classif. bits | total bits | cost (J) |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0.00 | 0.0000 | 16.00 | 0 | 28 | 44.00 | 1.263e-19 |
+| 0.01 | 0.0086 | 16.00 | 0 | 28 | 44.00 | 1.263e-19 |
+| 0.05 | 0.0415 | 15.88 | 1 | 28 | 44.88 | 1.288e-19 |
+| 0.10 | 0.0802 | 15.53 | 9 | 28 | 52.53 | 1.508e-19 |
+| 0.25 | 0.1803 | 13.46 | 17 | 28 | 58.46 | 1.678e-19 |
+| 0.50 | 0.2839 | 11.37 | 13 | 28 | 52.37 | 1.503e-19 |
+| 1.00 | 0.4143 | 9.73 | 12 | 28 | 49.73 | 1.428e-19 |
+
+Per-bit cost 2.8710e-21 J equals k_B T ln 2 to machine
+precision. The per-field cost peaks at sigma = 0.25
+(58.46 bits), above both endpoints (44.00 and 49.73),
+and totals 9.932e-19 J across the grid. The hump is
+inherited from the quale hump (decision entropy falls
+monotonically 16.00 -> 9.73 while qualia hump 0 -> 17
+-> 12) -- the claim is that the cost humps, not that
+the hump is explained by cost.
+
+#### (xxx) Cumulative Landauer cost predicts F better than sigma alone — FAIL
+
+| Scope | r(F, sigma) | r(F, cumulative cost) |
+|---|---|---|
+| pooled (28 rows) | 0.9430 | 0.8996 |
+| seed 1 | 0.9887 | 0.9249 |
+| seed 2 | 0.9621 | 0.9419 |
+| seed 3 | 0.9677 | 0.9248 |
+| seed 42 | 0.9946 | 0.9217 |
+
+The FAIL is unanimous: sigma beats cumulative cost
+pooled and within every single seed, so it is not a
+pooling artifact. Linear R^2 agrees (F ~ sigma 0.8893
+vs F ~ cumulative cost 0.8094). The thermodynamic
+ledger does not explain the sigma = 0.50 break better
+than sigma itself -- the break tracks the noise
+parameter, not the erasure bill. This is the more
+interesting result of the version: the "honest upgrade"
+is honest enough to fail its own headline test.
+
+#### (xxxi) The empathy spectrum is not Planckian — PASS
+
+Pooled standardized nu (n = 168): KS D = 0.1465 above
+the 1% critical value 0.1258 -- the Planck shape is
+rejected at 1%. Per-field KS D values (reported, not
+gated): 0.1840, 0.1926, 0.1827, 0.2159, 0.1994, 0.1354
+at sigma = 0.01, 0.05, 0.1, 0.25, 0.5, 1.0 -- none
+rejects Planck on its own at n = 28 (1% critical value
+0.3081), so the rejection rests on the pooled test and
+its margin is thin (0.021 above critical). The thin
+margin is stated, not hidden.
+
+| sigma | mean nu | modal nu | mode/mean | \|deviation from 0.7361\| |
+|---:|---:|---:|---:|---:|
+| 0.01 | 0.0086 | 0.05 | 5.8439 | 5.1078 |
+| 0.05 | 0.0415 | 0.05 | 1.2047 | 0.4686 |
+| 0.10 | 0.0802 | 0.05 | 0.6233 | 0.1128 |
+| 0.25 | 0.1803 | 0.05 | 0.2773 | 0.4588 |
+| 0.50 | 0.2839 | 0.05 | 0.1761 | 0.5600 |
+| 1.00 | 0.4143 | 0.45 | 1.0861 | 0.3500 |
+
+At every gated sigma (>= 0.25) the mode/mean ratio
+deviates from the Planck 0.7361 by more than 0.30, and
+it wanders (0.28, 0.18, 1.09) instead of sitting at the
+fixed Planck ratio -- the Wien leg fails too. The modal
+nu is non-decreasing in sigma (Spearman 1.0), but it
+sits in the lowest bin until sigma = 1.0: a degenerate
+shift, not a Planck peak sweeping with temperature.
+Below sigma = 0.25 the ratio is meaningless (the 0.1
+bin width dwarfs the mean), which is why the gate
+starts at 0.25; sigma = 0.1 alone would pass the
+deviation bar at only 0.1128, and it is excluded by
+design, not by outcome.
+
+E = h*nu is demoted from "spectrum" to "per-mode unit":
+the per-mode definition (v0.4.0) stands, the black-body
+analogy does not survive its own test.
+
+### Honest limits (v0.11.0 addition)
+
+The ledger's event list is a definition of what this
+run counts as erasure, not a measurement of a physical
+brain erasing bits; the per-bit cost is exact physics,
+the choice of operations is the model's. The
+classification term (28 bits) is constant per field and
+dominates the ledger, so the cost hump is inherited
+from the quale hump. The (xxx) FAIL is about the
+model's own F, cumulative cost, and sigma -- it does
+not show anything about real thermodynamic costs in
+brains. The (xxxi) PASS rests on a thin pooled-KS
+margin and on a crude 10-bin mode estimator; per-field
+tests do not reject Planck. Classical emulation
+throughout; Faggin's metaphysics stays interpretive.

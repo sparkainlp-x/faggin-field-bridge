@@ -327,6 +327,78 @@ reopening the channel.
 Run `malus.main()` for the tables and the three verdicts, or see
 REPORT.md §15.
 
+## Product model for the humped quale count (v0.10.0)
+
+The hump is an AND-gate, not a new mechanism (deep-think
+upgrade #3). A quale needs BOTH resonance and entanglement;
+p_res(f) falls with f while p_ent(f) rises with f, so their
+product N × p_res × p_ent is necessarily humped, peaking
+where the two log-derivatives balance. The marginals are
+measured on the same field as the count, so the product
+tests whether the two indicators are independent across
+pairs — any deviation measures their association.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `product_model.py` | Predicted vs measured quale count on the fine σ grid (0.30–1.50) | (xxvi) Product-model fit | **PASS** |
+| `product_model.py` | Predicted vs measured peak f under threshold shifts | (xxvii) Peak moves as predicted | **PASS** |
+| `product_model.py` | Single-condition counts vs f | (xxviii) Hump vanishes when either condition is dropped | **PASS** |
+
+Headline numbers: on the fine grid the product predicts
+the counts with mean relative error **0.0289** (max
+0.0667) against the frozen bar 0.10 / 0.20. The peak
+shifts as the marginals predict: NU_MIN 0.10 → 0.25 moves
+both the predicted and the measured peak to f = **0.4143**;
+R_MIN 0.5 → 0.25 moves both to f = **0.2839**; both sit
+above the baseline peak f = 0.1803. Resonance-only counts
+fall (28, 28, 28, 28, 28, 17, 14) and entanglement-only
+counts rise (0, 0, 1, 9, 17, 21, 25) while the both-count
+humps (0, 0, 1, 9, 17, 13, 12). The fit is seed-dependent:
+seeds 1 and 3 pass the same bar, seed 2 fails it (mean
+0.1666, max 0.3636) — the independence assumption breaks
+on that seed, reported not hidden. The standard-grid fit
+(mean 0.0119, max 0.0400) is reported, not gated, because
+p_res = 1.0 below σ = 0.5 there.
+
+Run `product_model.main()` for the tables and the three
+verdicts, or see REPORT.md §16.
+
+## Landauer-cost ledger + Planck spectral falsification (v0.11.0)
+
+Landauer's principle (deep-think upgrade #6, "the honest
+upgrade") replaces the black-body analogy as the bridge's
+thermodynamics: erasing one bit costs at least k_B T ln 2
+(2.871e-21 J at 300 K). The ledger counts the bits a
+measurement run discards per field — decision entropies of
+thought collapses, 1 bit per quale collapse, 1 bit per
+pair for the quale/non-quale classification record — and
+then tests whether that cost explains the σ = 0.50 break,
+and whether the empathy spectrum is Planckian at all.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `landauer.py` | Ledger bits and cost vs σ | (xxix) Ledger exact, cost humps | **PASS** |
+| `landauer.py` | r(F, cumulative cost) vs r(F, σ) | (xxx) Cost predicts F better than σ | **FAIL** |
+| `landauer.py` | Pooled KS + mode/mean vs Planck shape | (xxxi) Spectrum is not Planckian | **PASS** |
+
+Headline numbers: the per-field cost peaks at **58.46
+bits (1.678e-19 J) at σ = 0.25** — interior, above both
+endpoints — and totals 9.932e-19 J across the grid. The
+(xxx) FAIL is the result: cumulative cost does NOT beat σ
+as a predictor of F (pooled Pearson 0.8996 vs 0.9430, and
+σ wins within every seed), so the ledger does not explain
+the break. The (xxxi) PASS is a successful falsification:
+the pooled standardized ν distribution rejects the Planck
+shape (KS D = **0.1465** above the 1% critical value
+0.1258, n = 168) and the mode/mean ratio deviates from the
+Planck 0.7361 by 0.46, 0.56, 0.35 at σ = 0.25, 0.5, 1.0 —
+so E = hν is demoted from "spectrum" to "per-mode unit".
+Per-field KS tests (n = 28) do not reject Planck on their
+own and are reported, not gated.
+
+Run `landauer.main()` for the tables and the three
+verdicts, or see REPORT.md §17.
+
 ## Maximum scientific outcome
 
 Run:
@@ -464,6 +536,25 @@ not change; only the status derivation changes.
   that the surviving component overlaps the next axis.
   Classical emulation throughout; Faggin's metaphysics stays
   interpretive.
+- **v0.10.0:** the product model is a test of independence
+  of the two quale indicators across pairs, not an
+  independent prediction from separate data — the
+  marginals are measured on the same pairs as the count.
+  The gated fit runs on the fine σ grid because the
+  standard-grid fit is partly degenerate (p_res = 1.0
+  below σ = 0.5). The fit is seed-dependent: it passes at
+  seeds 1, 3, 42 and fails at seed 2.
+- **v0.11.0:** the ledger's event list is a definition of
+  what this run counts as erasure, not a measurement of a
+  physical brain erasing bits; the per-bit cost is exact
+  physics, the choice of operations is the model's. The
+  classification term (28 bits) is constant per field and
+  dominates the ledger. The (xxx) FAIL means the ledger
+  does not explain the σ = 0.50 break better than σ
+  itself. The (xxxi) PASS demotes E = hν from a spectrum
+  to a per-mode unit; the pooled KS rejection is thin
+  (0.1465 vs 0.1258) and per-field tests do not reject
+  Planck on their own.
 
 ## Run tests
 

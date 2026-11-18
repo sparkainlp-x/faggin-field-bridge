@@ -456,11 +456,26 @@ def run_collaboration(n_agents=DEFAULT_N_AGENTS_COLLABORATION,
             gen_counts = _joint_sample_counts(states, n_samples,
                                               sample_rng)
             counts.update(gen_counts)
+            # Process predictors (v0.19.0, Cogitate-style item 9):
+            # per-agent self-determinism D and pairwise resonance R
+            # of this generation's states, recorded additively.
+            # D and R are deterministic functions of the states, so
+            # these keys change no existing output.
+            ds = [agent_self_determinism(s) for s in states]
+            rs = [overlap_squared(states[i], states[j])
+                  for i in range(len(states))
+                  for j in range(i + 1, len(states))]
+            post_rs = ([overlap_squared(states[0], states[1])]
+                       if len(states) >= 2 else [])
             rows.append({
                 "generation": g,
                 "h_joint_bits": _joint_entropy_from_counts(gen_counts),
                 "distinct_joint": len(gen_counts),
                 "coupling_f": float(coupling),
+                "d_per_agent": ds,
+                "r_mean": float(sum(rs) / len(rs)) if rs else 0.0,
+                "r_posterior_mean": (float(sum(post_rs) / len(post_rs))
+                                     if post_rs else 0.0),
             })
         arms[arm] = {
             "counts": counts,

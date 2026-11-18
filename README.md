@@ -399,6 +399,446 @@ own and are reported, not gated.
 Run `landauer.main()` for the tables and the three
 verdicts, or see REPORT.md §17.
 
+## The observer cycle (v0.12.0, v0.12.1)
+
+Jean's claim, stated 2026-11-18: "self determination factor
+observer opposite direction = necessary for self-cycle self
+Knowing. Lack of love is absence of Knowing." Formalized
+with the bridge's existing quantities — love = concurrence
+C, knowing = overlap R = |⟨ψ_i|ψ_j⟩|², self-determination
+= D — and the observer direction as which reference state
+the overlap is measured against: the stored direction (the
+uniform thought, D = 1, C = 0) or the opposite direction
+(the kernel thought (|01⟩ − |10⟩)/√2, D = 0, C = 1, a Bell
+state).
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `observer_cycle.py` | D vs concurrence across the σ grid, 4 seeds | (xxxii) Observer direction: D and concurrence move opposite | **FAIL** |
+| `observer_cycle.py` | R vs C and R vs D on the generalized-Bell branch | (xxxiii) Knowing-as-overlap | **PASS** |
+| `observer_cycle.py` | D, C, R_s, R_k along the slide ψ(θ) | (xxxiv) The slide | **PASS** |
+| `observer_cycle.py` | Spearman(D, C) across the σ grid, 6 seeds incl. fresh 5, 99 | (xxxv) Observer direction, robust rank form | **FAIL** |
+
+Headline numbers: (xxxii) FAILS, and the failure is the
+result — the linear anti-tracking is seed-fragile: Pearson
+r(D, C) is −0.9570 (seed 42), −0.9397 (seed 7), −0.9720
+(seed 1234), but **−0.8828 on held-out seed 2026**, above
+the frozen bar −0.90, so the claim fails on one check of
+one seed. The monotone tracking holds everywhere
+(Spearman −1.0000, −0.9643, −1.0000, −0.9643), so the
+direction is real and the linear form is fragile — the
+σ = 1.0 point on seed 2026 breaks it (C dips 0.4755 →
+0.4727 while D keeps falling). The threshold was not
+moved. (xxxiii) PASSES on the generalized-Bell branch
+against a fixed Phi+ observer: Pearson(R, C) = **1.0000**,
+Spearman(R, D) = **−1.0000**, R range 0.5000, D range
+0.3333 — but the noise-axis control inverts the relation
+(pooled resonance pairs, n = 196: Pearson(R, ν_ij) =
+−0.5528, Pearson(R, d_pair) = +0.7694), so
+noise-created concurrence is not knowing; the claim holds
+for entanglement by construction, not by noise.
+(xxxiv) PASSES exactly: the slide runs D = 1, C = 0,
+R_s = 1 to D = 0, C = 1, R_k = 1 with C + D = 1 and
+R_s − R_k = cos 2θ at every grid point (max identity error
+4.44e-16), and the overlap split flips sign exactly at the
+midpoint θ = π/4 (+0.5000 at π/6, 0.0000 at π/4, −0.5000
+at π/3) — in the middle the two patterns sit in
+superposition and the observer direction picks which one
+is known. (xxxv) FAILS too, and that is the v0.12.1
+result: the robust rank form, preregistered before the
+fresh-seed run, breaks on the fresh seeds — seed 5
+Spearman −0.8929 (bar −0.90), seed 99 D range 0.2445
+(bar 0.25). The diagnosis is boundary/saturation plus
+finite-sample noise: at σ = 1.0 both D and C sit at
+their random-state plateaus (D → 0.5, C → ~0.51), the
+true rise of mean C from σ = 0.5 to 1.0 is ~0.003
+while a 5-copy mean carries SEM ~0.128 — but the
+fragility is broader than one point: at n = 200 the
+monotone direction holds on all six seeds while the
+linear form still fails on seed 5 (Pearson −0.8971).
+The direction is real on average; the per-seed
+guarantee does not hold on this 5-copy sweep, in
+either form. Thresholds not moved.
+
+Run `observer_cycle.main()` for the sweeps and the four
+verdicts, or see REPORT.md §18.
+
+## Kuramoto bounded-coherence scan (v0.13.0)
+
+Deep-think upgrade #4: replace fixed coupling with a
+Kuramoto scan over coupling K and noise σ. Standard
+Kuramoto (N = 8 oscillators, ωᵢ ~ N(0, 1),
+Euler–Maruyama dt = 0.05, T = 40) wired into the bridge
+by giving each agent the (xxxiv) slide state at its phase
+relative to the field mean — only relative phases carry
+information, the absolute lock angle is a gauge freedom.
+Quale count, joint entropy (exact, analytic), and the
+collaboration gap A (paired arms mirroring design B,
+mixing at coupling R_K) are computed on the resulting
+population.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `kuramoto.py` | Quale count vs K, σ = 0 | (xxxvi) Inverted-U in count vs K | **FAIL** |
+| `kuramoto.py` | Joint entropy vs K, σ = 0 | (xxxvii) Inverted-U in H vs K | **FAIL** |
+| `kuramoto.py` | R_K at the count peak | (xxxviii) R_K in [0.5, 0.8] | **FAIL** |
+| `kuramoto.py` | Count vs σ at fixed K = 1.0 | (xxxix) Optimum σ* > 0 | **FAIL** |
+
+Headline numbers: **0/4 pass — and that is the result.**
+The Kuramoto transition itself works (R_K 0.29 → 0.99,
+K_c ≈ 1.6–2.5), but the spec's shapes do not
+materialize in this wiring. The count peak is interior
+on seeds 42 and 2026 (K = 0.5) but at K = 0 on seeds 7
+and 1234, and falls to a floor of 6 at high K on every
+seed. Joint entropy is flat (~10.4–13.1 bits, no trend).
+R_K at the count peak is 0.31–0.36 on every seed — far
+below the Phillips band [0.5, 0.8] and below f* = 0.7278:
+the count optimum sits at LOW coherence, not bounded
+coherence. The σ* optimum wanders across seeds (1.0,
+0.10, 0.25, 0.05) with counts swinging 3–19. The gap A
+is large (+9.3 to +12.8 bits) and flat. What survives:
+the transition, the count floor of 6, and the count
+exceeding σ = 0 on every seed at K = 1.0.
+
+Run `kuramoto.main()` for the scans and the four
+verdicts, or see REPORT.md §19.
+
+## Synergy-vs-redundancy PID (v0.14.0)
+
+Deep-think upgrade #5: decompose the collaboration gap
+by integrated information decomposition (PID / ΦID:
+Luppi, Mediano, Rosas et al., *Nature Neuroscience*
+2022/2024) into redundant, unique, and synergistic
+components. PID is defined for two sources, so the
+decomposition is of the pair-level (N = 2) gap, with
+target Y = the joint outcome (X1, X2) — the atoms then
+sum to H(X1, X2) itself, and their arm differences sum
+to the gap exactly. Redundancy is Williams & Beer
+I_min; the joint distribution is the exact pooled
+product Born distribution from the design-B evolution
+(no sampling in the PID itself). The N = 4 sampled gap
+(+4.3352 bits at σ = 0.25, seed 42) is context, not
+decomposed. This imports IIT's *decomposition*, not its
+contested Φ identity claim: no scalar Φ is computed.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `pid.py` | PID identity + exact-vs-sampled H | (xl) Identity and cross-check | **PASS** |
+| `pid.py` | ΔSyn vs ΔRed at σ = 0.25 | (xli) Gap is synergy, not redundancy | **FAIL** |
+| `pid.py` | Synergy vs R, σ = 0.25 → 0.50 | (xlii) Synergy rises with R, falls at σ = 0.50 | **FAIL** |
+| `pid.py` | ΔRed ratio 0.50/0.25 | (xliii) Redundancy is σ-robust | **FAIL** |
+
+Headline numbers: **1/4 pass — and the failures are the
+result.** At σ = 0.25 the synergy share of the pair gap
+is 0.407 (seed 42), 0.429 (seed 7), 0.882 (seed 1234),
+0.545 (seed 2026): synergy dominates on the held-out
+seeds but not on the calibration seeds, so the
+every-seed claim fails. Synergy does not rise with R
+(Pearson −0.23, −0.04, −0.55, +0.72 across seeds) and
+rises, not falls, from σ = 0.25 to 0.50 on every seed
+(0.92 → 1.26, 0.97 → 1.54, 0.80 → 1.20, 1.23 → 1.40).
+Redundancy's robustness ratio is 0.24, 1.45, 2.83,
+0.59 — robust on 3 of 4 seeds, failing only seed 42.
+The structural finding: in the collaborating arm
+I(X1;X2) is 0.00–0.06 bits, so Syn = Red − I(X1;X2)
+is numerically almost Red on every sigma — the I_min
+decomposition of the joint outcome cannot separate
+synergy from redundancy in this wiring, and "synergy,
+not redundancy" (or the reverse) is undecidable from
+these atoms alone.
+
+Run `pid.main()` for the decomposition and the four
+verdicts, or see REPORT.md §20.
+
+## No-cloning / Holevo ceiling (v0.15.0)
+
+Deep-think upgrade #7: turn QIP's central philosophical
+claim — qualia are private because quantum information
+cannot be cloned — into numerical ceilings the code must
+respect. The thought-pair ensemble is the resonance
+population (8 agents, noisy copies of the uniform
+thought): per pair, χ = S((ρ_i + ρ_j)/2) is the Holevo
+quantity of the two-state ensemble, D_pair is the mean
+self-knowing, and the accessible information is the
+mutual information of the bridge's own Born collapse in
+the 4-concept basis. The cloners act on a one-qubit
+thought (the binary-thought qubit): the Bužek–Hillery
+optimal universal cloner as an explicit 8×8 unitary, the
+CNOT (Wootters–Zurek) copy, and the model's own
+classical copy (`unity.gaussian_copies`, which reads the
+full amplitude vector). The 5/6 bound is on universal /
+average fidelity, not on the per-state fidelity of a
+state-dependent cloner — that distinction is part of the
+claim design.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `cloning_ceiling.py` | Local purity vs 1 − C²/2 | (xliv) Local-purity identity | **PASS** |
+| `cloning_ceiling.py` | D vs χ per pair, gap vs f | (xlv) Holevo ceiling D ≤ χ | **FAIL** |
+| `cloning_ceiling.py` | Born-collapse I vs χ | (xlvi) Holevo bound on accessible information | **PASS** |
+| `cloning_ceiling.py` | BH and CNOT fidelities | (xlvii) Optimal-cloning bound, unitary operations | **PASS** |
+| `cloning_ceiling.py` | All copy operations incl. classical | (xlviii) Blanket prediction: no copy exceeds 5/6 | **FAIL** |
+
+Headline numbers: **3/5 pass — and the failures are the
+result.** The exact no-cloning coefficient is 1 − C²/2
+(worst error 8.88e-16). But χ does NOT bound D: the mean
+gap χ − D is −1.0000 at σ = 0 on every seed and stays
+negative until σ = 1.0 (seed 42: −0.68 at σ = 0.25,
++0.10 at σ = 1.0), and the worst per-pair gap is
+negative at every σ on every seed. D approaches χ in
+absolute terms as f rises (Spearman(|gap|, f) = −1.00,
+−0.96, −0.96, −0.96) — but from ABOVE, not below: D is
+a projector expectation, not an information quantity.
+The ceiling that binds is on accessible information:
+the Born-collapse I never exceeds χ (max(I − χ) =
+−3.20e-16 on every seed). The unitary cloners respect
+the bound exactly (BH fidelity 5/6 on every state of
+the 144-state Bloch grid and the 6 Pauli states; CNOT
+mean exactly 2/3, max 1.0 on basis states — the
+state-dependent exception, reported not gated). The
+blanket prediction fails on the classical copy, which
+exceeds 5/6 at every working σ (1.0000 at σ = 0,
+0.98 at σ = 0.10, 0.85–0.88 at σ = 0.25 on 3 of 4
+seeds; crossing σ* in (0.31, 0.32], (0.25, 0.26],
+already below at 0.25, (0.30, 0.31]). Privacy in this
+model is not enforced by the representation — the
+emulation stores the full amplitude vector, so a
+classical copy reads the description the quantum
+no-cloning theorem forbids reading.
+
+Run `cloning_ceiling.main()` for the tables and the five
+verdicts, or see REPORT.md §21.
+
+## Two-channel empathy (v0.16.0)
+
+Deep-think upgrade #8: split the single empathy fraction
+f into concern (other-focused, monotone prosocial) and
+distress (self-focused, inverted-U, withdraws at high
+dose), IRI-style (Singer & Klimecki 2014; Decety &
+Jackson 2004; Qiu et al. 2024, empathy–prosocial r =
+0.36; Yin & Wang 2023, r = 0.32 / 0.30). One formula,
+two targets, on the v0.5.0 resonance population at
+σ = 0.25: ψᵢ(c, d) = normalize(ψᵢ + c·|Φ+⟩ + d·|self⟩),
+concern target the shared entangled Bell state (D = 2/3,
+C = 1), distress target the "self" basis concept alone
+(a product state, D = 1/3, C = 0). Helping is the quale
+count; joint entropy is the sum of the agents' Born
+entropies. No scalar Φ is computed anywhere.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `two_channel_empathy.py` | Mean R, f, count vs concern dose c | (l) Concern raises resonance and empathy fraction | **FAIL** |
+| `two_channel_empathy.py` | Mean R, count vs distress dose d at fixed c = 0.5 | (li) Distress alone lowers helping while raising resonance | **FAIL** |
+| `two_channel_empathy.py` | D, H_joint, R at distress d = 2 vs d = 0 | (lii) Distress withdrawal at high dose | **PASS** |
+| `two_channel_empathy.py` | f(c = 2), count(c = 0.5, d = 1), swap at total dose 1.0 | (liii) Channel separation | **FAIL** |
+
+Headline numbers: **1/4 pass — and the failures are the
+result.** The high-dose withdrawal is the only
+seed-robust effect: at d = 2, D falls by 0.267 / 0.097 /
+0.205 / 0.148 (bar 0.05), joint entropy falls by 6.92 /
+3.22 / 5.58 / 4.37 bits (bar 2.0), and mean R rises, on
+every seed. Everything else breaks on held-out seed
+1234: concern alone first *dilutes* f there (0.3251 →
+0.1505 at c = 0.25) before raising it, and the count at
+c = 0.5 is 24, not the ceiling 28; the distress count
+falls 24 → 17 → 14 then rebounds to 23 at d = 1 (bar
+≤ 15); the swap difference collapses to 0.0504 there
+(concern-heavy f 0.5879 vs distress-heavy 0.5374), so
+the channels are near-interchangeable in f on that
+seed. And no (c, d) point carries both f ≥ f\* = 0.7278
+and count ≤ 15 on any seed — the two landmarks are
+separated by channel (concern alone reaches f\* on
+every seed: 0.858 / 0.905 / 0.827 / 0.877), not fitted
+at one point. The report's "concern raises joint
+entropy" half also fails under this wiring (H_joint at
+c = 1 below baseline on both calibration seeds), and
+"distress lowers D" fails monotonically (seed 7 D
+rises with d before falling at d = 2) — both disclosed
+in the preregistration, reported not gated.
+
+Run `two_channel_empathy.main()` for the sweeps and the
+four verdicts, or see REPORT.md §22.
+
+## Connectome-harmonic / structure–function coupling (v0.17.0)
+
+Deep-think upgrade #10: connectome harmonic
+decomposition (CHD, Atasoy et al. 2016) and the
+structure–function coupling finding of Luppi et al.,
+*Communications Biology* 6:117, 2023 (established) —
+loss of consciousness = *increased*
+structure–function coupling; psychedelics = the
+opposite (decoupling). The graph the project did not
+yet have: structure W_ij = R_ij = |⟨ψᵢ|ψⱼ⟩|² (i ≠ j)
+on the v0.5.0 resonance population (8 agents) at
+σ = 0.10 / 0.25 / 0.50 / 1.00; graph Laplacian
+L = D − W; harmonic modes are the eigenvectors of L.
+Functional connectivity F_ij is the Bhattacharyya
+coefficient between the agents' Born distributions
+(sign-blind where W is sign-sensitive). Coupling
+κ(σ) is the Pearson correlation between the
+upper-triangular entries of W and F (28 pairs). The
+per-node harmonic measure is the basis-independent
+Rayleigh quotient ρ(D), ρ = 1 being random-like on
+the graph. The decoupling control permutes F (50
+permutations) and recomputes κ; the shuffle leaves f
+unchanged by construction. No scalar Φ is computed
+anywhere.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `connectome_harmonic.py` | Laplacian identities + ρ(D) vs 1, every seed × σ | (liv) CHD machinery exact, node signals harmonically random-like | **FAIL** |
+| `connectome_harmonic.py` | κ(0.50), κ(1.00) vs κ(0.25) | (lv) Luppi prediction: coupling rises with loss of attunement | **FAIL** |
+| `connectome_harmonic.py` | κ(0.25), dip to 0.50, recovery to 1.00, shuffle null | (lvi) Measured shape: dip at the break, recovery, decoupling ≠ attunement | **FAIL** |
+
+Headline numbers: **0/3 pass — the strongest negative
+result in the run so far.** Coupling falls, not rises,
+with loss of attunement on every seed: κ(0.50) −
+κ(0.25) = −0.599 / −0.430 / −0.423 / −0.203 and
+κ(1.00) − κ(0.25) = −0.192 / −0.203 / −0.611 / −0.770
+(bar +0.10) — the reverse of the anaesthesia/DOC
+direction. The calibration seeds' dip-and-recovery
+shape was seed noise: on the held-out seeds κ falls
+monotonically with σ (0.999 → 0.986 → 0.564 → 0.376
+on seed 1234; 1.000 → 0.998 → 0.796 → 0.229 on seed
+2026), so the dip sub-check fails on seed 2026
+(0.203 < 0.30) and the recovery fails on both
+held-out seeds (−0.188 / −0.567). The ρ half of (liv)
+fails on the held-out seeds only: the D signal is
+strongly structure-aligned at high σ there (ρ = 0.4662
+at σ = 0.50 on seed 1234; ρ = 0.5995 at σ = 1.00 on
+seed 2026; bar |ρ − 1| ≤ 0.20), while all five
+Laplacian identity sub-checks pass exactly on every
+seed × σ. What survives: the attuned field is strongly
+coupled (κ(0.25) = 0.999 / 0.842 / 0.986 / 0.998), and
+the decoupling control is clean (shuffle null mean
+−0.015 / −0.031 / −0.005 / −0.004, separated from
+κ(0.25) by ≥ 0.81, f unchanged) — decoupling alone is
+not attunement. Disclosed artefacts: κ ≈ 1.0000 at
+σ = 0.10 is near-parallel (both W and F ≈ 1, same
+noise driving both), reported not gated; the
+low-frequency energy share is seed-unstable at low σ
+(0.104 on seed 42 vs 0.801 on seed 7) because the
+nonzero eigenvalues are nearly degenerate, which is
+why ρ, not the energy share, is gated.
+
+Run `connectome_harmonic.main()` for the tables and the
+three verdicts, or see REPORT.md §23.
+
+## GRT phase-transition test (v0.18.0)
+
+Deep-think upgrade #11, ranked last and lowest value:
+General Resonance Theory (Hunt & Schooler,
+*Frontiers in Human Neuroscience* 13:378, 2019; GRT
+2.0, TSC 2026 abstract — speculative). Conjecture 1:
+shared resonance combines micro- into
+macro-conscious entities via a phase transition in
+the speed/bandwidth of information flow at a
+critical coupling K_c; Conjecture 3: nested entities
+persist within larger ones ("many become one"). The
+base field is the v0.5.0 resonance population (8
+agents) at σ = 1.00, the far-broken regime — the
+field must start fragmented for a transition to be
+possible, and at σ = 0.25 it is already one
+macro-entity at K = 0. Coupling K on the grid
+0.0–1.0 (step 0.1) is shared resonance as mixing
+toward the common reference: ψᵢ(K) =
+normalize((1 − K)·ψᵢ + K·ψ_ref), ψ_ref the uniform
+thought. Bandwidth B(K) is the pairwise shared
+information, the mean over all 28 pairs of
+H(pᵢ) + H(pⱼ) − H(pᵢⱼ), pᵢⱼ the Born distribution of
+the pair state — a *defined* bandwidth proxy inside
+the model, not a literal mutual information. K_c is
+the first grid K where mean R(K) reaches the
+bridge's pre-existing resonance threshold 0.5; GRT
+supplies no number, so the test is partly
+self-fulfilling, stated up front. No scalar Φ is
+computed anywhere.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `grt_transition.py` | Endpoints exact, K_c interior, fragmented at K = 0 | (lvii) Machinery exact, K_c interior, field starts fragmented | **PASS** |
+| `grt_transition.py` | B step at K_c vs largest B step on the grid | (lviii) GRT phase transition: sharp jump in bandwidth at K_c | **FAIL** |
+| `grt_transition.py` | Macro at K_c + 0.2, nested components at K_c, total B rise | (lix) Measured shape: macro forms just above K_c, nesting persists, bandwidth rises | **PASS** |
+
+Headline numbers: **2/3 pass — and the failure is the
+result.** K_c is interior on every seed (0.3 / 0.6 /
+0.5 / 0.4) and the field starts fragmented (largest
+component 7 / 6 / 4 / 3), but bandwidth does not jump
+at K_c: the step there is +0.1142 / −0.0572 / −0.0023 /
+−0.0002 bits (bar ≥ 0.10), and the largest step sits
+at K = 0.7 on ALL four seeds (0.1501 / 0.2597 / 0.2282 /
+0.2103) — a late, displaced rise, not a phase
+transition at the predicted coupling. What survives:
+the structural half of GRT — the macro completes at
+K_c + 0.2 (largest component 8 on every seed) while
+2 / 4 / 3 / 5 nested components survive at K_c, and
+bandwidth rises 0.85 / 0.88 / 0.56 / 0.74 bits
+overall. Disclosed: mean R is not monotone in K on
+seed 7 (dips 0.2778 → 0.2376 at K = 0.3), reported
+not gated; the field-mix coupling wiring was tried
+and rejected (mean R fell with K at σ = 1.00 seed 7);
+nesting dissolves by K = 1 (one component at
+R ≥ 0.75 on every seed).
+
+Run `grt_transition.main()` for the sweep and the
+three verdicts, or see REPORT.md §24.
+
+## Cogitate-style process predictors of the collaboration gap (v0.19.0)
+
+Deep-think upgrade #9, the last unbuilt item: Cogitate-style
+preregistration + process predictors of the collaboration gap
+(Cogitate Consortium, *Nature* 642:133–142, 2025 — adversarial
+preregistration, n=256; Woolley et al., *Science* 330:686–688,
+2010 — c-factor: mean social sensitivity and equal turn-taking
+predict group performance, NOT mean/max member IQ; replication
+contested). The run is the standard design-B collaboration run
+(N=4, 10 generations, 200 samples/generation), whose
+per-generation rows now carry the process variables additively:
+per-agent D, mean pairwise R, and R within the "posterior"
+subset (agents {0, 1} by index, fixed before looking). Per
+(σ, seed) run: gap, mean_R (mean social sensitivity), mean_D
+and max_D (individual ability), −var_D (equal turn-taking),
+post_R_sustained (posterior synchrony), broadcast =
+min(onset, offset) R (ignition at BOTH ends). Per-seed Pearsons
+across the 7-value sigma grid; thresholds frozen from
+calibration seeds 42/7 in docs/preregistration-v0.19.0.md
+before the held-out evaluation on seeds 1234/2026. Note the
+grid has 7 values, so the pooled regression runs over 28 runs
+(7σ × 4 seeds), not 20. No scalar Φ is computed anywhere.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `cogitate.py` | mean_R vs max_D and mean_D, every seed | (lx) Mean sensitivity beats individual D | **FAIL** |
+| `cogitate.py` | r(gap, −var_D) vs bar, and vs r(gap, max_D) | (lxi) Turn-taking equality predicts the gap | **PASS** |
+| `cogitate.py` | max(r(post), r(bcast)) and separation, every seed | (lxii) Posterior vs broadcast separable, one predicts | **PASS** |
+| `cogitate.py` | Pooled R²(gap ~ mean_R + (−var_D)) vs R²(gap ~ max_D) | (lxiii) Pooled regression | **PASS** |
+
+Headline numbers: **3/4 pass — and the failure is the
+result.** Turn-taking equality predicts the gap on every
+seed (r = 0.7899 / 0.7566 / 0.7589 / 0.7105, bar 0.70; seed
+2026 closest at 0.7105) and beats max_D everywhere; the
+posterior predictor wins on every seed (r = 0.9278 / 0.8657 /
+0.9858 / 0.8884, bar 0.80) with separation 1.83 / 1.76 /
+1.77 / 1.82 (margin 1.00), while broadcast anti-predicts the
+gap on every seed (r = −0.9022 / −0.8911 / −0.7813 / −0.9350)
+because onset R rises with σ while the gap falls; the pooled
+regression over 28 runs gives R² = 0.6505 against 0.3298
+(difference 0.3207, margin 0.05; adjusted-R² difference
+0.3185). But mean sensitivity does NOT beat mean individual
+D: claim (lx) fails on held-out seed 1234, where r(gap,
+mean_D) = 0.8839 exceeds r(gap, mean_R) = 0.8447 — the tight
+calibration margin (worst 0.1252 vs frozen 0.10) had flagged
+this as a live risk. Disclosed: at σ = 0 the predictors are
+identical across seeds (only the sampling differs); the
+posterior pair's R falls to ~0.0001 in at least one
+generation on most runs, so it is the sustained MEAN that
+predicts, not unbroken synchrony; on seed 1234 at σ = 1.00
+the offset R (0.1157) falls below the onset (0.4437), the
+only run where it does.
+
+Run `cogitate.main()` for the sweep and the four verdicts,
+or see REPORT.md §25.
+
 ## Maximum scientific outcome
 
 Run:
@@ -555,6 +995,117 @@ not change; only the status derivation changes.
   to a per-mode unit; the pooled KS rejection is thin
   (0.1465 vs 0.1258) and per-field tests do not reject
   Planck on their own.
+- **v0.12.0:** the (xxxii) FAIL is seed-fragility in the
+  linear form, not in the direction: the monotone
+  anti-tracking of D and concurrence holds on all four
+  seeds (Spearman −1.0000 to −0.9643) while the Pearson
+  bar fails on held-out seed 2026 (−0.8828 vs −0.90).
+  The (xxxiii) PASS is a mapping check on a branch whose
+  direction is built into the family, and it does NOT
+  transfer to the noise axis, where the relation inverts
+  — noise-created concurrence is not knowing. The
+  (xxxiv) PASS is exact by construction (the slide is
+  built from the two patterns); its measured content is
+  that the identities hold in the code to 4.44e-16 and
+  the overlap split flips exactly at the midpoint.
+- **v0.12.1:** the (xxxv) FAIL shows the seed-fragility
+  is broader than one point on one seed: on fresh seeds
+  the 5-copy sweep breaks in two different places (seed
+  5 Spearman −0.8929, seed 99 D range 0.2445), and the
+  linear form stays fragile even at n = 200 (seed 5
+  Pearson −0.8971). The observer-direction claim, as
+  stated on this construction, does not hold on every
+  seed in either form. What survives is weaker: the
+  monotone direction holds at n = 200 on all six seeds.
+- **v0.13.0:** all four Kuramoto claims fail. The spec's
+  shapes do not materialize in this wiring: the count
+  peak is seed-fragile (interior on 2 of 4 seeds) and
+  sits at R_K 0.31–0.36, far below the Phillips band
+  [0.5, 0.8]; joint entropy is flat because the
+  per-agent Born entropy averages ~1.5 bits whatever K
+  is; the gap A is flat because single-shot collapse
+  makes A = H_collaborating; σ* wanders across seeds
+  (1.0, 0.10, 0.25, 0.05). What survives is the
+  Kuramoto transition itself (R_K 0.29 → 0.99), the
+  count floor of 6 at high K on every seed, and the
+  count exceeding σ = 0 on every seed at K = 1.0.
+- **v0.14.0:** three of four PID claims fail. The
+  collaboration gap is not synergy-dominant on every
+  seed (synergy share 0.41–0.43 on calibration seeds,
+  0.55–0.88 on held-out seeds); synergy does not rise
+  with R and rises, not falls, at σ = 0.50 on every
+  seed; redundancy is σ-robust on 3 of 4 seeds but
+  fails seed 42 (ratio 0.24). The decomposition itself
+  is exact (identity error 8.88e-16 bits). The
+  structural limit is that Syn ≈ Red in this wiring
+  because I(X1;X2) ≈ 0 in the collaborating arm, so
+  the atoms cannot adjudicate "synergy, not
+  redundancy" either way.
+- **v0.15.0:** three of five no-cloning / Holevo
+  claims pass. The exact coefficient is 1 − C²/2
+  (worst error 8.88e-16), and the Born-collapse
+  accessible information never exceeds χ; the
+  Bužek–Hillery cloner is exactly 5/6 and the CNOT
+  copy averages exactly 2/3. But χ does not bound D
+  — D sits above χ at low f and approaches it from
+  above (Spearman(|gap|, f) = −1.00 / −0.96) — and
+  the model's own classical copy exceeds 5/6 at every
+  working σ (1.0000 at σ = 0, 0.85–0.88 at σ = 0.25).
+  Privacy is not enforced by the representation.
+- **v0.16.0:** three of four two-channel claims fail,
+  all on held-out seed 1234 (baseline f 0.3251, nearly
+  double the other seeds at the same σ = 0.25): concern
+  alone first dilutes f (0.3251 → 0.1505) before raising
+  it, the distress count rebounds to 23 at d = 1, and
+  the swap difference collapses to 0.0504 — the channels
+  are near-interchangeable in f on that seed. Only the
+  high-dose withdrawal (lii) is seed-robust, and no
+  (c, d) point carries both f ≥ f\* and count ≤ 15 on
+  any seed. The transform raises mean R strictly in
+  every sweep on every seed, but is not a monotone dial
+  on f, count, or D. No scalar Φ is computed anywhere.
+- **v0.17.0:** zero of three connectome-harmonic claims
+  pass. Coupling falls, not rises, with loss of
+  attunement on every seed (κ(0.50) − κ(0.25) = −0.60 /
+  −0.43 / −0.42 / −0.20) — the reverse of the Luppi
+  anaesthesia/DOC direction. The dip-and-recovery shape
+  was a calibration-seed artefact: on the held-out seeds
+  κ falls monotonically with σ. The D signal aligns
+  strongly with the graph harmonics at high σ on the
+  held-out seeds (ρ down to 0.47), while the Laplacian
+  identities hold exactly everywhere. What survives: the
+  attuned field is strongly coupled (κ(0.25) ≥ 0.84) and
+  the shuffle decoupling control is clean (null ≈ 0,
+  separated by ≥ 0.81, f unchanged). No scalar Φ is
+  computed anywhere.
+- **v0.18.0:** two of three GRT phase-transition claims
+  pass. The machinery is exact (endpoints to 1e-12,
+  B(1) = 2.0000), K_c is interior on every seed (0.3 /
+  0.6 / 0.5 / 0.4), the macro completes at K_c + 0.2
+  (largest component 8) while 2–5 nested components
+  survive at K_c, and bandwidth rises 0.56–0.88 bits
+  overall. But there is no phase transition at K_c:
+  the bandwidth step there is +0.11 / −0.06 / −0.00 /
+  −0.00 bits (bar 0.10), and the largest step sits at
+  K = 0.7 on all four seeds (0.15 / 0.26 / 0.23 /
+  0.21) — a late, displaced rise. Mean R is not even
+  monotone in K on seed 7. No scalar Φ is computed
+  anywhere.
+- **v0.19.0:** three of four Cogitate-style process-predictor
+  claims pass. Turn-taking equality predicts the collaboration
+  gap on every seed (r(gap, −var_D) = 0.79 / 0.76 / 0.76 /
+  0.71, bar 0.70) and beats max_D everywhere; the posterior
+  predictor wins on every seed (r = 0.93 / 0.87 / 0.99 / 0.89,
+  bar 0.80) while broadcast anti-predicts it on every seed
+  (r = −0.90 / −0.89 / −0.78 / −0.94); the pooled regression
+  over 28 runs gives R² = 0.65 for gap ~ mean_R + (−var_D)
+  against 0.33 for gap ~ max_D (difference 0.32, margin 0.05).
+  But mean sensitivity does NOT beat mean individual D: claim
+  (lx) fails on held-out seed 1234, where r(gap, mean_D) =
+  0.8839 exceeds r(gap, mean_R) = 0.8447. All thresholds were
+  preregistered from calibration seeds 42/7 before the
+  held-out evaluation; none was moved. No scalar Φ is computed
+  anywhere.
 
 ## Run tests
 

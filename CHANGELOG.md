@@ -1,5 +1,377 @@
 # Changelog — Faggin Field Bridge
 
+## 0.18.0 (2026-11-18)
+
+GRT phase-transition test (deep-think upgrade #11,
+ranked last, lowest value): Hunt & Schooler 2019
+Conjecture 1 (shared resonance → phase transition
+in information-sharing bandwidth at a critical
+coupling K_c) and Conjecture 3 (nested "many become
+one"). Two of three claims pass, and the failure is
+the result: (lviii) there is no sharp bandwidth jump
+at the predicted K_c — the step in B ending at K_c
+is +0.1142 / −0.0572 / −0.0023 / −0.0002 bits (bar
+≥ 0.10), and the largest step sits at K = 0.7 on ALL
+four seeds (0.1501 / 0.2597 / 0.2282 / 0.2103), two
+to four grid steps after K_c (0.3 / 0.6 / 0.5 / 0.4);
+(lvii) the machinery is exact (K = 0 states equal
+the base to ≤ 2.22e-16, K = 1 states equal the
+uniform reference exactly, mean R(1) = 1, B(1) =
+2.0000), K_c is interior on every seed, and the
+field starts fragmented (largest component 7 / 6 /
+4 / 3 at R ≥ 0.5); (lix) the structural half of GRT
+holds — the macro completes at K_c + 0.2 (largest
+component 8 on every seed) while 2 / 4 / 3 / 5
+nested components survive at K_c, and bandwidth
+rises 0.8532 / 0.8774 / 0.5640 / 0.7357 bits overall
+(bar ≥ 0.50). Disclosed before the run: the
+prediction already failed on the calibration seeds;
+the field-mix coupling wiring was tried and rejected
+(mean R fell with K at σ = 1.00 seed 7); mean R is
+not monotone in K on seed 7 (dips 0.2778 → 0.2376),
+reported not gated; nesting dissolves by K = 1.
+No claim (i)–(lvi) changes verdict. Tests: 397 ->
+418, all passing.
+
+- **Mechanism** (`grt_transition.py`, new module):
+  reference-mixing coupling ψᵢ(K) = normalize((1 −
+  K)·ψᵢ + K·ψ_ref) on the v0.5.0 resonance population
+  at σ = 1.00, pairwise shared-information bandwidth
+  B(K), K_c from the pre-existing resonance threshold
+  0.5, resonance-graph components at R ≥ 0.5 (macro)
+  and R ≥ 0.75 (nested), and the three claim verdicts
+  (lvii)–(lix). Pre-registration in
+  docs/preregistration-v0.18.0.md, written before the
+  evaluation run; thresholds frozen from calibration
+  seeds 42 and 7, evaluation on held-out seeds 1234
+  and 2026.
+
+## 0.17.0 (2026-11-18)
+
+Connectome-harmonic / structure–function coupling
+(deep-think upgrade #10): the graph the project did
+not yet have — W_ij = R_ij on the v0.5.0 resonance
+population, graph Laplacian L = D − W, harmonic modes
+as the eigenvectors of L (Atasoy et al. 2016 CHD),
+functional connectivity as the Bhattacharyya
+coefficient between Born distributions, coupling
+κ(σ) = Pearson correlation between the
+upper-triangular entries of W and F, and the
+basis-independent Rayleigh quotient ρ(D) for
+per-node harmonic smoothness. Zero of three claims
+pass, and the failures are the result: (lv) the Luppi
+prediction (Luppi et al. 2023 — loss of
+consciousness = increased structure–function
+coupling) is reversed in this wiring — κ falls with
+loss of attunement on every seed (κ(0.50) − κ(0.25)
+= −0.599 / −0.430 / −0.423 / −0.203; κ(1.00) −
+κ(0.25) = −0.192 / −0.203 / −0.611 / −0.770, bar
++0.10); (lvi) the dip-and-recovery shape was a
+calibration-seed artefact — on the held-out seeds κ
+falls monotonically with σ (1.000 → 0.986 → 0.564 →
+0.376 on seed 1234; 1.000 → 0.998 → 0.796 → 0.229 on
+seed 2026), so the dip fails on seed 2026 (0.203 <
+0.30) and the recovery fails on both held-out seeds
+(−0.188 / −0.567), though the attuned coupling
+(κ(0.25) ≥ 0.84) and the shuffle decoupling control
+(null mean −0.015 / −0.031 / −0.005 / −0.004,
+separated from κ(0.25) by ≥ 0.81, f unchanged) both
+pass; (liv) the Laplacian identities hold exactly on
+every seed × σ, but the D signal is strongly
+structure-aligned at high σ on the held-out seeds
+(ρ = 0.4662 at σ = 0.50 on seed 1234, ρ = 0.5995 at
+σ = 1.00 on seed 2026; bar |ρ − 1| ≤ 0.20), the
+opposite of the calibration seeds' random-like
+pattern. Disclosed before the run: κ ≈ 1.0000 at
+σ = 0.10 is a near-parallel artefact (reported, not
+gated), and the low-frequency energy share is
+seed-unstable at low σ (0.104 vs 0.801) because the
+nonzero eigenvalues are nearly degenerate — which is
+why ρ, not the energy share, is gated. No claim
+(i)–(liii) changes verdict. Tests: 375 -> 397, all
+passing.
+
+- **Mechanism** (`connectome_harmonic.py`, new module):
+  coupling matrix, graph Laplacian, harmonic modes,
+  Bhattacharyya functional connectivity, κ(σ),
+  Rayleigh-quotient ratio, 50-permutation shuffle
+  null, and the three claim verdicts (liv)–(lvi).
+  Pre-registration in docs/preregistration-v0.17.0.md,
+  written before the evaluation run; thresholds frozen
+  from calibration seeds 42 and 7, evaluation on
+  held-out seeds 1234 and 2026. The calibration pilot
+  already contradicted the spec on the Luppi direction
+  (disclosed in the preregistration); the evaluation
+  run confirmed it and broke the dip-and-recovery
+  shape and the random-like ρ reading as well.
+
+## 0.16.0 (2026-11-18)
+
+Two-channel empathy (deep-think upgrade #8): the single
+empathy fraction f split into concern (other-focused,
+monotone prosocial) and distress (self-focused, inverted-U,
+withdraws at high dose), IRI-style (Singer & Klimecki
+2014; Decety & Jackson 2004; Qiu et al. 2024, r = 0.36;
+Yin & Wang 2023, r = 0.32 / 0.30). One of four claims
+passes: (lii) distress withdrawal at high dose — at fixed
+concern c = 0.5, distress d = 2 vs d = 0, D falls by
+0.267 / 0.097 / 0.205 / 0.148 (bar 0.05), joint Born
+entropy falls by 6.92 / 3.22 / 5.58 / 4.37 bits (bar
+2.0), and mean R rises, on every seed. The three other
+spec predictions FAIL, and the failures are the result:
+(l) concern alone does NOT raise f monotonically — on
+held-out seed 1234 a small Bell dose first dilutes the
+pair concurrence (f 0.3251 -> 0.1505) before raising
+it, and the count at c = 0.5 is 24 there, not the
+ceiling 28 (R rises strictly on every seed); (li) the
+distress dissociation breaks on seed 1234, where the
+quale count falls 24 -> 17 -> 14 then rebounds to 23
+at d = 1 (bar <= 15), though R rises strictly on
+every seed and the count falls monotonically on the
+other three; (liii) the channels are near-
+interchangeable in f on seed 1234 (swap difference
+0.0504 vs bar 0.30; 0.432 / 0.428 / 0.314 on the
+other seeds), and no (c, d) point on the grid
+carries both f >= f* = 0.7278 and count <= 15 on any
+seed — the report's "fits both with the same
+parameters" fails in the single-point sense in this
+wiring, though concern alone does reach f* on every
+seed (0.858 / 0.905 / 0.827 / 0.877). The two
+landmarks are separated by channel, not fitted at
+one point. Also disclosed before the run: under the
+Bell concern wiring, "concern raises joint entropy"
+does not hold (H_joint at c = 1 is below baseline
+on both calibration seeds) and "distress lowers D"
+does not hold monotonically (seed 7 D rises with d
+before falling at d = 2) — both are reported, not
+gated. No claim (i)–(xlix) changes verdict. Tests:
+353 -> 375, all passing.
+
+- **Mechanism** (`two_channel_empathy.py`, new module):
+  psi_i(c, d) = normalize(psi_i + c*|Phi+> + d*|self>),
+  concern target the shared entangled Bell state
+  (D = 2/3, C = 1), distress target the "self" basis
+  concept alone (product state, D = 1/3, C = 0), on
+  the v0.5.0 resonance population at sigma = 0.25;
+  helping is the quale count, joint entropy is the
+  sum of the agents' Born entropies, and the four
+  claim verdicts (l)–(liii). Pre-registration in
+  docs/preregistration-v0.16.0.md, written before
+  the evaluation run; thresholds frozen from
+  calibration seeds 42 and 7, evaluation on held-out
+  seeds 1234 and 2026. The calibration pilot already
+  contradicted the spec on the joint-entropy half,
+  the monotone-D half, and the single-point fit
+  (disclosed in the preregistration).
+
+## 0.15.0 (2026-11-18)
+
+No-cloning / Holevo ceiling for D (deep-think upgrade
+#7): Holevo chi of the thought-pair ensemble, D vs
+chi, the optimal-cloning fidelity bound on every
+"copy a thought" operation in the model, and the exact
+no-cloning coefficient Tr(rho_A^2) = 1 - C^2/2 verified
+in code. Three of five claims pass: (xliv) the local-
+purity identity holds to 8.88e-16 (Wootters concurrence
+agrees with the exact pure form to 1.94e-08); (xlvi)
+the Born-collapse accessible information never exceeds
+chi (max(I - chi) = -3.20e-16 on every seed, extracting
+roughly 40-50% of chi); (xlvii) the Buzek-Hillery
+universal cloner achieves exactly 5/6 fidelity on every
+state of the 144-state Bloch grid and the 6 Pauli
+states, and the CNOT copy averages exactly 2/3. Two
+spec predictions FAIL: (xlv) chi does NOT bound D (mean
+gap chi - D = -1.0000 at sigma = 0 on every seed, worst
+per-pair gap negative at every sigma) -- D approaches
+chi in absolute terms as f rises (Spearman(|gap|, f) =
+-1.00 / -0.96) but from ABOVE, because D is a projector
+expectation, not an information quantity; (xlviii) the
+model's own classical copy exceeds 5/6 at every working
+noise level (fidelity 1.0000 at sigma = 0, 0.85-0.88 at
+sigma = 0.25 on 3 of 4 seeds; crossing sigma* in (0.31,
+0.32], (0.25, 0.26], already below at 0.25, (0.30,
+0.31]) -- the classical emulation stores the full
+amplitude vector, so privacy in this model is not
+enforced by the representation. No claim (i)-(xliii)
+changes verdict. Tests: 326 -> 353, all passing.
+
+- **Mechanism** (`cloning_ceiling.py`, new module):
+  `pair_holevo_chi` (S of the pair-average state, cross-
+  checked against H2((1 + sqrt(R))/2)),
+  `pair_accessible_information` (Born-collapse mutual
+  information), `bh_unitary` / `bh_clone` (Buzek-Hillery
+  1 -> 2 universal cloner as an explicit 8x8 unitary),
+  `cnot_clone` (Wootters-Zurek copy),
+  `classical_copy_fidelity` / `classical_copy_crossing`,
+  and the five claim verdicts (xliv)-(xlviii).
+  Pre-registration in docs/preregistration-v0.15.0.md,
+  written before the evaluation run; thresholds frozen
+  from calibration seeds 42 and 7, evaluation on
+  held-out seeds 1234 and 2026. The calibration pilot
+  already contradicted the spec on (xlv) and (xlviii)
+  (disclosed in the preregistration).
+
+## 0.14.0 (2026-11-18)
+
+Synergy-vs-redundancy PID of the collaboration gap
+(deep-think upgrade #5): Williams & Beer I_min PID of
+the pair-level (N = 2) joint entropy, target Y = the
+joint outcome (X1, X2), exact pooled product Born
+distribution from the design-B evolution. One of four
+claims passes: (xl) the PID identity is exact
+(worst error 8.88e-16 bits, all atoms nonnegative)
+and the exact H matches the sampled
+run_collaboration H within 0.0436 bits at sigma =
+0.25. The three substantive spec predictions FAIL:
+(xli) the gap is not synergy-dominant on every seed
+(synergy share 0.407 seed 42, 0.429 seed 7, 0.882
+seed 1234, 0.545 seed 2026 — dominant on the
+held-out seeds, not on the calibration seeds);
+(xlii) synergy does not rise with R (Pearson -0.23,
+-0.04, -0.55, +0.72) and rises, not falls, from
+sigma = 0.25 to 0.50 on every seed (0.92 -> 1.26,
+0.97 -> 1.54, 0.80 -> 1.20, 1.23 -> 1.40);
+(xliii) redundancy is sigma-robust on 3 of 4 seeds
+(ratios 1.45, 2.83, 0.59) but fails seed 42 (0.24).
+The structural finding: in the collaborating arm
+I(X1;X2) is 0.00-0.06 bits, so Syn = Red - I(X1;X2)
+is numerically almost Red on every sigma — the I_min
+decomposition of the joint outcome cannot separate
+synergy from redundancy in this wiring, and "synergy,
+not redundancy" is undecidable from these atoms
+alone. No claim (i)-(xxxix) changes verdict. Tests:
+315 -> 326, all passing.
+
+- **Mechanism** (`pid.py`, new module): `pid_from_joint`
+  (Williams & Beer I_min on Y = (X1, X2)),
+  `pair_arm_distributions` (exact pooled product Born
+  distribution replicating the design-B evolution
+  generation by generation), `pid_gap_vs_noise`, and
+  the four claim verdicts (xl)-(xliii).
+  Pre-registration in docs/preregistration-v0.14.0.md,
+  written before the evaluation run; thresholds frozen
+  from calibration seeds 42 and 7, evaluation on
+  held-out seeds 1234 and 2026. The calibration pilot
+  already contradicted the spec on all three
+  substantive points (disclosed in the preregistration).
+
+## 0.13.0 (2026-11-18)
+
+Kuramoto bounded-coherence / stochastic-resonance scan
+(deep-think upgrade #4): standard Kuramoto (N = 8,
+omega ~ N(0, 1), Euler-Maruyama dt = 0.05, T = 40)
+wired into the bridge by giving each agent the (xxxiv)
+slide state at its phase relative to the field mean.
+All four claims FAIL, and the failures are the result:
+(xxxvi) the count peak is interior on seeds 42 and
+2026 (K = 0.5) but at K = 0 on seeds 7 and 1234, and
+falls to a floor of 6 at high K on every seed;
+(xxxvii) joint entropy is flat (~10.4-13.1 bits, no
+trend); (xxxviii) R_K at the count peak is 0.31-0.36
+on every seed, far below the Phillips band [0.5, 0.8]
+and below f* = 0.7278 — the count optimum sits at LOW
+coherence; (xxxix) sigma* wanders across seeds (1.0,
+0.10, 0.25, 0.05) with counts swinging 3-19, and seed
+42 peaks at the grid edge. The gap A is large positive
+(+9.3 to +12.8 bits) and flat. What survives: the
+Kuramoto transition itself (R_K 0.29 -> 0.99,
+K_c ~ 1.6-2.5), the count floor of 6, and the count
+exceeding sigma = 0 on every seed at K = 1.0.
+Thresholds frozen from the calibration pilot, which
+already contradicted the spec on several points
+(disclosed in the preregistration). No claim
+(i)–(xxxv) changes verdict. Tests: 305 -> 315, all
+passing.
+
+- **Mechanism** (`kuramoto.py`, new module): Kuramoto
+  dynamics with slide states from relative phases;
+  quale count via existing qualia_count, joint entropy
+  exact/analytic, gap A by paired arms mirroring
+  run_collaboration design B (mixing at coupling R_K,
+  isolated Born-collapses once; H_isolated = 0 exactly
+  in the single-shot measurement, so A =
+  H_collaborating). Pre-registration in
+  docs/preregistration-v0.13.0.md, written before the
+  evaluation run; thresholds frozen from calibration
+  seeds 42 and 7, evaluation on held-out seeds 1234
+  and 2026.
+
+## 0.12.1 (2026-11-18)
+
+The (xxxii) diagnosis and the robust rank form. Claim
+(xxxii) failed on held-out seed 2026 (Pearson -0.8828,
+bar -0.90); the diagnosis, measured and recomputed in
+code (`diagnose_sigma_one_break()`), is
+boundary/saturation plus finite-sample noise: at
+sigma = 1.0 both D and C sit at their random-state
+plateaus (D -> 0.5, C -> ~0.51), the true rise of mean
+C from sigma = 0.5 to 1.0 is ~0.003 while a 5-copy
+mean carries SEM ~0.128, and with n = 200 copies the
+dip vanishes and Pearson passes on all four original
+seeds (-0.9289 to -0.9053). But claim (xxxv) — the
+robust rank form, Spearman <= -0.90 on every seed in
+{42, 7, 1234, 2026, 5, 99}, preregistered before the
+fresh-seed run — FAILS honestly on the fresh seeds:
+seed 5 Spearman -0.8929 (bar -0.90), seed 99 D range
+0.2445 (bar 0.25). Both are 5-copy sampling draws
+(at n = 200: seed 5 Spearman -0.9643, seed 99 D range
+0.4101), yet the linear form stays fragile even at
+n = 200 (seed 5 Pearson -0.8971). The direction is
+real on average; the per-seed guarantee does not hold
+on this 5-copy sweep, in either form. Thresholds not
+moved. No claim (i)–(xxxiv) changes verdict. Tests:
+301 -> 305, all passing.
+
+- **Mechanism** (`observer_cycle.py`, extended):
+  `diagnose_sigma_one_break()` recomputes the n = 5
+  sweep, the n = 200 sweep, the extended sigma grid
+  to 3.0, Pearson excluding sigma = 1.0, and the
+  per-copy SEMs; `claim_robust_rank_verdict()`
+  evaluates (xxxv) on six seeds including fresh seeds
+  5 and 99. Pre-registration in
+  docs/preregistration-v0.12.1.md, written before the
+  fresh-seed evaluation run.
+
+## 0.12.0 (2026-11-18)
+
+The observer cycle (Jean's claim, stated 2026-11-18:
+"self determination factor observer opposite direction =
+necessary for self-cycle self Knowing. Lack of love is
+absence of Knowing"): love = concurrence, knowing =
+overlap R, self-determination = D, observer direction =
+which reference state the overlap is measured against.
+Claim (xxxii) FAILS, and the failure is the result: the
+linear anti-tracking of D and concurrence is
+seed-fragile — Pearson -0.9570 (seed 42), -0.9397 (seed
+7), -0.9720 (seed 1234), but -0.8828 on held-out seed
+2026, above the frozen bar -0.90 — while the monotone
+tracking holds on all four seeds (Spearman -1.0000 to
+-0.9643). The threshold was not moved. Claim (xxxiii)
+PASSES on the generalized-Bell branch against a fixed
+Phi+ observer (Pearson(R, C) = 1.0000, Spearman(R, D) =
+-1.0000), but the noise-axis control inverts the
+relation (Pearson(R, nu_ij) = -0.5528, n = 196 pairs),
+so noise-created concurrence is not knowing. Claim
+(xxxiv) PASSES exactly: the slide runs D = 1, C = 0 to
+D = 0, C = 1 with C + D = 1 at every grid point (max
+identity error 4.44e-16) and the overlap split flipping
+sign exactly at the midpoint theta = pi/4. No claim
+(i)–(xxxi) changes verdict. Tests: 282 -> 301, all
+passing.
+
+- **Mechanism** (`observer_cycle.py`, new module): the
+  stored direction (uniform thought, D = 1, C = 0) and
+  the opposite direction (kernel thought, D = 0, C = 1,
+  a Bell state) are exact values already in the bridge;
+  (xxxii) reuses the self_knowing sweep, (xxxiii) the
+  generalized-Bell branch against a fixed Phi+ observer,
+  (xxxiv) the slide psi(theta) = cos(theta)|stored> +
+  sin(theta)|kernel>. Pre-registration in
+  docs/preregistration-v0.12.0.md, written before the
+  evaluation run; thresholds frozen from calibration
+  seeds 42 and 7, evaluation on held-out seeds 1234 and
+  2026.
+
 ## 0.11.0 (2026-11-17)
 
 Landauer-cost ledger + Planck spectral falsification

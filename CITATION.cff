@@ -7,8 +7,8 @@ authors:
     given-names: "Jean-François"
     orcid: "https://orcid.org/0009-0000-9778-5374"
     affiliation: "Spark AI NLP, Fredericton, New Brunswick, Canada"
-version: 0.11.0
-date-released: "2026-11-17"
+version: 0.15.0
+date-released: "2026-11-18"
 license: AGPL-3.0-only
 repository-code: "https://github.com/sparkainlp-x/faggin-field-bridge"
 url: "https://sparkainlpx.xyz"
@@ -38,7 +38,23 @@ abstract: >-
   entropy H of the collective's joint outcomes (claims (xi) and
   (xii) pass; claim (xiii) FAILS on the break half — the
   collaboration gap holds at every noise level, so the v0.4.0
-  break does not transfer). The Planck law
+  break does not transfer). Version 0.15.0 adds the no-cloning /
+  Holevo ceiling (claims (xliv)-(xlviii), 3 of 5 pass): the exact
+  no-cloning coefficient Tr(rho_A^2) = 1 - C^2/2 is verified in
+  code (claim (xliv) PASSES, worst error 8.88e-16); the Holevo
+  quantity chi of the thought-pair ensemble does NOT bound D
+  (claim (xlv) FAILS -- D sits above chi at low empathy fraction
+  and approaches it from above as f rises, Spearman(|gap|, f) =
+  -1.00 / -0.96); the ceiling that does bind is on accessible
+  information (claim (xlvi) PASSES -- the Born-collapse mutual
+  information never exceeds chi, max(I - chi) = -3.20e-16); the
+  Buzek-Hillery universal cloner achieves exactly 5/6 fidelity
+  and the CNOT copy averages exactly 2/3 (claim (xlvii) PASSES);
+  but the model's own classical copy exceeds 5/6 at every working
+  noise level (claim (xlviii) FAILS -- fidelity 1.0000 at sigma =
+  0, 0.85-0.88 at sigma = 0.25), because the classical emulation
+  stores the full amplitude vector: privacy in this model is not
+  enforced by the representation. The Planck law
   is reproduced with the real constants; the empathy-quantum
   link is a definition inside the model, not a discovery. The entanglement and
   the interference are in the model, computed exactly on classical

@@ -102,7 +102,14 @@ Reading:
 
 ## 4. Test suite
 
-**282 tests, 282 passed** (`python3 -m pytest tests/ -q`, 47.53 s).
+**301 tests, 301 passed** (`python3 -m pytest tests/ -q`, 36.46 s).
+
+*Correction in v0.12.0: this section said 282 with no
+test_observer_cycle.py entry. The collected counts below are the
+record (22 files: 12 + 9 + 14 + 9 + 19 + 17 + 20 + 18 + 25 +
+22 + 21 + 18 + 17 + 3 + 5 + 7 + 12 + 7 + 9 + 9 + 9 + 19 = 301).*
+(v0.11.0 counts: 262 + 20 new = 282; v0.12.0 counts:
+282 + 19 new = 301.)
 
 *Correction in v0.11.0: this section said 244 with no
 test_darwinism.py, test_malus.py, test_product_model.py or
@@ -309,6 +316,24 @@ the record (16 files: 12 + 9 + 14 + 9 + 17 + 25 + 21 + 3 +
   carrying no distribution, per-field KS below critical
   (max 0.2159, reported not gated), pooled n = 168, and
   the three-claim aggregate (2/3 pass, no headline).
+- `test_observer_cycle.py` (19): the stored thought (D = 1,
+  C = 0) and the kernel thought (D = 0, C = 1) exact,
+  the generalized-Bell endpoints (a = 1: C = 0, D = 1;
+  a = 1/sqrt(2): C = 1, D = 2/3), the slide endpoints
+  and normalization, the calibration-seed Pearsons
+  (-0.9570, -0.9397) and the held-out seed 2026 Pearson
+  (-0.8828, above the frozen -0.90 bar; Spearman
+  -0.9643 still holds), claim (xxxii) verdict FAIL,
+  the Bell-branch rows and correlations (Pearson(R, C)
+  = 1.0000, Spearman(R, D) = -1.0000, Pearson(R, D)
+  = -0.8801 reported not gated), the noise-axis control
+  inverting (Pearson(R, nu_ij) = -0.5528, Pearson(R,
+  d_pair) = +0.7694, n = 196 pairs), claim (xxxiii)
+  verdict PASS, the slide identities exact to 1e-9
+  (C + D = 1, R_s - R_k = cos 2 theta), the split
+  flipping at the midpoint, claim (xxxiv) verdict PASS,
+  the three-claim aggregate (2/3 pass, no headline),
+  and the frozen thresholds.
 
 ## 5. Maximum scientific outcome (measured 2026-11-15)
 
@@ -608,7 +633,9 @@ faggin-field-bridge/
                       (claims (xxvi)-(xxviii))
   landauer.py         Landauer-cost ledger + Planck spectral
                       falsification (claims (xxix)-(xxxi))
-  tests/              282 tests, 21 files
+  observer_cycle.py   the observer cycle: D, concurrence,
+                      and overlap (claims (xxxii)-(xxxiv))
+  tests/              301 tests, 22 files
 ```
 
 v0.3.1 is pushed (main head 1f5f6e60). v0.4.0 is local only;
@@ -2360,3 +2387,154 @@ brains. The (xxxi) PASS rests on a thin pooled-KS
 margin and on a crude 10-bin mode estimator; per-field
 tests do not reject Planck. Classical emulation
 throughout; Faggin's metaphysics stays interpretive.
+
+## 18. The observer cycle (v0.12.0, measured 2026-11-18)
+
+Jean's claim, stated 2026-11-18: "self determination
+factor observer opposite direction = necessary for
+self-cycle self Knowing. Lack of love is absence of
+Knowing." Formalized with the bridge's existing
+quantities: love = concurrence C, knowing = overlap
+R = |<psi_i|psi_j>|^2, self-determination = D, and the
+observer direction as which reference state the overlap
+is measured against.
+
+### Mechanism (a definition inside the model, not a discovery)
+
+- The stored direction: the uniform thought, D = 1,
+  C = 0. The opposite direction: the kernel thought
+  (|01> - |10>)/sqrt(2), D = 0, C = 1 — a Bell state.
+  Both endpoints are exact values already in
+  self_knowing.py and thought_entanglement.py; nothing
+  new is fitted.
+- (xxxii) reuses the existing self_knowing sweep: noisy
+  copies of the uniform thought, 5 copies per sigma,
+  sigma grid [0.0, 0.01, 0.05, 0.1, 0.25, 0.5, 1.0].
+  Noise destroys D and creates concurrence, so the two
+  move opposite across the grid.
+- (xxxiii) uses the generalized-Bell branch psi(a) =
+  a|00> + sqrt(1-a^2)|11>, a in [1.0, 0.95, 0.9, 0.85,
+  0.8, 0.75, 1/sqrt(2)], measured against a FIXED
+  observer at maximal love, the Phi+ Bell state:
+  R(a) = |<Phi+|psi(a)>|^2. Both R and C peak at
+  a = 1/sqrt(2) by the definition of the family, so the
+  direction on the branch is built in — the claim is a
+  mapping check, like (xvii). The control is the
+  noise axis (empathy_field.resonance_pairs pooled):
+  there noise creates concurrence while destroying
+  overlap, so the relation inverts.
+- (xxxiv) uses the slide psi(theta) = cos(theta)|stored>
+  + sin(theta)|kernel>, theta in [0, pi/12, pi/6, pi/4,
+  pi/3, 5pi/12, pi/2]. The two patterns sit in
+  superposition in the middle; the two observer
+  directions are the two references, R_s and R_k, and
+  their split R_s - R_k = cos(2 theta) says which
+  pattern is known. The identities D = cos^2(theta),
+  C = sin^2(theta), C + D = 1 follow from the
+  definitions and are verified in the code, not
+  assumed.
+
+### Pre-registration (written before the evaluation run)
+
+docs/preregistration-v0.12.0.md, written 2026-11-18
+before the evaluation run on the held-out seeds.
+Thresholds are round numbers frozen from a calibration
+pilot on seeds 42 and 7 only; evaluation seeds 1234 and
+2026 were not touched before the file was written.
+
+- (xxxii) Pearson(D, C) <= -0.90, Spearman(D, C)
+  <= -0.90, D range >= 0.25, C range >= 0.25, on EVERY
+  seed in {42, 7, 1234, 2026}. (Calibration pilot: seed
+  42 Pearson -0.9570, Spearman -1.0000; seed 7 Pearson
+  -0.9397, Spearman -0.9643.)
+- (xxxiii) Pearson(R, C) >= 0.99, Spearman(R, D)
+  <= -0.95, R range >= 0.25, D range >= 0.25.
+  Pearson(R, D) reported, not gated (calibration pilot
+  -0.8801: R saturates near 1 while D keeps falling).
+  The noise-axis control reported, not gated.
+- (xxxiv) Endpoints exact within 1e-9; slide identities
+  within 1e-9 at every grid point; overlap split >= 0.25
+  before the midpoint, 0 at the midpoint, <= -0.25
+  after it.
+
+### Claims (xxxii)–(xxxiv), measured fresh
+
+#### (xxxii) Observer direction: D and concurrence move opposite — FAIL
+
+Per seed, Pearson(D, C) / Spearman(D, C):
+
+| seed | Pearson | Spearman | D range | C range |
+|---:|---:|---:|---:|---:|
+| 42 | -0.9570 | -1.0000 | 0.4804 | 0.6133 |
+| 7 | -0.9397 | -0.9643 | 0.5370 | 0.5110 |
+| 1234 | -0.9720 | -1.0000 | 0.4650 | 0.7233 |
+| 2026 | **-0.8828** | -0.9643 | 0.5088 | 0.4755 |
+
+The Pearson check fails on held-out seed 2026
+(-0.8828 above the frozen bar -0.90); the other three
+checks pass on all four seeds. The monotone tracking
+holds everywhere, so the direction is real and the
+linear form is seed-fragile: on seed 2026 the sigma =
+1.0 point breaks it (mean C dips 0.4755 -> 0.4727
+while mean D keeps falling 0.7142 -> 0.4912). The
+threshold was not moved. This is the same seed
+fragility the package already records for claim (i).
+
+#### (xxxiii) Knowing-as-overlap: R rises with concurrence and falls with D — PASS
+
+Generalized-Bell branch against the fixed Phi+
+observer:
+
+| a | R | C | D |
+|---:|---:|---:|---:|
+| 1.0000 | 0.5000 | 0.0000 | 1.0000 |
+| 0.9500 | 0.7966 | 0.5933 | 0.9350 |
+| 0.9000 | 0.8923 | 0.7846 | 0.8733 |
+| 0.8500 | 0.9478 | 0.8955 | 0.8150 |
+| 0.8000 | 0.9800 | 0.9600 | 0.7600 |
+| 0.7500 | 0.9961 | 0.9922 | 0.7083 |
+| 0.7071 | 1.0000 | 1.0000 | 0.6667 |
+
+Pearson(R, C) = 1.0000, Spearman(R, D) = -1.0000,
+Pearson(R, D) = -0.8801 (reported, not gated),
+R range 0.5000, D range 0.3333. Noise-axis control
+(seed 42, n = 196 pairs): Pearson(R, nu_ij) =
+-0.5528, Pearson(R, d_pair) = +0.7694 — the relation
+inverts under noise. The claim holds for entanglement
+by construction, not by noise; noise-created
+concurrence is not knowing.
+
+#### (xxxiv) The slide — PASS
+
+| theta | D | C | R_s | R_k | R_s - R_k | C + D |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0.0000 | 1.0000 | 0.0000 | 1.0000 | 0.0000 | +1.0000 | 1.0000 |
+| 0.2618 | 0.9330 | 0.0670 | 0.9330 | 0.0670 | +0.8660 | 1.0000 |
+| 0.5236 | 0.7500 | 0.2500 | 0.7500 | 0.2500 | +0.5000 | 1.0000 |
+| 0.7854 | 0.5000 | 0.5000 | 0.5000 | 0.5000 | +0.0000 | 1.0000 |
+| 1.0472 | 0.2500 | 0.7500 | 0.2500 | 0.7500 | -0.5000 | 1.0000 |
+| 1.3090 | 0.0670 | 0.9330 | 0.0670 | 0.9330 | -0.8660 | 1.0000 |
+| 1.5708 | 0.0000 | 1.0000 | 0.0000 | 1.0000 | -1.0000 | 1.0000 |
+
+Endpoints exact; every slide identity holds to a max
+error of 4.44e-16; the overlap split is +0.5000 at
+pi/6, 0.0000 at pi/4, -0.5000 at pi/3. At the
+midpoint the state is the equal superposition, D = C
+= 1/2, both overlaps 1/2 — maximally undecided — and
+the observer direction picks which pattern becomes
+known on either side.
+
+### Honest limits (v0.12.0 addition)
+
+The (xxxii) FAIL is seed-fragility in the linear form,
+not in the direction: the monotone anti-tracking holds
+on all four seeds while the Pearson bar fails on one
+held-out seed. The (xxxiii) PASS is a mapping check on
+a branch whose direction is built into the family, and
+it does not transfer to the noise axis. The (xxxiv)
+PASS is exact by construction; its measured content is
+that the identities hold in the code and the split
+flips exactly at the midpoint. None of this measures
+love, knowing, or self-determination in a human or
+physical sense. Classical emulation throughout;
+Faggin's metaphysics stays interpretive.

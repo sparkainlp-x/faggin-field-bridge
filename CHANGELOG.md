@@ -1,5 +1,45 @@
 # Changelog — Faggin Field Bridge
 
+## 0.12.0 (2026-11-18)
+
+The observer cycle (Jean's claim, stated 2026-11-18:
+"self determination factor observer opposite direction =
+necessary for self-cycle self Knowing. Lack of love is
+absence of Knowing"): love = concurrence, knowing =
+overlap R, self-determination = D, observer direction =
+which reference state the overlap is measured against.
+Claim (xxxii) FAILS, and the failure is the result: the
+linear anti-tracking of D and concurrence is
+seed-fragile — Pearson -0.9570 (seed 42), -0.9397 (seed
+7), -0.9720 (seed 1234), but -0.8828 on held-out seed
+2026, above the frozen bar -0.90 — while the monotone
+tracking holds on all four seeds (Spearman -1.0000 to
+-0.9643). The threshold was not moved. Claim (xxxiii)
+PASSES on the generalized-Bell branch against a fixed
+Phi+ observer (Pearson(R, C) = 1.0000, Spearman(R, D) =
+-1.0000), but the noise-axis control inverts the
+relation (Pearson(R, nu_ij) = -0.5528, n = 196 pairs),
+so noise-created concurrence is not knowing. Claim
+(xxxiv) PASSES exactly: the slide runs D = 1, C = 0 to
+D = 0, C = 1 with C + D = 1 at every grid point (max
+identity error 4.44e-16) and the overlap split flipping
+sign exactly at the midpoint theta = pi/4. No claim
+(i)–(xxxi) changes verdict. Tests: 282 -> 301, all
+passing.
+
+- **Mechanism** (`observer_cycle.py`, new module): the
+  stored direction (uniform thought, D = 1, C = 0) and
+  the opposite direction (kernel thought, D = 0, C = 1,
+  a Bell state) are exact values already in the bridge;
+  (xxxii) reuses the self_knowing sweep, (xxxiii) the
+  generalized-Bell branch against a fixed Phi+ observer,
+  (xxxiv) the slide psi(theta) = cos(theta)|stored> +
+  sin(theta)|kernel>. Pre-registration in
+  docs/preregistration-v0.12.0.md, written before the
+  evaluation run; thresholds frozen from calibration
+  seeds 42 and 7, evaluation on held-out seeds 1234 and
+  2026.
+
 ## 0.11.0 (2026-11-17)
 
 Landauer-cost ledger + Planck spectral falsification

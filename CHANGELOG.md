@@ -1,5 +1,57 @@
 # Changelog — Faggin Field Bridge
 
+## 0.24.0 (2026-11-18)
+
+Seed-1234 design decisions: re-gate the two-channel empathy
+claims (l)/(li)/(liii) on the baseline pair determinant-sign
+distribution, and replace (lx)'s 0.10 margin with a pooled
+rule (follow-up to the v0.21.0 diagnosis and the v0.22.0
+per-generation result). The gate is frozen in
+docs/preregistration-v0.24.0.md before the evaluation run:
+a seed is gated in iff its baseline resonance field (N = 8,
+sigma = 0.25) has mean baseline pair determinant >= -0.05
+(the tightest round number below the calibration minimum
+-0.0431, seed 42). On the 12-seed survey it admits 8 seeds
+and excludes 1234, 2, 777, 2024. Five of six claims pass.
+(lxxxii)-(lxxxiv) the ORIGINAL (l)/(li)/(liii) sub-checks,
+unchanged, on the gated file seeds {42, 7, 2026} — all PASS
+(1234 is excluded by the gate, not by hand). (lxxxv) the
+mechanism-governed concurrence halves on the whole 12-seed
+survey — f(c, 0) strictly rises and f(0.5, d) is
+non-increasing on every gated survey seed, and no det >= 0
+pair ever falls under concern at dose 0.25 on any of the 12
+seeds — PASSES. (lxxxvii) the pooled Cogitate rule: over all
+84 runs (12 seeds x 7 sigma), r(gap, mean_R) - r(gap, mean_D)
+= +0.4022 (bar 0.10) and mean_R is the top-ranked pooled
+predictor (+0.6658, next: post +0.5373) — PASSES; the old
+(lx) verdict (FAIL, honest, per-seed margin) stands
+unchanged. (lxxxvi) the FULL re-gated claims on all gated
+survey seeds — FAILS honestly: (l) passes on 4/8, (li) on
+4/8, (liii) on 5/8 gated survey seeds. The gate rescues the
+concurrence halves, not the quale-count halves: count(c =
+0.5) is 24 / 25 / 26 / 27, not the 28 ceiling, on seeds 1 /
+3 / 99 / 31337, and the swap fails on seed 3 by 0.0031
+(0.2969 vs 0.30). Disclosed: the distress half of the sign
+rule is not exact (negative-det pairs fall under distress
+on seeds 1, 2, 777); a fraction-negative gate was considered
+and rejected (it admits seeds 777 and 2024, whose f dips
+under concern); a mean_D-shape gate for (lx) was considered
+and rejected (hump-shaped seeds 3, 99, 123 pass the 0.10
+margin while falling seeds 777, 2024 fail it); the pooled
+rule was frozen from the same survey it is evaluated on
+(calibration, not a held-out test) — the fresh-seed
+diagnostic (seeds 5, 11, 555, 4242, reported not gated)
+holds at the pooled level (+0.5270, mean_R top-ranked) while
+its per-seed margins are wilder than the survey's (+1.3257 /
+-0.1963 / +0.5211 / -0.3788); and no per-generation
+restatement applies to the two-channel claims (no pooling
+across generations there), while the XOR (lxv) failure was
+already corrected per-generation in v0.22.0 ((lxxvii) PASS,
+mean per-generation gap +1.4356 on seed 1234 vs pooled
+-0.2591). No claim (i)-(lxxxi) changes verdict in this
+build; the (l)/(li)/(liii) and (lx) originals stay FAIL as
+stated.
+
 ## 0.23.0 (2026-11-18)
 
 Privacy-enforcing copier: is the 5/6 cloning bound

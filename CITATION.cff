@@ -7,7 +7,7 @@ authors:
     given-names: "Jean-François"
     orcid: "https://orcid.org/0009-0000-9778-5374"
     affiliation: "Spark AI NLP, Fredericton, New Brunswick, Canada"
-version: 0.23.0
+version: 0.24.0
 date-released: "2026-11-18"
 license: AGPL-3.0-only
 repository-code: "https://github.com/sparkainlp-x/faggin-field-bridge"
@@ -154,7 +154,32 @@ abstract: >-
   (16-shot fidelity above 5/6 at sigma = 0.25 and
   below it at sigma = 1.00 on every seed), because
   sign-blindness caps the leak once noise creates
-  negative components. The Planck law
+  negative components. Version 0.24.0 carries out the
+  seed-1234 design decisions (claims (lxxxii)-(lxxxvii),
+  5 of 6 pass): the two-channel claims (l)/(li)/(liii)
+  are re-gated on the baseline pair determinant-sign
+  distribution -- a seed is gated in iff its baseline
+  mean pair determinant is >= -0.05 (the tightest round
+  number below the calibration minimum -0.0431, seed
+  42) -- and with their original sub-checks unchanged
+  they pass on the gated file seeds {42, 7, 2026}
+  (1234 excluded by the gate, not by hand); the
+  mechanism-governed concurrence halves pass on the
+  whole 12-seed survey (f(c, 0) strictly rises and
+  f(0.5, d) is non-increasing on every gated survey
+  seed, and no det >= 0 pair ever falls under concern
+  at dose 0.25 on any of the 12 seeds); and the (lx)
+  question is re-asked at the pooled level -- over all
+  84 runs the pooled margin r(gap, mean_R) -
+  r(gap, mean_D) is +0.4022 (bar 0.10) with mean_R the
+  top-ranked pooled predictor (+0.6658) -- while the
+  old (lx) verdict (FAIL, honest, per-seed margin)
+  stands unchanged. But the FULL re-gated claims fail
+  on the wider survey (claim (lxxxvi) FAILS: (l) 4/8,
+  (li) 4/8, (liii) 5/8 gated survey seeds) -- the gate
+  rescues the concurrence halves, not the quale-count
+  halves (count(c = 0.5) is 24 / 25 / 26 / 27, not the
+  28 ceiling, on seeds 1 / 3 / 99 / 31337). The Planck law
   is reproduced with the real constants; the empathy-quantum
   link is a definition inside the model, not a discovery. The entanglement and
   the interference are in the model, computed exactly on classical

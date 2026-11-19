@@ -4635,3 +4635,238 @@ it measures a synthetic classical emulation, under a
 preregistration written before the held-out seeds were touched.
 Classical emulation throughout; Faggin's metaphysics stays
 interpretive. No scalar Φ is computed anywhere.
+
+## 30. Seed-1234 design decisions: re-gate the two-channel claims on the determinant sign, replace (lx)'s margin with a pooled rule (v0.24.0, measured 2026-11-18)
+
+The v0.21.0 diagnosis left two design decisions open, and
+this build takes both. The gate and the pooled rule were
+frozen in docs/preregistration-v0.24.0.md before the
+evaluation run, from the calibration pilot (seeds 42/7 for
+the gate) and the 12-seed survey (for the pooled rule,
+disclosed in full there). The old verdicts stay on the
+record: (l), (li), (liii) FAIL as originally stated (every
+file seed), and (lx) FAILS as originally stated (frozen
+0.10 margin). The new claims (lxxxii)–(lxxxvii) are NEW
+claims, not rewrites.
+
+### The gate
+
+A seed is gated in iff its baseline resonance field (N = 8,
+σ = 0.25) has mean baseline pair determinant ≥ −0.05. The
+calibration det means are −0.0431 (seed 42) and +0.1050
+(seed 7); any gate must admit both calibration seeds, and
+−0.05 is the tightest round number below the calibration
+minimum. On the 12-seed survey it admits 8 seeds (42, 7,
+2026, 1, 3, 99, 123, 31337) and excludes 4 (1234, 2, 777,
+2024). Two alternatives were considered and rejected before
+the run: a fraction-negative gate (≤ 0.75) admits 11/12
+seeds including 777 and 2024, whose f dips under concern —
+the count of negative pairs does not carry the mechanism,
+the mean does; and a gate on the baseline level f0, refuted
+already in the diagnosis (no landmark sits near f = 0.3251).
+
+Baseline determinant stats, N = 8, σ = 0.25:
+
+| seed | det mean | det < 0 | f0 | gated in |
+|---|---|---|---|---|
+| 42 | −0.0431 | 18/28 | 0.1803 | yes |
+| 7 | +0.1050 | 5/28 | 0.2469 | yes |
+| 1234 | −0.1556 | 26/28 | 0.3251 | NO |
+| 2026 | +0.0101 | 12/28 | 0.1772 | yes |
+| 1 | −0.0494 | 18/28 | 0.2168 | yes |
+| 2 | −0.0877 | 19/28 | 0.2332 | NO |
+| 3 | −0.0123 | 14/28 | 0.2732 | yes |
+| 99 | −0.0011 | 15/28 | 0.2742 | yes |
+| 123 | −0.0315 | 19/28 | 0.2213 | yes |
+| 777 | −0.0717 | 18/28 | 0.2594 | NO |
+| 2024 | −0.0528 | 21/28 | 0.2462 | NO |
+| 31337 | −0.0216 | 17/28 | 0.2720 | yes |
+
+### (lxxxii) Re-gated (l): concern raises resonance and empathy fraction, on gated seeds — PASS
+
+The original (l) sub-checks (mean R strictly rising in c,
+mean f strictly rising in c, quale count at c = 0.5 is the
+28 ceiling), unchanged, on the gated file seeds {42, 7,
+2026}. All three pass: f(c, 0) rises 0.1803 → 0.2253 →
+0.4207 → 0.6680 (42), 0.2469 → 0.4500 → 0.6067 → 0.7784
+(7), 0.1772 → 0.3123 → 0.4959 → 0.7132 (2026), with the
+count at c = 0.5 at the 28 ceiling on all three. Seed 1234
+is excluded by the gate, not by hand.
+
+### (lxxxiii) Re-gated (li): distress lowers helping while raising resonance, on gated seeds — PASS
+
+The original (li) sub-checks (at fixed concern c = 0.5:
+mean R strictly rising in d, quale count non-increasing in
+d, count(d = 1) ≤ 15, R(d = 1) − R(d = 0) ≥ 0.04),
+unchanged, on the gated file seeds {42, 7, 2026}. All three
+pass: distress counts fall 28 → 25 → 19 → 10 (42), 28 → 28
+→ 24 → 14 (7), 28 → 25 → 21 → 9 (2026).
+
+### (lxxxiv) Re-gated (liii): channel separation, on gated seeds — PASS
+
+The original (liii) sub-checks ((a) f(c = 2, d = 0) ≥ f* =
+0.7278; (b) count(c = 0.5, d = 1) ≤ 15; (c) swap
+|f(1, 0) − f(0, 1)| ≥ 0.30), unchanged, on the gated file
+seeds {42, 7, 2026}. All three pass: f(c = 2) = 0.8578 /
+0.9051 / 0.8769, counts at (c = 0.5, d = 1) = 10 / 14 / 9,
+swaps 0.4321 / 0.4283 / 0.3140 — the 2026 swap is the
+thinnest pass (0.014 above the bar).
+
+### (lxxxv) Determinant-sign-conditioned concurrence, on the 12-seed survey — PASS
+
+The mechanism-governed halves of (l) and (li), stated
+against f only (no count sub-checks), on the whole 12-seed
+survey: (a) f(c, 0) strictly rises with c on every gated
+survey seed (8/8); (b) f(0.5, d) is non-increasing in d on
+every gated survey seed (8/8); (c) the exact sign rule: no
+pair with det ≥ 0 ever falls under concern at dose 0.25, on
+ANY of the 12 survey seeds (0 pairs everywhere). The gate
+separates the f failures exactly on the survey: every
+excluded seed except seed 2 dips under concern (1234:
+0.3251 → 0.1505; 777: 0.2594 → 0.2575; 2024: 0.2462 →
+0.2174 at c = 0.25) and re-rises under distress at fixed
+concern (1234: 0.1154 → 0.2082; 777: 0.1476 → 0.1508;
+2024: 0.1354 → 0.1425 at d = 1), while seed 2 passes both
+f halves but is excluded anyway — the gate is a sufficient
+condition for the mechanism regime, not a necessary one,
+and no claim here asserts necessity. Mean Δf under concern
+for negative-det pairs is negative on 11/12 seeds (−0.21
+to −0.02; exception seed 7: +0.1114 on only 5 negative-det
+pairs) and positive for positive-det pairs on all 12
+(+0.22 to +0.28). The distress half of the sign rule is
+NOT claimed: negative-det pairs fall under distress on
+seeds 1 (0.111, 2/18 pairs), 2 (0.158, 3/19), and 777
+(0.278, 5/18) — reported, not gated.
+
+### (lxxxvi) Full re-gated claims on all gated survey seeds — FAIL
+
+Claims (l), (li), (liii) with ALL original sub-checks
+(including the quale-count sub-checks), on every gated
+survey seed (8 seeds). (l) passes on 4/8 (42, 7, 2026,
+123), (li) on 4/8 (the same four), (liii) on 5/8 (42, 7,
+2026, 1, 123). The gate rescues the concurrence halves,
+not the count halves: count(c = 0.5) is 24 / 25 / 26 / 27,
+not the 28 ceiling, on seeds 1 / 3 / 99 / 31337; the
+distress count is non-increasing fails on seed 1 (24 → 25
+at d = 0.25) and count(d = 1) is 17 / 16 / 16, above the 15
+bar, on seeds 3 / 99 / 31337; count(c = 0.5, d = 1) is 17 /
+16 / 16 on the same three seeds. The count is a
+thresholded quantity (per pair, R ≥ 0.5 AND ν ≥ 0.10) that
+depends on the R distribution, not just on the det sign —
+so the determinant gate governs the concurrence response,
+not the count. The only f-based sub-check to fail on a
+gated survey seed is the swap on seed 3: 0.2969 vs the 0.30
+bar, a miss of 0.0031. This FAIL is the finding, claimed as
+(lxxxvi), not hidden: re-gating on the determinant sign is
+necessary but not sufficient for the two-channel claims in
+general — it repairs them on the file seeds and fails them
+on half the wider survey, on the count.
+
+### (lxxxvii) Pooled Cogitate rule replacing (lx)'s margin — PASS
+
+The (lx) question — does mean sensitivity beat mean
+individual D as a predictor of the gap — asked at the
+POOLED level instead of per-seed. Pooling all 84 runs (12
+survey seeds × 7 σ values):
+
+| predictor | pooled r(gap, ·) |
+|---|---|
+| mean_R | +0.6658 |
+| post_R_sustained | +0.5373 |
+| neg_var_D | +0.3791 |
+| mean_D | +0.2636 |
+| max_D | −0.5253 |
+| broadcast | −0.5916 |
+
+Pooled margin r(gap, mean_R) − r(gap, mean_D) = +0.4022
+against the frozen 0.10 bar — the same bar (lx) used, now
+applied to the pooled margin — and mean_R is the
+top-ranked of the six pooled predictors (next: post,
++0.5373). Both legs pass. Per-seed, mean_R ranks 1st on 4
+seeds (2, 3, 99, 31337), 2nd on 6 (42, 7, 2026, 123, 777,
+2024), 3rd on 1234, 4th on seed 1 — so the pooled top-rank
+is not a per-seed claim in disguise; it is a different
+statistical level, the same level as the pooled regression
+in (lxiii), which passed (R² 0.6505 vs 0.3298 over 28
+runs). Pooling averages out the per-seed trajectory-shape
+noise that makes r(mean_D) swing from −0.11 to +0.90.
+A shape gate was considered and rejected before the run:
+hump-shaped mean_D does not separate the failures — seeds
+3, 99, 123 are hump-shaped yet pass the 0.10 margin
+(+0.61, +0.35, +0.85) because their r(mean_D) is low or
+negative, while falling seeds 777 and 2024 fail it
+(+0.0025, +0.0375) because their r(mean_D) ≈ r(mean_R).
+The old (lx) verdict (FAIL, honest, per-seed 0.10 margin)
+stands unchanged, and no per-seed margin bar is claimed
+here — a per-seed rule with any bar ≥ 0.10 still fails on
+half the survey (6/12 clear 0.10; mean margin +0.2312,
+median +0.1084, 10/12 positive).
+
+Fresh-seed diagnostic (reported, not gated): on four seeds
+never used anywhere in the tree before this build (5, 11,
+555, 4242; 28 runs), the pooled margin is +0.5270 and
+mean_R is again the top-ranked pooled predictor (+0.5066,
+next: post +0.4526) — the pooled rule holds on fresh seeds
+too. But the per-seed margins there are wilder than on the
+survey (+1.3257 / −0.1963 / +0.5211 / −0.3788): seed 11 has
+r(gap, mean_D) = 0.9957, nearly perfect, and seed 4242 has
+the worst margin yet measured (−0.3788, r(mean_D) = 0.6513
+vs r(mean_R) = 0.2725). Only 2/4 fresh seeds have a
+positive per-seed margin. The per-seed framing is not
+rescued — it is more fragile on fresh seeds than on the
+survey — and that is a limit on (lxxxvii), reported here.
+
+### Per-generation note
+
+No per-generation restatement applies to the two-channel
+claims (l)–(liii): each is measured on a single N = 8 field
+(28 pairs) at one σ, with no generation index anywhere, so
+there is no pooling across generations in them to undo.
+The one pooled claim in the seed-1234 diagnosis, the XOR
+(lxv) failure, was already corrected at the per-generation
+level in v0.22.0: claim (lxxvii) PASSES — the mean
+per-generation XOR gap on seed 1234 is +1.4356 bits
+(synergy-majority, share 0.584) against the pooled gap of
+−0.2591, because per-generation the isolated arm carries
+nothing at all (I_isol = 0 exactly, every generation) while
+pooling raises its information to 1.7610 bits. The v0.20.0
+seed-1234 XOR failure was itself a pooling artifact, and
+that result stands; no separate XOR re-gating is attempted
+in this build.
+
+### Honest limits (v0.24.0 addition)
+
+**5/6 claims pass.** The headline is a split verdict: the
+determinant gate repairs the two-channel claims on the
+file seeds and the pooled rule repairs the Cogitate
+comparison in aggregate — but the gate does not generalize
+to the count halves on the wider survey, and the pooled
+rule does not generalize to per-seed prediction. Four
+disclosures qualify the picture: (1) the gate excludes
+seed 1234 by a stated rule, not by hand, and the rule was
+frozen from the calibration seeds only — but the survey
+shows the gate is necessary, not sufficient: seed 2 passes
+both f halves yet is excluded, and four gated survey seeds
+fail the count halves; (2) the pooled Cogitate rule
+(lxxxvii) was frozen from the same 12-seed survey it is
+evaluated on — a calibration result, not a held-out test —
+and the only held-out check, the fresh-seed diagnostic,
+confirms the pooled legs while showing per-seed margins
+more dispersed than the survey's (two of four negative,
+worst −0.3788); (3) the distress half of the sign rule is
+not exact on the survey (seeds 1, 2, 777), so the
+mechanism as stated covers the concern channel exactly and
+the distress channel only on average; (4) the (lxxxiv)
+swap pass on seed 2026 is thin (0.3140 vs the 0.30 bar),
+and the (lxxxvi) swap failure on seed 3 is thinner still
+in the other direction (0.2969) — the swap bar sits inside
+the seed-to-seed scatter. None of this measures
+consciousness, empathy in a human, or any theory of
+consciousness; it measures a synthetic classical emulation,
+under a preregistration written before the new claims were
+evaluated — with the disclosed exception that the pooled
+rule (lxxxvii) was frozen from the same survey it is
+evaluated on, so for that claim the preregistration is a
+calibration record, not a held-out test. Classical emulation
+throughout; Faggin's metaphysics stays interpretive. No
+scalar Φ is computed anywhere.

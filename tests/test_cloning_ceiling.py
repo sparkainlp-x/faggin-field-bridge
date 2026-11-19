@@ -52,8 +52,18 @@ def test_purity_sweep_worst_errors():
     sweep = cc.purity_sweep()
     assert sweep["worst_identity_error"] == pytest.approx(
         8.88e-16, abs=1e-15)
+    # Wootters-vs-pure worst is a max over 200+ states of an
+    # eigenvalue difference, so it is platform-sensitive at
+    # the ~15% level (calibration pilot 1.94e-08; measured
+    # 1.85e-08 on CPython 3.12 / NumPy 2.5.5 and 2.12e-08
+    # on CPython 3.11 / NumPy 2.5.5, different argmax Haar
+    # states, same order of magnitude). The pin below is a
+    # sanity band around the pilot value, NOT a claim
+    # threshold: the frozen (xliv) bar is WOOTTERS_TOL =
+    # 1e-7 and is unchanged — both platforms pass it with
+    # ~5x margin.
     assert sweep["worst_wootters_vs_pure"] == pytest.approx(
-        1.94e-08, abs=1e-09)
+        1.94e-08, abs=5e-09)
 
 
 def test_claim_xliv_verdict_pass():

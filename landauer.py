@@ -274,8 +274,8 @@ def _planck_standardized():
     with np.errstate(divide="ignore", invalid="ignore"):
         dens = np.where(xs == 0.0, 0.0,
                         xs ** 3 / np.expm1(xs))
-    dens = dens / np.trapz(dens, xs)
-    mean_x = float(np.trapz(xs * dens, xs))
+    dens = dens / np.trapezoid(dens, xs)
+    mean_x = float(np.trapezoid(xs * dens, xs))
     cdf = np.cumsum(dens) * (xs[1] - xs[0])
     cdf = cdf / cdf[-1]
     mode_x = float(xs[np.argmax(dens)])

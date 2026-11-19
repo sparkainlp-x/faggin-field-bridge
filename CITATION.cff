@@ -7,8 +7,8 @@ authors:
     given-names: "Jean-François"
     orcid: "https://orcid.org/0009-0000-9778-5374"
     affiliation: "Spark AI NLP, Fredericton, New Brunswick, Canada"
-version: 0.11.0
-date-released: "2026-11-17"
+version: 0.20.0
+date-released: "2026-11-18"
 license: AGPL-3.0-only
 repository-code: "https://github.com/sparkainlp-x/faggin-field-bridge"
 url: "https://sparkainlpx.xyz"
@@ -38,7 +38,79 @@ abstract: >-
   entropy H of the collective's joint outcomes (claims (xi) and
   (xii) pass; claim (xiii) FAILS on the break half — the
   collaboration gap holds at every noise level, so the v0.4.0
-  break does not transfer). The Planck law
+  break does not transfer). Version 0.15.0 adds the no-cloning /
+  Holevo ceiling (claims (xliv)-(xlviii), 3 of 5 pass): the exact
+  no-cloning coefficient Tr(rho_A^2) = 1 - C^2/2 is verified in
+  code (claim (xliv) PASSES, worst error 8.88e-16); the Holevo
+  quantity chi of the thought-pair ensemble does NOT bound D
+  (claim (xlv) FAILS -- D sits above chi at low empathy fraction
+  and approaches it from above as f rises, Spearman(|gap|, f) =
+  -1.00 / -0.96); the ceiling that does bind is on accessible
+  information (claim (xlvi) PASSES -- the Born-collapse mutual
+  information never exceeds chi, max(I - chi) = -3.20e-16); the
+  Buzek-Hillery universal cloner achieves exactly 5/6 fidelity
+  and the CNOT copy averages exactly 2/3 (claim (xlvii) PASSES);
+  but the model's own classical copy exceeds 5/6 at every working
+  noise level (claim (xlviii) FAILS -- fidelity 1.0000 at sigma =
+  0, 0.85-0.88 at sigma = 0.25), because the classical emulation
+  stores the full amplitude vector: privacy in this model is not
+  enforced by the representation. Version 0.16.0 adds two-channel
+  empathy (claims (l)-(liii), 1 of 4 pass): concern vs distress
+  as two convergence targets on the resonance population at
+  sigma = 0.25; only the high-dose distress withdrawal passes
+  on every seed (claim (lii)), while concern alone first dilutes
+  f on held-out seed 1234 (claim (l) FAILS), the distress count
+  rebounds to 23 at d = 1 on that seed (claim (li) FAILS), and
+  the channels are near-interchangeable in f there (swap
+  difference 0.0504; claim (liii) FAILS) -- no (c, d) point
+  carries both f >= f* = 0.7278 and count <= 15 on any seed. Version 0.17.0 adds connectome-harmonic
+  structure-function coupling (claims (liv)-(lvi), 0 of 3 pass): the graph Laplacian from the thought-pair
+  coupling matrix W_ij = R_ij, Bhattacharyya functional connectivity, coupling kappa(sigma) as the Pearson
+  correlation between W and F, and the Rayleigh-quotient harmonic smoothness rho(D). The Luppi et al. 2023
+  prediction is reversed in this wiring -- kappa falls, not rises, with loss of attunement on every seed
+  (kappa(0.50) - kappa(0.25) = -0.599 / -0.430 / -0.423 / -0.203); the dip-and-recovery shape was a
+  calibration-seed artefact (on the held-out seeds kappa falls monotonically with sigma); and the D signal is
+  strongly structure-aligned at high sigma on the held-out seeds (rho down to 0.47), while the Laplacian
+  identities hold exactly everywhere, the attuned field stays strongly coupled (kappa(0.25) >= 0.84), and the
+  shuffle decoupling control is clean (null mean within 0.04 of zero, separated from kappa(0.25) by >= 0.81,
+  f unchanged). Version 0.18.0 adds the GRT phase-transition test (claims (lvii)-(lix), 2 of 3 pass): Hunt &
+  Schooler 2019 Conjecture 1 (shared resonance -> phase transition in information-sharing bandwidth at a
+  critical coupling K_c) and Conjecture 3 (nested "many become one"), with coupling as mixing toward the common
+  reference on the resonance population at sigma = 1.00, bandwidth B(K) as pairwise shared information, and K_c
+  read off the project's pre-existing resonance threshold 0.5. The machinery is exact (K = 1 states equal the
+  uniform reference, B(1) = 2.0000 bits), K_c is interior on every seed (0.3 / 0.6 / 0.5 / 0.4), the macro
+  completes at K_c + 0.2 while 2-5 nested components survive at K_c -- but there is no phase transition at K_c:
+  the bandwidth step there is +0.1142 / -0.0572 / -0.0023 / -0.0002 bits (bar 0.10), and the largest step sits at
+  K = 0.7 on all four seeds (0.1501 / 0.2597 / 0.2282 / 0.2103). Version 0.19.0 adds the Cogitate-style
+  preregistration + process predictors of the collaboration gap (claims (lx)-(lxiii), 3 of 4 pass): Woolley et al.
+  2010 c-factor analogues (mean pairwise R as mean social sensitivity, -var_D across members as equal turn-taking,
+  mean/max per-agent D as individual ability) and Cogitate 2025 analogues (sustained R in the posterior subset
+  {agents 0, 1} vs broadcast ignition at onset AND offset), all preregistered with frozen bars from calibration
+  seeds 42/7 before the held-out evaluation on seeds 1234/2026. Turn-taking equality predicts the gap on every
+  seed (r = 0.7899 / 0.7566 / 0.7589 / 0.7105, bar 0.70); the posterior predictor wins on every seed
+  (r = 0.9278 / 0.8657 / 0.9858 / 0.8884, bar 0.80) while broadcast anti-predicts it on every seed
+  (r = -0.9022 / -0.8911 / -0.7813 / -0.9350); the pooled regression over 28 runs gives R^2 = 0.6505 for
+  gap ~ mean_R + (-var_D) against 0.3298 for gap ~ max_D (difference 0.3207, margin 0.05). But mean sensitivity
+  does NOT beat mean individual D: claim (lx) fails on held-out seed 1234, where r(gap, mean_D) = 0.8839 exceeds
+  r(gap, mean_R) = 0.8447 by 0.0393 (margin 0.10) -- the tight calibration margin (worst 0.1252) had flagged this
+  as a live risk. Version 0.20.0 adds the genuinely synergistic
+  target (claims (lxiv)-(lxvii), 2 of 4 pass): the XOR target
+  Y = X1 (+) X2 replaces the joint-outcome target in the Williams
+  & Beer I_min PID, preregistered with frozen bars from
+  calibration seeds 42/7 before the held-out evaluation on seeds
+  1234/2026. The XOR target DOES separate synergy from
+  redundancy at sigma = 0.25 (delta-synergy +1.4472 / +1.0010
+  against delta-redundancy +0.3143 / +0.1397 on calibration),
+  but the "gap is synergy" claim (lxv) fails on held-out seed
+  1234, where the information gap itself is negative (-0.2591
+  bits: the isolated arm carries more XOR information than the
+  collaborating arm), so the synergy share is -3.956; and
+  synergy does NOT rise with R or fall at sigma = 0.50 (claim
+  (lxvi) fails on every seed: Pearsons 0.3731 / 0.3424 / -0.3397 /
+  0.9036, synergy rising 0.25 -> 0.50 everywhere). Redundancy
+  stays a small share of the target information (claim (lxvii)
+  passes: worst shares 0.1924 / 0.2357 / 0.1396 / 0.0882, bar
+  0.25). The Planck law
   is reproduced with the real constants; the empathy-quantum
   link is a definition inside the model, not a discovery. The entanglement and
   the interference are in the model, computed exactly on classical

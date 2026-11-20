@@ -9,6 +9,7 @@ authors:
     affiliation: "Spark AI NLP, Fredericton, New Brunswick, Canada"
 version: 0.28.0
 date-released: "2026-11-19"
+doi: "10.5281/zenodo.24391367"
 license: AGPL-3.0-only
 repository-code: "https://github.com/sparkainlp-x/faggin-field-bridge"
 url: "https://sparkainlpx.xyz"
@@ -300,7 +301,7 @@ abstract: >-
   not exact) because the original evolved state is unavailable. Empathy
   0.5503 is the notebook's reported value, recorded as a supplied proxy,
   not recomputed. Spooky is self-similarity under noise, not entanglement.
-  No gravity model exists in this package. No DOI yet (no Zenodo record).
+  No gravity model exists in this package. DOI: https://doi.org/10.5281/zenodo.24391367 (v0.28.0).
 keywords:
   - synthetic-data
   - consciousness

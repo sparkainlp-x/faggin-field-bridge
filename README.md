@@ -1,5 +1,7 @@
 # Faggin Field Bridge
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24391367.svg)](https://doi.org/10.5281/zenodo.24391367)
+
 A reproducible classical mapping inspired by Federico Faggin's Quantum Information Panpsychism (QIP).
 
 **Theory author:** Federico Faggin, with Giacomo Mauro D'Ariano.  

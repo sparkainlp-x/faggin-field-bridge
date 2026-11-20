@@ -1,6 +1,6 @@
 # Faggin Field Bridge
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24391367.svg)](https://doi.org/10.5281/zenodo.24391367)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24404948.svg)](https://doi.org/10.5281/zenodo.24404948)
 
 A reproducible classical mapping inspired by Federico Faggin's Quantum Information Panpsychism (QIP).
 

@@ -1,5 +1,88 @@
 # Changelog — Faggin Field Bridge
 
+## 0.29.0 (2026-11-20)
+
+Blind fresh-seed head-to-head: plain n=20 vs
+V4-full on stored Pearson (Faggin P1, the
+highest-value next build from the 2026-11-20
+measurement/detection upgrade exploration;
+Jean's directive, refined 2026-11-17: "Do all
+logic by value"). No new module: the evaluation
+re-measures through the production function
+`spooky_symmetry.fresh_rescue_table` — the same
+function (cviii) used — on five frozen seeds no
+pilot ever saw. One of one claim passes. Full
+suite: 609 passed (608 existing + 1 new test,
+`test_claim_cx_passes` in
+tests/test_spooky_symmetry.py), 0 failures,
+under Python 3.11 / NumPy 2.4.6 (338.39s).
+Running totals: through v0.28.0 the tree had 109
+claims measured, 34 failed; with (cx) passing,
+v0.29.0 brings the totals to 110 claims
+measured, 34 failed — the failed count is
+unchanged because (cx) passed.
+(cx) blind fresh-seed head-to-head — PASSES,
+and it is a CONFIRMATION of the (cviii)
+correction, blind: V4-full stored Pearson <=
+-0.90 on exactly 3/5 frozen seeds [2718, 31415,
+51977] and plain n=20 on exactly 3/5 [2718,
+31415, 40961] — a TIE, not a repeat of the
+(cviii) 4/5 vs 3/5 split, so plain n=20 does
+not lose to V4-full on seeds neither method
+saw. The two methods win one seed each off the
+shared pair: 40961 for n=20 (plain -0.930404 ->
+V4 -0.892191, a V4 break across the bar; n=20
+-0.936957) and 51977 for V4 (plain -0.767673 ->
+V4 -0.921335, a V4 rescue n=20 misses at
+-0.869694). Seed 65521 fails under every method
+(-0.866073 / -0.839839 / -0.896974), like seed 5
+in (cviii). The full 8-bar check (all four
+bars, both directions, V4-full + frozen
+calibrator; plain n=20) agrees in direction:
+V4+cal passes 2/5, n=20 passes 3/5. The
+calibrator holds delta = 0.0 (stored and
+opposite) on all five seeds. Worsened count = 0
+(definition, frozen: plain <= -0.90 AND V4 >
+-0.90 AND (V4 - plain) > 0.05). Near-miss
+disclosed, bar NOT moved: on 40961 V4 crosses
+the bar the wrong way (-0.9304 -> -0.8922) but
+by 0.0382, below the frozen 0.05 threshold — a
+V4 break across the bar, not a "worsened" seed
+by the frozen definition. Thin margins
+disclosed: on 2718 plain misses the bar by
+0.0009 (-0.899088) and both methods rescue it;
+on 31415 n=20 passes by 0.0005 (-0.900454); on
+65521 n=20 misses by 0.0030 (-0.896974). This
+is the first BLIND evaluation in the tree's
+history: the frozen seeds {2718, 31415, 40961,
+51977, 65521} were selected by grep-audit only,
+never measured, never seen by any pilot, and no
+pilot on them was run before evaluation; the
+preregistration (docs/preregistration-v0.29.0.md)
+was written before the evaluation run. The
+seed-freeze audit is recorded in REPORT §35:
+31 seed integers already used in the tree
+(0-19, 42, 99, 123, 555, 777, 1234, 2024, 2026,
+4242, 31337), including the range(20) entropy
+sweep in tests/test_cost.py:77 that burns 0-19;
+candidate 17389 discarded on a derived-stream
+collision (7+4242+1000*13+10*14); /tmp grep
+clean for all five frozen seeds; scope caveat —
+the freeze is "never used as a base seed
+anywhere in this tree" only, not Git history or
+other repos. Correction recorded: the v0.28.0
+preregistration's "never used" line about
+{5, 99, 2, 777, 2024} was inaccurate (5, 99 used
+in v0.12.1; 2, 777, 2024 in the v0.21.0 survey);
+this freeze was audited not to repeat that
+error. P2/P3 (n=200 claims + plateau
+decomposition) are reserved as future claims on
+the same frozen seeds; not built or evaluated.
+The (cviii), (xci), (xcii), (xxxii) and
+(xcviii) verdicts stand unchanged. No scalar Φ
+is computed anywhere; E = hν is not used; no
+new physics is imported.
+
 ## 0.28.0 (2026-11-19)
 
 Stability: the reopened cascade's fixed point, spooky

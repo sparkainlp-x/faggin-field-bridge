@@ -6097,3 +6097,182 @@ mechanism is borrowed. No threshold was moved to
 force a pass. Classical emulation throughout;
 Faggin's metaphysics stays interpretive. No scalar
 Φ is computed anywhere.
+
+## 35. Blind fresh-seed head-to-head: plain n=20 vs V4-full (v0.29.0, measured 2026-11-20)
+
+Jean's directive, refined 2026-11-17: "Do all
+logic by value." The highest-value next build
+from the 2026-11-20 measurement/detection
+upgrade exploration (read-only, 4 subagents) is
+Faggin P1: a blind fresh-seed head-to-head,
+V4-full vs plain n=20, on stored Pearson — one
+question, one claim. No new module: the
+evaluation re-measures through the production
+function spooky_symmetry.fresh_rescue_table,
+the same function (cviii) used, on five frozen
+seeds no pilot ever saw. One new test
+(test_claim_cx_passes in
+tests/test_spooky_symmetry.py). Full suite: 609
+passed (608 existing + 1 new), 0 failures,
+under Python 3.11 / NumPy 2.4.6 (338.39s). The
+preregistration (docs/preregistration-v0.29.0.md)
+was written before the evaluation run, and it
+carries a blinding note that is the point of
+this build: this is the first BLIND evaluation
+in the tree's history — the frozen seeds {2718,
+31415, 40961, 51977, 65521} were selected by
+grep-audit only, never measured, never seen by
+any pilot, and no pilot on them was run before
+evaluation. What is still frozen and unfitted:
+the bar is the (xxxii) bar (stored Pearson <=
+-0.90), frozen since v0.12.0 and reused
+unchanged; the directional bar for (cx) — plain
+n=20 passes >= as many of the 5 frozen seeds
+as V4-full — was frozen from the (cviii) table
+before the preregistration was written, and the
+frozen seeds contribute no information to it;
+the calibrator rule is the v0.26.0 rule,
+unchanged, used only for the reported-alongside
+8-bar check, not gated; no bar was fitted to
+any seed.
+
+**1/1 claim passes.** What survives: the
+(cviii) correction survives blind — plain n=20
+does not lose to V4-full on seeds neither
+method saw. What does not survive: the (cviii)
+4/5 vs 3/5 split does not repeat — this is a
+TIE, 3/5 each, with the two methods winning one
+seed each off the shared pair. Running totals:
+through v0.28.0 the tree had 109 claims
+measured, 34 failed; with (cx) passing, v0.29.0
+brings the totals to 110 claims measured, 34
+failed — the failed count is unchanged because
+(cx) passed. (The Nov 19 ledger's "87 claims,
+31 failed" was the v0.24.0 snapshot, now stale;
+the 109/34 figure was verified against the
+release notes.)
+
+### (cx) Blind fresh-seed head-to-head: plain n=20 vs V4-full — PASS (CONFIRMATION of the (cviii) correction)
+
+Stored Pearson, plain / V4-full / n=20, on the
+frozen seeds {2718, 31415, 40961, 51977, 65521}:
+
+| seed | plain | V4-full | n=20 | V4+cal 8-bar | n=20 8-bar |
+|---|---|---|---|---|---|
+| 2718 | -0.899088 | -0.924024 | -0.940522 | PASS | PASS |
+| 31415 | -0.905677 | -0.909501 | -0.900454 | PASS | PASS |
+| 40961 | -0.930404 | -0.892191 | -0.936957 | FAIL | PASS |
+| 51977 | -0.767673 | -0.921335 | -0.869694 | FAIL | FAIL |
+| 65521 | -0.866073 | -0.839839 | -0.896974 | FAIL | FAIL |
+
+V4-full stored Pearson <= -0.90 on exactly 3/5
+frozen seeds [2718, 31415, 51977]; plain n=20
+on exactly 3/5 [2718, 31415, 40961]. 3 >= 3, so
+(cx) PASSES on the preregistered directional
+bar. This is a TIE, not a repeat of the (cviii)
+4/5 vs 3/5 split — the (cviii) correction is
+confirmed blind: plain n=20 does not lose to
+V4-full on seeds neither method saw. The two
+methods win one seed each off the shared pair
+(2718, 31415, where both pass): 40961 for n=20
+(plain -0.930404 -> V4 -0.892191, a V4 break
+across the bar; n=20 -0.936957) and 51977 for
+V4 (plain -0.767673 -> V4 -0.921335, a V4 rescue
+n=20 misses at -0.869694). Seed 65521 fails
+under every method (-0.866073 / -0.839839 /
+-0.896974), like seed 5 in (cviii). The full
+8-bar check (all four bars, both directions,
+V4-full + frozen calibrator; plain n=20) agrees
+in direction: V4+cal passes 2/5, n=20 passes
+3/5. The calibrator holds delta = 0.0 (stored
+and opposite) on all five seeds.
+
+Worsened count = 0. Definition, frozen in the
+preregistration: a seed where plain Pearson <=
+-0.90 AND V4 Pearson > -0.90 AND (V4 Pearson -
+plain Pearson) > 0.05 — the 2024-type break.
+Near-miss disclosed, bar NOT moved: on 40961
+V4 crosses the bar the wrong way (-0.9304 ->
+-0.8922) but by 0.0382, below the frozen 0.05
+threshold — a V4 break across the bar, not a
+"worsened" seed by the frozen definition. Thin
+margins disclosed: on 2718 plain misses the bar
+by 0.0009 (-0.899088) and both methods rescue
+it; on 31415 n=20 passes by 0.0005 (-0.900454);
+on 65521 n=20 misses by 0.0030 (-0.896974).
+
+### Seed-freeze audit — recorded
+
+The full used-seed set in the tree is 31
+integers: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+12, 13, 14, 15, 16, 17, 18, 19, 42, 99, 123, 555,
+777, 1234, 2024, 2026, 4242, 31337} — file seeds
+{42, 7, 1234, 2026}; survey adds {1, 2, 3, 99,
+123, 777, 2024, 31337}; fresh sets add {5, 11,
+555, 4242}; the range(20) entropy sweep in
+tests/test_cost.py:77 adds {0, 4, 6, 8, 9, 10,
+12, 13, 14, 15, 16, 17, 18, 19}. None of the
+five frozen seeds is in that set, and none
+collides with any derived effective seed from
+it (base+1000, base+4242, base+424242,
+base+1000*g+10*i, base+4242+1000*g+10*i).
+Discarded candidate recorded: 17389 was clean
+literally but collided with a derived stream
+(7+4242+1000*13+10*14) and was discarded; it is
+NOT a frozen seed and must not be used as one.
+Extra check: plain substring grep of /tmp for
+each of the five frozen seeds (the v0.28.0
+exploration pilots ran in /tmp) — no hits for
+any of them. Scope caveat, recorded honestly:
+the freeze is "never used as a base seed
+anywhere in this tree" only — it does not cover
+Git history (.git excluded from the audit; local
+HEAD is stale at v0.5.0) or other repos' trees.
+Correction recorded: the v0.28.0
+preregistration's line calling the old fresh
+seeds {5, 99, 2, 777, 2024} "never used" was
+inaccurate — seeds 5 and 99 were used in
+v0.12.1, and seeds 2, 777, 2024 in the v0.21.0
+survey. This freeze was audited not to repeat
+that error.
+
+What it says: the (cviii) correction — plain
+n=20 does not lose to V4-full on fresh seeds —
+survives a blind re-measurement on seeds no
+pilot ever saw, as a tie with the two methods
+winning one seed each off the shared pair; the
+rescue is variance reduction whose two
+implementations trade wins seed by seed, and
+seed 65521 fails under every method. P2/P3 (the
+n=200 claims + plateau decomposition) are
+reserved as future claims on the SAME frozen
+seeds {2718, 31415, 40961, 51977, 65521}; their
+bars are not defined here, and they are not
+built or evaluated in this build — reserving
+the seed set now, before any of it is measured,
+is what keeps those future claims blind too.
+What it does not say: nothing here measures
+consciousness, empathy in a human, or any theory
+of consciousness; it measures a synthetic
+classical emulation, under a preregistration
+written before the evaluation run, on the first
+blind seed set in the tree's history. The
+(cviii) verdict (PASS, as stated), the (xci)
+verdict (FAIL, honest), the (xcii) verdict
+(FAIL, honest), the (xxxii) verdict (FAIL,
+honest) and the (xcviii) verdict (FAIL, honest)
+stand unchanged — the blind head-to-head tests
+whether the (cviii) correction generalizes; it
+does not rewrite it. Claim (c) stands as
+measured on the file seeds; claim (cviii) is
+its generalization correction, not a
+retraction; claim (cx) is the blind
+confirmation of that correction. The
+symmetry-entropy verdict (orbit entropy cannot
+prove reality is a quantum projection) is
+untouched: only the orbit-averaging mechanism
+is borrowed. No threshold was moved to force a
+pass. Classical emulation throughout; Faggin's
+metaphysics stays interpretive. No scalar Φ is
+computed anywhere; E = hν is not used anywhere
+in this build; no new physics is imported.

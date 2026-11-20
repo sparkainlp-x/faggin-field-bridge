@@ -22,6 +22,14 @@ V4-full perpendicular D range < 0.25 on every
 fresh seed (max 0.1767), Pearson positive on 6/9
 seeds plain and 5/9 under V4-full. See
 docs/preregistration-v0.28.0.md.
+
+Claim (cx) (v0.29.0, blind): plain n=20 passes
+>= as many of the 5 frozen fresh seeds
+{2718, 31415, 40961, 51977, 65521} as V4-full on
+stored Pearson <= -0.90. Measured: a TIE, 3/5
+vs 3/5 — V4-full [2718, 31415, 51977], plain
+n=20 [2718, 31415, 40961]. No worsened seed.
+See docs/preregistration-v0.29.0.md.
 """
 
 import math
@@ -160,3 +168,75 @@ def test_file_seed_rescue_stands():
         n20 = ss.plain_n_copies_sweep(seed, 0.0, 20)
         assert v4["pearson_d_c"] <= -0.90
         assert n20["pearson_d_c"] <= -0.90
+
+
+# ---------------------------------------------------------------------------
+# Claim (cx): blind fresh-seed head-to-head (v0.29.0)
+# ---------------------------------------------------------------------------
+
+FROZEN_CX_SEEDS = (2718, 31415, 40961, 51977, 65521)
+
+
+@pytest.fixture(scope="module")
+def cx_rows():
+    return sp.fresh_rescue_table(seeds=FROZEN_CX_SEEDS)
+
+
+def test_claim_cx_passes(cx_rows):
+    # (cx), preregistered in
+    # docs/preregistration-v0.29.0.md: PASS iff plain
+    # n=20 passes >= as many of the 5 frozen seeds
+    # as V4-full on stored Pearson <= -0.90. Blind:
+    # the frozen seeds were never measured before
+    # this run. Measured: a TIE, 3/5 vs 3/5 — V4-full
+    # [2718, 31415, 51977], plain n=20 [2718, 31415,
+    # 40961]. The (cviii) correction is confirmed
+    # blind: n=20 does not lose to V4-full. No
+    # worsened seed (the 2024-type break, delta >
+    # 0.05): V4 crosses the bar the wrong way on
+    # 40961 (-0.9304 -> -0.8922) but by only 0.0382,
+    # below the 0.05 worsened bar. Seed 65521 fails
+    # under every method; seed 51977 is a V4 rescue
+    # (-0.7677 -> -0.9213) that n=20 misses
+    # (-0.8697). 8-bar alongside, not gated: V4+cal
+    # 2/5, n=20 3/5.
+    v4_passing = sorted(r["seed"] for r in cx_rows
+                        if r["v4_passes"])
+    n20_passing = sorted(r["seed"] for r in cx_rows
+                         if r["n20_passes"])
+    assert v4_passing == [2718, 31415, 51977]
+    assert n20_passing == [2718, 31415, 40961]
+    assert len(v4_passing) == 3
+    assert len(n20_passing) == 3
+    # The preregistered bar: n=20 passes >= as many
+    # as V4-full.
+    assert len(n20_passing) >= len(v4_passing)
+    # Worsened count, reported alongside, not gated:
+    # 0.
+    worsened = [r for r in cx_rows
+                if r["plain_pearson"] <= -0.90
+                and r["v4_pearson"] > -0.90
+                and (r["v4_pearson"] - r["plain_pearson"])
+                > 0.05]
+    assert worsened == []
+    # The full 8-bar check: V4+cal 2/5, n=20 3/5.
+    assert sum(1 for r in cx_rows
+               if r["v4_8bar_passes"]) == 2
+    assert sum(1 for r in cx_rows
+               if r["n20_8bar_passes"]) == 3
+    # Per-seed stored Pearson, reproducibility to 1e-4.
+    expected = {
+        2718: (-0.8991, -0.9240, -0.9405),
+        31415: (-0.9057, -0.9095, -0.9005),
+        40961: (-0.9304, -0.8922, -0.9370),
+        51977: (-0.7677, -0.9213, -0.8697),
+        65521: (-0.8661, -0.8398, -0.8970),
+    }
+    for r in cx_rows:
+        plain, v4, n20 = expected[r["seed"]]
+        assert r["plain_pearson"] == pytest.approx(
+            plain, abs=1e-4)
+        assert r["v4_pearson"] == pytest.approx(
+            v4, abs=1e-4)
+        assert r["n20_pearson"] == pytest.approx(
+            n20, abs=1e-4)

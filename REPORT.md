@@ -1,6 +1,6 @@
 # Faggin Field Bridge — Report
 
-**Version:** 0.23.0 (2026-11-18)
+**Version:** 0.25.0 (2026-11-19)
 **Theory author:** Federico Faggin (with Giacomo Mauro D'Ariano)
 **Bridge / test author:** Jean-François Brisson (Spark AI NLP)
 **Status:** SYNTHETIC. Classical computation on synthetic states.
@@ -102,7 +102,26 @@ Reading:
 
 ## 4. Test suite
 
-**418 tests, 418 passed** (`python3 -m pytest tests/ -q`, 67.16 s).
+**543 tests, 543 passed** (Python 3.11 / NumPy 2.4.6,
+`python3.11 -m pytest tests/ -q`, 214.42 s). Note: the
+system python3 (NumPy 1.26.4) cannot collect
+test_landauer.py — landauer.py uses np.trapezoid, which
+needs NumPy >= 2.0 (the v0.23.0 merge fixed np.trapz ->
+np.trapezoid for CI, NumPy 2.5.5). Run the suite under
+Python 3.11 / NumPy 2.x.
+
+*Correction in v0.25.0: this section said 418, and its
+per-file list below sums to 301 and stopped at v0.12.0 —
+it had no entries for the v0.12.1 follow-up (4 tests in
+test_observer_cycle.py, 19 -> 23) or for any test file
+added in v0.13.0–v0.25.0. The collected counts below are
+the record (36 files, alphabetical: 12 + 9 + 14 + 27 + 15
++ 22 + 9 + 19 + 17 + 21 + 10 + 20 + 18 + 25 + 22 + 23 + 14
++ 11 + 21 + 18 + 17 + 3 + 5 + 19 + 13 + 19 + 7 + 13 + 12 +
+7 + 9 + 9 + 16 + 22 + 9 + 16 = 543), collected under
+Python 3.11 / NumPy 2.4.6. The missing entries are
+appended at the end of the list, in version order.*
+(v0.24.0 counts: 527 + 16 new = 543.)
 
 *Correction in v0.18.0: this section said 397. The collected counts below are the
 record (28 files: 12 + 9 + 14 + 27 + 22 + 9 + 19 + 17 + 21 + 10 + 20 + 18 + 25 +
@@ -346,7 +365,7 @@ the record (16 files: 12 + 9 + 14 + 9 + 17 + 25 + 21 + 3 +
   carrying no distribution, per-field KS below critical
   (max 0.2159, reported not gated), pooled n = 168, and
   the three-claim aggregate (2/3 pass, no headline).
-- `test_observer_cycle.py` (19): the stored thought (D = 1,
+- `test_observer_cycle.py` (23): the stored thought (D = 1,
   C = 0) and the kernel thought (D = 0, C = 1) exact,
   the generalized-Bell endpoints (a = 1: C = 0, D = 1;
   a = 1/sqrt(2): C = 1, D = 2/3), the slide endpoints
@@ -363,7 +382,127 @@ the record (16 files: 12 + 9 + 14 + 9 + 17 + 25 + 21 + 3 +
   (C + D = 1, R_s - R_k = cos 2 theta), the split
   flipping at the midpoint, claim (xxxiv) verdict PASS,
   the three-claim aggregate (2/3 pass, no headline),
-  and the frozen thresholds.
+  the v0.12.1 follow-up (the sigma = 1.0 break diagnosed
+  as boundary/saturation plus finite-sample noise, claim
+  (xxxv) verdict FAIL on fresh seeds 5/99), and the
+  frozen thresholds.
+- `test_cloning_ceiling.py` (27): the local-purity
+  identity Tr(rho_A^2) = 1 - C^2/2 exact, claim (xliv)
+  verdict PASS; D vs chi (claim (xlv) FAIL, D approaches
+  chi from above); the Holevo bound on accessible
+  information (claim (xlvi) PASS); the Buzek-Hillery
+  5/6 and CNOT 2/3 fidelities exact (claim (xlvii) PASS);
+  the classical copy exceeding 5/6 at every working sigma
+  (claim (xlviii) FAIL, 1.0000 at sigma = 0); the
+  five-claim aggregate (3/5 pass, no headline), and the
+  frozen thresholds.
+- `test_kuramoto.py` (10): the count-vs-K inverted-U
+  (claim (xxxvi) FAIL, peak at K = 0 on seeds 7/1234),
+  H_joint flat (claim (xxxvii) FAIL), R_K at the count
+  peak 0.31-0.36, far below the Phillips band (claim
+  (xxxviii) FAIL), the wandering sigma* (claim (xxxix)
+  FAIL), the four-claim aggregate (0/4 pass, no
+  headline), and the frozen thresholds.
+- `test_pid.py` (11): the PID identity exact (claim (xl)
+  PASS), the synergy share 0.407-0.882 (claim (xli)
+  FAIL), Syn rising sigma 0.25 -> 0.50 on every seed
+  (claim (xlii) FAIL), the Delta-Red ratio 0.2351-2.8327
+  (claim (xliii) FAIL), the four-claim aggregate (1/4
+  pass, no headline), and the frozen thresholds.
+- `test_two_channel_empathy.py` (22): the two-channel
+  empathy claims (l)-(liii) — (l) FAIL, (li) FAIL, (lii)
+  PASS (distress withdrawal at high dose), (liii) FAIL
+  (no (c, d) point carries both f >= f* and count <= 15),
+  the four-claim aggregate (1/4 pass, no headline), and
+  the frozen thresholds.
+- `test_connectome_harmonic.py` (22): the Laplacian
+  identities exact but rho failing on held-out seeds
+  (claim (liv) FAIL), the coupling falling on every seed
+  (claim (lv) FAIL), the calibration dip-and-recovery as
+  seed noise (claim (lvi) FAIL), the three-claim
+  aggregate (0/3 pass, no headline), and the frozen
+  thresholds.
+- `test_grt_transition.py` (21): the interior critical
+  coupling and the exact endpoints R(1) = 1.0000,
+  B(1) = 2.0000 (claim (lvii) PASS), the max-B step
+  sitting at K = 0.7 on all four seeds (claim (lviii)
+  FAIL), the macro forms just above K_c with nesting
+  persisting at K_c (claim (lix) PASS), the three-claim
+  aggregate (2/3 pass, no headline), and the frozen
+  thresholds.
+- `test_cogitate.py` (15): the collaboration gap
+  reproducing exactly (+4.3352 bits at sigma = 0.25,
+  seed 42, design B), claim (lx) FAIL (mean_D beats
+  mean_R on held-out seed 1234, margin -0.0393 vs the
+  0.10 bar), claim (lxi) PASS (turn-taking equality
+  predicts the gap), claim (lxii) PASS (posterior wins
+  every seed, broadcast anti-predicts every seed), claim
+  (lxiii) PASS (pooled R^2 0.6505 vs 0.3298), the
+  four-claim aggregate (3/4 pass, no headline), and the
+  frozen thresholds.
+- `test_synergistic_target.py` (13): the XOR target
+  identity exact (claim (lxiv) PASS), the share half
+  failing on held-out seed 1234 (claim (lxv) FAIL,
+  Delta I = -0.2591), Syn_collab rising 0.25 -> 0.50 on
+  every seed (claim (lxvi) FAIL), the redundancy ceiling
+  (claim (lxvii) PASS), the four-claim aggregate (2/4
+  pass, no headline), and the frozen thresholds.
+- `test_total_information_target.py` (16): the MAX
+  target claims (lxviii)-(lxxii), all five PASS — the
+  first target to clear held-out seed 1234 (Delta I =
+  +0.3266), the synergy shares 0.543 / 0.964 / 1.226 /
+  1.011, the redundancy ceiling, and Delta I > 0 across
+  the grid — the five-claim aggregate (5/5 pass, no
+  headline), and the frozen thresholds.
+- `test_seed_1234_diagnosis.py` (13): the seed-1234
+  diagnosis — the baseline pair determinant sign (26/28
+  negative-det pairs on 1234), the per-pair sign rule
+  exact on all file seeds, the hump-shaped mean_D, the
+  staggered concept switches, the 12-seed survey (the
+  three anomaly statistics essentially uncorrelated),
+  and the verdict that the three anomalies are
+  independent, with no common mechanism.
+- `test_per_generation_pid.py` (14): the per-generation
+  PID claims (lxxiii)-(lxxvii) — the identity exact
+  (lxxiii) PASS, the v0.20.0 synergy-vs-sigma climb not
+  surviving without pooling (lxxiv) FAIL, the mixture
+  excess below the bar (lxxv) FAIL, the MAX pooled
+  synergy-majority not surviving per-generation (lxxvi)
+  FAIL, and the v0.20.0 seed-1234 failure itself a
+  pooling artifact (lxxvii) PASS, mean per-generation gap
+  +1.4356 vs pooled -0.2591 — the five-claim aggregate
+  (2/5 pass, no headline), and the frozen thresholds.
+- `test_restricted_copier.py` (19): the privacy-enforcing
+  copier claims (lxxviii)-(lxxxi), all four PASS — the
+  single-shot bound restored (max mean fidelity 0.40 /
+  0.58 / 0.62 / 0.41, bar 5/6), the 16-shot leak at sigma
+  = 0 (0.95 / 0.94 / 0.94 / 0.92), the budget gaps 0.74
+  (bar 0.30), and the sigma limit (16-shot above 5/6 at
+  sigma = 0.25, below it at sigma = 1.00) — the
+  four-claim aggregate (4/4 pass, no headline), and the
+  frozen thresholds.
+- `test_seed_1234_regating.py` (19): the seed-1234
+  design-decision claims (lxxxii)-(lxxxvii) — the
+  re-gated (l)/(li)/(liii) on the gated file seeds
+  {42, 7, 2026} (lxxxii)-(lxxxiv) PASS, the
+  mechanism-governed concurrence halves on the whole
+  12-seed survey (lxxxv) PASS, the full re-gated claims
+  on all gated survey seeds (lxxxvi) FAIL ((l) 4/8, (li)
+  4/8, (liii) 5/8), the pooled Cogitate rule (lxxxvii)
+  PASS (pooled margin +0.4022, bar 0.10) — the six-claim
+  aggregate (5/6 pass, no headline), and the frozen
+  thresholds.
+- `test_wave_direction.py` (16): the wave-direction
+  claims (lxxxviii)-(xcii) — the opposite direction
+  identity (lxxxviii) PASS (worst 1.22e-15), the
+  perpendicular swap (lxxxix) PASS (worst 1.78e-15),
+  the all-directions profile and cascade (xc) PASS, the
+  noisy stored-and-opposite sweep (xci) FAIL (seed 2026
+  stored Pearson -0.8828, seed 2026 opposite D range
+  0.2490 vs the 0.25 bar), the noisy perpendicular
+  direction (xcii) FAIL (Pearson +0.5109 / +0.8297 on
+  the held-out seeds) — the five-claim aggregate (3/5
+  pass, no headline), and the frozen thresholds.
 
 ## 5. Maximum scientific outcome (measured 2026-11-15)
 
@@ -4635,3 +4774,458 @@ it measures a synthetic classical emulation, under a
 preregistration written before the held-out seeds were touched.
 Classical emulation throughout; Faggin's metaphysics stays
 interpretive. No scalar Φ is computed anywhere.
+
+## 30. Seed-1234 design decisions: re-gate the two-channel claims on the determinant sign, replace (lx)'s margin with a pooled rule (v0.24.0, measured 2026-11-18)
+
+The v0.21.0 diagnosis left two design decisions open, and
+this build takes both. The gate and the pooled rule were
+frozen in docs/preregistration-v0.24.0.md before the
+evaluation run, from the calibration pilot (seeds 42/7 for
+the gate) and the 12-seed survey (for the pooled rule,
+disclosed in full there). The old verdicts stay on the
+record: (l), (li), (liii) FAIL as originally stated (every
+file seed), and (lx) FAILS as originally stated (frozen
+0.10 margin). The new claims (lxxxii)–(lxxxvii) are NEW
+claims, not rewrites.
+
+### The gate
+
+A seed is gated in iff its baseline resonance field (N = 8,
+σ = 0.25) has mean baseline pair determinant ≥ −0.05. The
+calibration det means are −0.0431 (seed 42) and +0.1050
+(seed 7); any gate must admit both calibration seeds, and
+−0.05 is the tightest round number below the calibration
+minimum. On the 12-seed survey it admits 8 seeds (42, 7,
+2026, 1, 3, 99, 123, 31337) and excludes 4 (1234, 2, 777,
+2024). Two alternatives were considered and rejected before
+the run: a fraction-negative gate (≤ 0.75) admits 11/12
+seeds including 777 and 2024, whose f dips under concern —
+the count of negative pairs does not carry the mechanism,
+the mean does; and a gate on the baseline level f0, refuted
+already in the diagnosis (no landmark sits near f = 0.3251).
+
+Baseline determinant stats, N = 8, σ = 0.25:
+
+| seed | det mean | det < 0 | f0 | gated in |
+|---|---|---|---|---|
+| 42 | −0.0431 | 18/28 | 0.1803 | yes |
+| 7 | +0.1050 | 5/28 | 0.2469 | yes |
+| 1234 | −0.1556 | 26/28 | 0.3251 | NO |
+| 2026 | +0.0101 | 12/28 | 0.1772 | yes |
+| 1 | −0.0494 | 18/28 | 0.2168 | yes |
+| 2 | −0.0877 | 19/28 | 0.2332 | NO |
+| 3 | −0.0123 | 14/28 | 0.2732 | yes |
+| 99 | −0.0011 | 15/28 | 0.2742 | yes |
+| 123 | −0.0315 | 19/28 | 0.2213 | yes |
+| 777 | −0.0717 | 18/28 | 0.2594 | NO |
+| 2024 | −0.0528 | 21/28 | 0.2462 | NO |
+| 31337 | −0.0216 | 17/28 | 0.2720 | yes |
+
+### (lxxxii) Re-gated (l): concern raises resonance and empathy fraction, on gated seeds — PASS
+
+The original (l) sub-checks (mean R strictly rising in c,
+mean f strictly rising in c, quale count at c = 0.5 is the
+28 ceiling), unchanged, on the gated file seeds {42, 7,
+2026}. All three pass: f(c, 0) rises 0.1803 → 0.2253 →
+0.4207 → 0.6680 (42), 0.2469 → 0.4500 → 0.6067 → 0.7784
+(7), 0.1772 → 0.3123 → 0.4959 → 0.7132 (2026), with the
+count at c = 0.5 at the 28 ceiling on all three. Seed 1234
+is excluded by the gate, not by hand.
+
+### (lxxxiii) Re-gated (li): distress lowers helping while raising resonance, on gated seeds — PASS
+
+The original (li) sub-checks (at fixed concern c = 0.5:
+mean R strictly rising in d, quale count non-increasing in
+d, count(d = 1) ≤ 15, R(d = 1) − R(d = 0) ≥ 0.04),
+unchanged, on the gated file seeds {42, 7, 2026}. All three
+pass: distress counts fall 28 → 25 → 19 → 10 (42), 28 → 28
+→ 24 → 14 (7), 28 → 25 → 21 → 9 (2026).
+
+### (lxxxiv) Re-gated (liii): channel separation, on gated seeds — PASS
+
+The original (liii) sub-checks ((a) f(c = 2, d = 0) ≥ f* =
+0.7278; (b) count(c = 0.5, d = 1) ≤ 15; (c) swap
+|f(1, 0) − f(0, 1)| ≥ 0.30), unchanged, on the gated file
+seeds {42, 7, 2026}. All three pass: f(c = 2) = 0.8578 /
+0.9051 / 0.8769, counts at (c = 0.5, d = 1) = 10 / 14 / 9,
+swaps 0.4321 / 0.4283 / 0.3140 — the 2026 swap is the
+thinnest pass (0.014 above the bar).
+
+### (lxxxv) Determinant-sign-conditioned concurrence, on the 12-seed survey — PASS
+
+The mechanism-governed halves of (l) and (li), stated
+against f only (no count sub-checks), on the whole 12-seed
+survey: (a) f(c, 0) strictly rises with c on every gated
+survey seed (8/8); (b) f(0.5, d) is non-increasing in d on
+every gated survey seed (8/8); (c) the exact sign rule: no
+pair with det ≥ 0 ever falls under concern at dose 0.25, on
+ANY of the 12 survey seeds (0 pairs everywhere). The gate
+separates the f failures exactly on the survey: every
+excluded seed except seed 2 dips under concern (1234:
+0.3251 → 0.1505; 777: 0.2594 → 0.2575; 2024: 0.2462 →
+0.2174 at c = 0.25) and re-rises under distress at fixed
+concern (1234: 0.1154 → 0.2082; 777: 0.1476 → 0.1508;
+2024: 0.1354 → 0.1425 at d = 1), while seed 2 passes both
+f halves but is excluded anyway — the gate is a sufficient
+condition for the mechanism regime, not a necessary one,
+and no claim here asserts necessity. Mean Δf under concern
+for negative-det pairs is negative on 11/12 seeds (−0.21
+to −0.02; exception seed 7: +0.1114 on only 5 negative-det
+pairs) and positive for positive-det pairs on all 12
+(+0.22 to +0.28). The distress half of the sign rule is
+NOT claimed: negative-det pairs fall under distress on
+seeds 1 (0.111, 2/18 pairs), 2 (0.158, 3/19), and 777
+(0.278, 5/18) — reported, not gated.
+
+### (lxxxvi) Full re-gated claims on all gated survey seeds — FAIL
+
+Claims (l), (li), (liii) with ALL original sub-checks
+(including the quale-count sub-checks), on every gated
+survey seed (8 seeds). (l) passes on 4/8 (42, 7, 2026,
+123), (li) on 4/8 (the same four), (liii) on 5/8 (42, 7,
+2026, 1, 123). The gate rescues the concurrence halves,
+not the count halves: count(c = 0.5) is 24 / 25 / 26 / 27,
+not the 28 ceiling, on seeds 1 / 3 / 99 / 31337; the
+distress count is non-increasing fails on seed 1 (24 → 25
+at d = 0.25) and count(d = 1) is 17 / 16 / 16, above the 15
+bar, on seeds 3 / 99 / 31337; count(c = 0.5, d = 1) is 17 /
+16 / 16 on the same three seeds. The count is a
+thresholded quantity (per pair, R ≥ 0.5 AND ν ≥ 0.10) that
+depends on the R distribution, not just on the det sign —
+so the determinant gate governs the concurrence response,
+not the count. The only f-based sub-check to fail on a
+gated survey seed is the swap on seed 3: 0.2969 vs the 0.30
+bar, a miss of 0.0031. This FAIL is the finding, claimed as
+(lxxxvi), not hidden: re-gating on the determinant sign is
+necessary but not sufficient for the two-channel claims in
+general — it repairs them on the file seeds and fails them
+on half the wider survey, on the count.
+
+### (lxxxvii) Pooled Cogitate rule replacing (lx)'s margin — PASS
+
+The (lx) question — does mean sensitivity beat mean
+individual D as a predictor of the gap — asked at the
+POOLED level instead of per-seed. Pooling all 84 runs (12
+survey seeds × 7 σ values):
+
+| predictor | pooled r(gap, ·) |
+|---|---|
+| mean_R | +0.6658 |
+| post_R_sustained | +0.5373 |
+| neg_var_D | +0.3791 |
+| mean_D | +0.2636 |
+| max_D | −0.5253 |
+| broadcast | −0.5916 |
+
+Pooled margin r(gap, mean_R) − r(gap, mean_D) = +0.4022
+against the frozen 0.10 bar — the same bar (lx) used, now
+applied to the pooled margin — and mean_R is the
+top-ranked of the six pooled predictors (next: post,
++0.5373). Both legs pass. Per-seed, mean_R ranks 1st on 4
+seeds (2, 3, 99, 31337), 2nd on 6 (42, 7, 2026, 123, 777,
+2024), 3rd on 1234, 4th on seed 1 — so the pooled top-rank
+is not a per-seed claim in disguise; it is a different
+statistical level, the same level as the pooled regression
+in (lxiii), which passed (R² 0.6505 vs 0.3298 over 28
+runs). Pooling averages out the per-seed trajectory-shape
+noise that makes r(mean_D) swing from −0.11 to +0.90.
+A shape gate was considered and rejected before the run:
+hump-shaped mean_D does not separate the failures — seeds
+3, 99, 123 are hump-shaped yet pass the 0.10 margin
+(+0.61, +0.35, +0.85) because their r(mean_D) is low or
+negative, while falling seeds 777 and 2024 fail it
+(+0.0025, +0.0375) because their r(mean_D) ≈ r(mean_R).
+The old (lx) verdict (FAIL, honest, per-seed 0.10 margin)
+stands unchanged, and no per-seed margin bar is claimed
+here — a per-seed rule with any bar ≥ 0.10 still fails on
+half the survey (6/12 clear 0.10; mean margin +0.2312,
+median +0.1084, 10/12 positive).
+
+Fresh-seed diagnostic (reported, not gated): on four seeds
+never used anywhere in the tree before this build (5, 11,
+555, 4242; 28 runs), the pooled margin is +0.5270 and
+mean_R is again the top-ranked pooled predictor (+0.5066,
+next: post +0.4526) — the pooled rule holds on fresh seeds
+too. But the per-seed margins there are wilder than on the
+survey (+1.3257 / −0.1963 / +0.5211 / −0.3788): seed 11 has
+r(gap, mean_D) = 0.9957, nearly perfect, and seed 4242 has
+the worst margin yet measured (−0.3788, r(mean_D) = 0.6513
+vs r(mean_R) = 0.2725). Only 2/4 fresh seeds have a
+positive per-seed margin. The per-seed framing is not
+rescued — it is more fragile on fresh seeds than on the
+survey — and that is a limit on (lxxxvii), reported here.
+
+### Per-generation note
+
+No per-generation restatement applies to the two-channel
+claims (l)–(liii): each is measured on a single N = 8 field
+(28 pairs) at one σ, with no generation index anywhere, so
+there is no pooling across generations in them to undo.
+The one pooled claim in the seed-1234 diagnosis, the XOR
+(lxv) failure, was already corrected at the per-generation
+level in v0.22.0: claim (lxxvii) PASSES — the mean
+per-generation XOR gap on seed 1234 is +1.4356 bits
+(synergy-majority, share 0.584) against the pooled gap of
+−0.2591, because per-generation the isolated arm carries
+nothing at all (I_isol = 0 exactly, every generation) while
+pooling raises its information to 1.7610 bits. The v0.20.0
+seed-1234 XOR failure was itself a pooling artifact, and
+that result stands; no separate XOR re-gating is attempted
+in this build.
+
+### Honest limits (v0.24.0 addition)
+
+**5/6 claims pass.** The headline is a split verdict: the
+determinant gate repairs the two-channel claims on the
+file seeds and the pooled rule repairs the Cogitate
+comparison in aggregate — but the gate does not generalize
+to the count halves on the wider survey, and the pooled
+rule does not generalize to per-seed prediction. Four
+disclosures qualify the picture: (1) the gate excludes
+seed 1234 by a stated rule, not by hand, and the rule was
+frozen from the calibration seeds only — but the survey
+shows the gate is necessary, not sufficient: seed 2 passes
+both f halves yet is excluded, and four gated survey seeds
+fail the count halves; (2) the pooled Cogitate rule
+(lxxxvii) was frozen from the same 12-seed survey it is
+evaluated on — a calibration result, not a held-out test —
+and the only held-out check, the fresh-seed diagnostic,
+confirms the pooled legs while showing per-seed margins
+more dispersed than the survey's (two of four negative,
+worst −0.3788); (3) the distress half of the sign rule is
+not exact on the survey (seeds 1, 2, 777), so the
+mechanism as stated covers the concern channel exactly and
+the distress channel only on average; (4) the (lxxxiv)
+swap pass on seed 2026 is thin (0.3140 vs the 0.30 bar),
+and the (lxxxvi) swap failure on seed 3 is thinner still
+in the other direction (0.2969) — the swap bar sits inside
+the seed-to-seed scatter. None of this measures
+consciousness, empathy in a human, or any theory of
+consciousness; it measures a synthetic classical emulation,
+under a preregistration written before the new claims were
+evaluated — with the disclosed exception that the pooled
+rule (lxxxvii) was frozen from the same survey it is
+evaluated on, so for that claim the preregistration is a
+calibration record, not a held-out test. Classical emulation
+throughout; Faggin's metaphysics stays interpretive. No
+scalar Φ is computed anywhere.
+
+## 31. Wave direction: opposite and perpendicular, all possible directions (v0.25.0, measured 2026-11-19)
+
+Jean's directive, 2026-11-19: check the opposite wave
+direction and the perpendicular wave direction — all
+possible directions — under "do all logic for maximum
+scientific outcomes". The target is the Faggin bridge
+(the live arc), grounded in his Matrix logic (2026-11-18):
+the observer facing the opposite direction is necessary
+for the self-cycle of self-knowing.
+
+The wave direction in the code is the angle theta in the
+{stored, kernel} plane, in two places that already exist:
+the slide state psi(theta) = cos(theta)|stored> +
+sin(theta)|kernel> (observer_cycle.slide_state) and the
+rotation pair psi1 = cos(theta) q1 + sin(theta) k1, psi2 =
+-sin(theta) q1 + cos(theta) k1 (cascade.rotation_pair).
+Both were run before only on theta in [0, pi/2]. This
+build sweeps theta over the full circle [0, 2 pi) on a
+24-point grid (every 15 degrees) and asks what the wave
+does at theta + pi (opposite) and theta + pi/2
+(perpendicular). The preregistration
+(docs/preregistration-v0.25.0.md) was written before the
+evaluation run, with the claims frozen, the thresholds
+frozen (the (xxxii) bars, reused for the same noisy
+construction), and the noisy claim split into (xci) and
+(xcii) from the calibration pilot — not after seeing the
+held-out numbers. New module wave_direction.py; 16 new
+tests in tests/test_wave_direction.py.
+
+The exact structure, derivable by hand and verified in
+code on the grid: slide D(theta) = cos^2(theta), C(theta)
+= sin^2(theta), R_s(theta) = cos^2(theta), R_k(theta) =
+sin^2(theta), R_s - R_k = cos(2 theta), C + D = 1;
+rotation pair D1(theta) = cos^2(theta), D2(theta) =
+sin^2(theta), cross term chi(theta) = -sin(theta)
+cos(theta) = -(1/2) sin(2 theta), V(theta) =
+|sin(2 theta)|. Opposite (theta + pi): cos^2 and sin^2
+are unchanged, so every slide and rotation-pair quantity
+is identical — the wave returns to itself, up to a global
+phase of -1. Perpendicular (theta + pi/2): cos^2 and
+sin^2 swap, so the slide swaps D with C and R_s with
+R_k, and the rotation pair swaps D1 with D2 and flips
+the sign of chi, while |chi| and V are unchanged — the
+perpendicular direction knows the opposite pattern.
+
+### (lxxxviii) Opposite direction: the wave returns to itself — PASS
+
+On the 24-point grid, every slide quantity (D, C, R_s,
+R_k, split, C + D) and every rotation-pair quantity (D1,
+D2, cross term real and imag, V sweep, V analytic) at
+theta + pi equals the same quantity at theta within
+1e-9. Worst differences: slide split 1.22e-15, slide D
+5.55e-16, slide C 5.55e-16, slide R_s 8.88e-16, slide
+R_k 6.11e-16, slide C + D 2.22e-16, pair D1 6.66e-16,
+pair D2 5.00e-16, pair cross real 5.55e-16, pair cross
+imag 0.00e+00, pair V sweep 9.99e-16, pair V analytic
+9.99e-16. All twelve are float noise, six orders of
+magnitude below the 1e-9 bar. The self-cycle closes: the
+opposite direction is the same wave.
+
+### (lxxxix) Perpendicular direction: the swap — PASS
+
+On the same grid, the slide swaps D with C and R_s with
+R_k at theta + pi/2, and the rotation pair swaps D1 with
+D2 and negates the cross term while |cross| and V are
+unchanged, all within 1e-9. Worst swap errors: slide D
+swaps with C 5.55e-16, slide C swaps with D 7.77e-16,
+slide R_s swaps with R_k 9.99e-16, slide R_k swaps with
+R_s 7.77e-16, pair D1 swaps with D2 6.66e-16, pair D2
+swaps with D1 5.55e-16, pair cross negates 9.99e-16,
+pair |cross| unchanged 9.99e-16, pair V sweep unchanged
+1.78e-15, pair V analytic unchanged 1.78e-15. All ten
+are float noise. Spot values: at theta = 0 -> pi/2, D
+and C exchange (1.0 <-> 0.0) and R_s and R_k exchange;
+at theta = pi/4 -> 3pi/4 the cross term flips sign
+(-0.5 -> +0.5) while V stays 1.0.
+
+### (xc) All-directions sweep: the directional profile and the cascade's direction dependence — PASS
+
+(a) chi(theta) = -(1/2) sin(2 theta) within 1e-9 and
+V(theta) = |sin(2 theta)| within 1e-9 on the grid:
+worst |chi + (1/2) sin 2theta| = 1.67e-16, worst |V -
+|sin 2theta|| = 3.33e-16, worst |chi imag| = 0. The
+signed cross term has four lobes: zeros at 0, pi/2, pi,
+3pi/2, extrema at pi/4, 3pi/4, 5pi/4, 7pi/4, max |chi| =
+0.5000. (b) The rotation cascade at every grid theta:
+off-axis (theta not a multiple of pi/2) V_1 =
+|sin 2theta| (0.5 / 0.8660 / 1.0 at pi/12 / pi/6 / pi/4
+and their rotations) and V_k = 0 for every stage k >= 2,
+with the pair gone from stage 2; on-axis (0, pi/2, pi,
+3pi/2) V_1 = 0 and no pair exists from stage 2. The
+cascade's death at stage 2, found in claim (vi) for a
+single direction, is direction-independent: both
+projected vectors are parallel to q1 off-axis (rank 1),
+and one member projects to zero on-axis. This is the
+same mechanism as (vi), now checked on all 24
+directions instead of one.
+
+### (xci) Noisy direction sweep, stored and opposite directions — FAIL
+
+The same noise model and construction as
+self_knowing.self_knowing_sweep (5 noisy copies per
+sigma on the grid [0, 0.01, 0.05, 0.1, 0.25, 0.5, 1.0]),
+with the uniform thought replaced by the slide state
+psi(theta), from theta = 0 (stored) and theta = pi/2
+(opposite, the kernel thought). Bars are the (xxxii)
+bars, unchanged: Pearson(D, C) <= -0.90, Spearman(D, C)
+<= -0.90, D range >= 0.25, C range >= 0.25, on every
+(seed, direction) in the 4 x 2 set.
+
+| seed | direction | D(σ=0) | C(σ=0) | Pearson | Spearman | D range | C range |
+|---|---|---|---|---|---|---|---|
+| 42 | stored | 1.0000 | 0.0000 | −0.9570 | −1.0000 | 0.4804 | 0.6133 |
+| 42 | opposite | 0.0000 | 1.0000 | −0.9987 | −1.0000 | 0.4380 | 0.7789 |
+| 7 | stored | 1.0000 | 0.0000 | −0.9397 | −0.9643 | 0.5370 | 0.5110 |
+| 7 | opposite | 0.0000 | 1.0000 | −0.9038 | −0.9643 | 0.2884 | 0.4628 |
+| 1234 | stored | 1.0000 | 0.0000 | −0.9720 | −1.0000 | 0.4650 | 0.7233 |
+| 1234 | opposite | 0.0000 | 1.0000 | −0.9889 | −1.0000 | 0.3834 | 0.5757 |
+| 2026 | stored | 1.0000 | 0.0000 | **−0.8828** | −0.9643 | 0.5088 | 0.4755 |
+| 2026 | opposite | 0.0000 | 1.0000 | −0.9710 | −1.0000 | **0.2490** | 0.4107 |
+
+The claim FAILS on two held-out legs, and both are
+worth naming. Seed 2026 stored Pearson −0.8828 is the
+known (xxxii) failure reproduced exactly — the stored
+direction IS the (xxxii) construction, so this leg is a
+consistency check that the new module reproduces the old
+measurement to four decimals, not a new surprise. Seed
+2026 opposite D range 0.2490 misses the 0.25 bar by
+0.0010: D rises 0.0000 -> 0.0000 -> 0.0010 -> 0.0038 ->
+0.0217 -> 0.0800 -> 0.2490 while C falls 1.0000 ->
+0.5893, the anti-correlation itself strong (Pearson
+−0.9710, Spearman −1.0000) — the failure is the range,
+not the direction. The other six combos pass all four
+bars, with seed 7 opposite Pearson −0.9038 a thin pass
+(0.0038 inside the bar). Seed 1234 passes both
+directions on its first noisy-sweep test — the seed that
+broke (l), (li), (liii), (lx), (lxv) does not break the
+direction sweep. The opposite direction is the mirror
+image of the stored one: D rises from 0 where the stored
+D falls from 1, and C falls from 1 where the stored C
+rises from 0 (seed 42 opposite: D 0.0000 -> 0.4380, C
+1.0000 -> 0.2211; seed 1234 opposite: D 0.0000 ->
+0.3834, C 1.0000 -> 0.4243).
+
+### (xcii) Noisy perpendicular direction — FAIL
+
+The same four bars from theta = pi/4 (the equal
+superposition, D = C = 0.5), on every seed in {42, 7,
+1234, 2026}. This claim was calibrated to FAIL: the
+calibration pilot (seeds 42/7) failed on both seeds
+before the evaluation run, and the claim is kept as
+stated — the failure is the finding.
+
+| seed | D(σ=0) | C(σ=0) | Pearson | Spearman | D range | C range |
+|---|---|---|---|---|---|---|
+| 42 | 0.5000 | 0.5000 | −0.7982 | −0.9643 | 0.2936 | 0.2183 |
+| 7 | 0.5000 | 0.5000 | +0.1661 | +0.1071 | 0.1050 | 0.1643 |
+| 1234 | 0.5000 | 0.5000 | **+0.5109** | **+0.7500** | 0.1200 | 0.2575 |
+| 2026 | 0.5000 | 0.5000 | **+0.8297** | **+0.6071** | 0.1285 | 0.1252 |
+
+On the held-out seeds the correlation is POSITIVE: from
+the equal superposition D and C move together, not
+opposite. The perpendicular direction does not merely
+break the observer-direction anti-correlation — it
+inverts it. Per-sigma rows, seed 1234 perpendicular: D
+0.5000 -> 0.4925 -> 0.4637 -> 0.4320 -> 0.3800 -> 0.3970
+-> 0.4516, C 0.5000 -> 0.4972 -> 0.4809 -> 0.4512 ->
+0.3706 -> 0.4743 -> 0.6281 — both fall together to
+sigma = 0.25, then both rise together to sigma = 1.00.
+Per-sigma rows, seed 2026 perpendicular: D 0.5000 ->
+0.4970 -> 0.4846 -> 0.4693 -> 0.4318 -> 0.4004 ->
+0.3715 (falls monotonically), C 0.5000 -> 0.5037 ->
+0.5141 -> 0.5181 -> 0.4849 -> 0.3929 -> 0.4359 (humps,
+then falls). Calibration rows, seed 42 perpendicular: D
+humps 0.50 -> 0.79 (sigma = 0.50) -> 0.63, C dips 0.50
+-> 0.28 (sigma = 0.25) -> 0.42; seed 7 perpendicular: D
+drifts down 0.50 -> 0.395, C humps 0.50 -> 0.60 (sigma =
+0.25) -> 0.44. Four seeds, four different trajectories
+— the perpendicular start sits on the saturation
+plateau (D = C = 0.5), so noise has no systematic
+direction to move the quantities: the trajectories trace
+the fixed noise directions and differ by seed. The
+observer-direction anti-correlation holds from the
+stored and opposite directions and breaks — inverts —
+at the perpendicular one.
+
+### What this build does and does not say
+
+What it says: the wave's geometry is closed under the
+opposite and perpendicular shifts exactly, on all 24
+directions, to float noise; the cascade's stage-2 death
+is direction-independent; and the noisy
+observer-direction effect — the D-vs-C anti-correlation
+of (xxxii) — is a property of starting at an endpoint of
+the slide (stored or opposite), not of the slide itself:
+from the midpoint it fails on every seed and inverts on
+three of four. What it does not say: nothing here
+measures consciousness, empathy in a human, or any
+theory of consciousness; it measures a synthetic
+classical emulation, under a preregistration written
+before the evaluation run. The split of the noisy claim
+into (xci) and (xcii) was made from the calibration
+pilot before the evaluation run; the alternative of
+relaxing the bars for the perpendicular start was
+considered and rejected (the bars are the (xxxii) bars,
+reused for the same construction — moving them for one
+direction would be moving a threshold to force a pass).
+The (xxxii) verdict (FAIL, honest, held-out seed 2026)
+and the (xxxv) verdict (FAIL, honest, fresh seeds 5/99)
+stand unchanged. Claims (lxxxviii)-(xc) are exact
+identities, like (xxxiv): the measured content is that
+the code realizes them on the full circle to 1e-9,
+including the negative-amplitude quadrants the existing
+code never ran. Claims (xci)/(xcii) are statistical
+claims on 5-copy means, like (xxxii)/(xxxv): the same
+saturation and finite-sample fragility applies. No
+threshold was moved to force a pass. Classical emulation
+throughout; Faggin's metaphysics stays interpretive. No
+scalar Φ is computed anywhere.

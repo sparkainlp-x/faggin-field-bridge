@@ -1,5 +1,122 @@
 # Changelog — Faggin Field Bridge
 
+## 0.25.0 (2026-11-19)
+
+Wave direction: check the opposite wave direction and the
+perpendicular wave direction — all possible directions
+(Jean's directive, "do all logic for maximum scientific
+outcomes", grounded in his Matrix logic: the observer
+facing the opposite direction is necessary for the
+self-cycle of self-knowing). The wave direction is the
+angle theta in the {stored, kernel} plane — the slide
+state psi(theta) = cos(theta)|stored> +
+sin(theta)|kernel> and the rotation pair psi1 =
+cos(theta) q1 + sin(theta) k1, psi2 = -sin(theta) q1 +
+cos(theta) k1 — swept over the full circle [0, 2 pi) on a
+24-point grid, where before it ran only on theta in
+[0, pi/2]. Three of five claims pass. (lxxxviii) the
+opposite direction (theta + pi): every slide and
+rotation-pair quantity is identical to theta, worst
+difference 1.22e-15 (bar 1e-9) — the wave returns to
+itself, up to a global phase of -1; the self-cycle closes
+— PASSES. (lxxxix) the perpendicular direction (theta +
+pi/2): the slide swaps D with C and R_s with R_k, the
+rotation pair swaps D1 with D2 and negates the cross term
+while |chi| and V are unchanged, worst swap error
+1.78e-15 (bar 1e-9) — the perpendicular direction knows
+the opposite pattern — PASSES. (xc) the all-directions
+sweep: chi(theta) = -(1/2) sin(2 theta) and V(theta) =
+|sin(2 theta)| exactly (worst errors 1.67e-16 / 3.33e-16),
+zeros at every multiple of pi/2, extrema +/-0.5 at odd
+multiples of pi/4, and the rotation cascade dies at stage
+2 at every off-axis direction (V_1 = 0.5 / 0.8660 / 1.0,
+V_k = 0 for k >= 2) and is degenerate on-axis (V_1 = 0)
+— PASSES. (xci) the noisy direction sweep from the
+stored and opposite directions — FAILS honestly: the
+stored direction on held-out seed 2026 reproduces the
+known (xxxii) failure exactly (Pearson -0.8828 vs the
+-0.90 bar), and the opposite direction on seed 2026
+misses the D-range bar by 0.0010 (0.2490 vs 0.25); the
+other six (seed, direction) combos pass all four bars,
+with seed 1234 passing both directions on its first
+noisy-sweep test (-0.9720 / -0.9889). (xcii) the noisy
+perpendicular direction — FAILS honestly, as calibrated:
+on both calibration seeds (42: Pearson -0.7982, C range
+0.2183; 7: Pearson +0.1661) and on both held-out seeds,
+where the correlation is POSITIVE (+0.5109 / +0.8297) —
+from the equal superposition D and C move together, not
+opposite. The perpendicular start sits on the saturation
+plateau (D = C = 0.5), so noise has no systematic
+direction to move the quantities: the trajectories trace
+the fixed noise directions and differ by seed (D humps
+to 0.79 on seed 42, drifts down to 0.395 on seed 7, both
+fall together to 0.38 on seed 1234, D falls to 0.37 on
+seed 2026). The observer-direction anti-correlation
+holds from the stored and opposite directions and breaks
+— inverts — at the perpendicular one. The noisy claim
+was split into (xci) and (xcii) from the calibration
+pilot before the evaluation run; the alternative of
+relaxing the bars for the perpendicular start was
+considered and rejected (the bars are the (xxxii) bars,
+reused for the same construction). No claim
+(i)-(lxxxvii) changes verdict in this build; the
+(xxxii) and (xxxv) originals stay FAIL as stated. All
+thresholds were preregistered in
+docs/preregistration-v0.25.0.md before the evaluation
+run; none was moved. No scalar Phi is computed anywhere.
+
+## 0.24.0 (2026-11-18)
+
+Seed-1234 design decisions: re-gate the two-channel empathy
+claims (l)/(li)/(liii) on the baseline pair determinant-sign
+distribution, and replace (lx)'s 0.10 margin with a pooled
+rule (follow-up to the v0.21.0 diagnosis and the v0.22.0
+per-generation result). The gate is frozen in
+docs/preregistration-v0.24.0.md before the evaluation run:
+a seed is gated in iff its baseline resonance field (N = 8,
+sigma = 0.25) has mean baseline pair determinant >= -0.05
+(the tightest round number below the calibration minimum
+-0.0431, seed 42). On the 12-seed survey it admits 8 seeds
+and excludes 1234, 2, 777, 2024. Five of six claims pass.
+(lxxxii)-(lxxxiv) the ORIGINAL (l)/(li)/(liii) sub-checks,
+unchanged, on the gated file seeds {42, 7, 2026} — all PASS
+(1234 is excluded by the gate, not by hand). (lxxxv) the
+mechanism-governed concurrence halves on the whole 12-seed
+survey — f(c, 0) strictly rises and f(0.5, d) is
+non-increasing on every gated survey seed, and no det >= 0
+pair ever falls under concern at dose 0.25 on any of the 12
+seeds — PASSES. (lxxxvii) the pooled Cogitate rule: over all
+84 runs (12 seeds x 7 sigma), r(gap, mean_R) - r(gap, mean_D)
+= +0.4022 (bar 0.10) and mean_R is the top-ranked pooled
+predictor (+0.6658, next: post +0.5373) — PASSES; the old
+(lx) verdict (FAIL, honest, per-seed margin) stands
+unchanged. (lxxxvi) the FULL re-gated claims on all gated
+survey seeds — FAILS honestly: (l) passes on 4/8, (li) on
+4/8, (liii) on 5/8 gated survey seeds. The gate rescues the
+concurrence halves, not the quale-count halves: count(c =
+0.5) is 24 / 25 / 26 / 27, not the 28 ceiling, on seeds 1 /
+3 / 99 / 31337, and the swap fails on seed 3 by 0.0031
+(0.2969 vs 0.30). Disclosed: the distress half of the sign
+rule is not exact (negative-det pairs fall under distress
+on seeds 1, 2, 777); a fraction-negative gate was considered
+and rejected (it admits seeds 777 and 2024, whose f dips
+under concern); a mean_D-shape gate for (lx) was considered
+and rejected (hump-shaped seeds 3, 99, 123 pass the 0.10
+margin while falling seeds 777, 2024 fail it); the pooled
+rule was frozen from the same survey it is evaluated on
+(calibration, not a held-out test) — the fresh-seed
+diagnostic (seeds 5, 11, 555, 4242, reported not gated)
+holds at the pooled level (+0.5270, mean_R top-ranked) while
+its per-seed margins are wilder than the survey's (+1.3257 /
+-0.1963 / +0.5211 / -0.3788); and no per-generation
+restatement applies to the two-channel claims (no pooling
+across generations there), while the XOR (lxv) failure was
+already corrected per-generation in v0.22.0 ((lxxvii) PASS,
+mean per-generation gap +1.4356 on seed 1234 vs pooled
+-0.2591). No claim (i)-(lxxxi) changes verdict in this
+build; the (l)/(li)/(liii) and (lx) originals stay FAIL as
+stated.
+
 ## 0.23.0 (2026-11-18)
 
 Privacy-enforcing copier: is the 5/6 cloning bound

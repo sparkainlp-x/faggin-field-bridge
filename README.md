@@ -1039,6 +1039,121 @@ seeds 7 and 1234; and the (lxxxi) high-σ leg rests on thin margins
 Run `restricted_copier.main()` for the sweep and the four verdicts,
 or see REPORT.md §29.
 
+## Seed-1234 design decisions: re-gate the two-channel claims, replace (lx)'s margin (v0.24.0)
+
+The v0.21.0 diagnosis left two design decisions open, and this
+build takes both, with the gate and the pooled rule frozen in
+docs/preregistration-v0.24.0.md before the evaluation run. A seed
+is gated in iff its baseline resonance field (N = 8, σ = 0.25)
+has mean baseline pair determinant ≥ −0.05 — the tightest round
+number below the calibration minimum (−0.0431, seed 42). On the
+12-seed survey the gate admits 8 seeds and excludes 1234, 2, 777,
+2024. The old verdicts stay on the record: (l), (li), (liii) FAIL
+as originally stated, and (lx) FAILS as originally stated.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `seed_1234_regating.py` | Original (l) sub-checks, gated file seeds {42, 7, 2026} | (lxxxii) Re-gated (l) | **PASS** |
+| `seed_1234_regating.py` | Original (li) sub-checks, gated file seeds {42, 7, 2026} | (lxxxiii) Re-gated (li) | **PASS** |
+| `seed_1234_regating.py` | Original (liii) sub-checks, gated file seeds {42, 7, 2026} | (lxxxiv) Re-gated (liii) | **PASS** |
+| `seed_1234_regating.py` | Concern/distress f halves + exact sign rule, 12-seed survey | (lxxxv) Sign-conditioned concurrence | **PASS** |
+| `seed_1234_regating.py` | Full re-gated (l)/(li)/(liii), all gated survey seeds | (lxxxvi) Survey extension | **FAIL** |
+| `seed_1234_regating.py` | Pooled Cogitate margin over 84 runs vs 0.10, top-ranked | (lxxxvii) Pooled Cogitate rule | **PASS** |
+
+Headline numbers: **5/6 pass — the gate repairs the
+two-channel claims on the file seeds and the pooled rule
+repairs the Cogitate comparison in aggregate, but neither
+generalizes.** With their original sub-checks unchanged, (l),
+(li), (liii) pass on the gated file seeds {42, 7, 2026}
+(1234 excluded by the gate, not by hand), and the
+mechanism-governed concurrence halves pass on the whole
+12-seed survey: f(c, 0) strictly rises and f(0.5, d) is
+non-increasing on every gated survey seed, and no det ≥ 0
+pair ever falls under concern at dose 0.25 on any of the 12
+seeds. But the full re-gated claims fail on the wider survey
+— (l) 4/8, (li) 4/8, (liii) 5/8 gated survey seeds — because
+the gate rescues the concurrence halves, not the
+quale-count halves (count(c = 0.5) is 24 / 25 / 26 / 27, not
+the 28 ceiling, on seeds 1 / 3 / 99 / 31337; the swap fails
+on seed 3 by 0.0031). And the (lx) question, re-asked at the
+pooled level over all 84 runs, passes — pooled margin
+r(gap, mean_R) − r(gap, mean_D) = +0.4022 (bar 0.10) with
+mean_R the top-ranked pooled predictor (+0.6658, next: post
++0.5373) — while a per-seed rule with any bar ≥ 0.10 still
+fails on half the survey. Disclosed: the distress half of
+the sign rule is not exact (seeds 1, 2, 777); the pooled
+rule was frozen from the same survey it is evaluated on, so
+it is a calibration result, not a held-out test — the
+fresh-seed diagnostic (seeds 5, 11, 555, 4242, reported not
+gated) holds at the pooled level (+0.5270, mean_R
+top-ranked) while its per-seed margins are wilder than the
+survey's (+1.33 / −0.20 / +0.52 / −0.38); and no
+per-generation restatement applies to the two-channel claims
+(no pooling across generations there), while the XOR (lxv)
+failure was already corrected per-generation in v0.22.0
+((lxxvii) PASS, mean per-generation gap +1.4356 on seed
+1234 vs pooled −0.2591).
+
+Run `seed_1234_regating.main()` for the gate, the six
+verdicts, and the fresh-seed diagnostic, or see REPORT.md
+§30.
+
+## Wave direction: opposite and perpendicular, all possible directions (v0.25.0)
+
+The wave direction is the angle theta in the
+{stored, kernel} plane — the slide state psi(theta) =
+cos(theta)|stored> + sin(theta)|kernel> and the rotation
+pair psi1 = cos(theta) q1 + sin(theta) k1, psi2 =
+-sin(theta) q1 + cos(theta) k1 — swept over the full
+circle [0, 2 pi) on a 24-point grid, where before it ran
+only on theta in [0, pi/2]. The preregistration
+(docs/preregistration-v0.25.0.md) was written before the
+evaluation run, with the noisy claim split into (xci) and
+(xcii) from the calibration pilot. The old verdicts stay
+on the record: (xxxii) FAILS as originally stated, and
+(xxxv) FAILS as originally stated.
+
+| Module | What it measures | Claim | Verdict |
+|---|---|---|---|
+| `wave_direction.py` | Slide and rotation-pair quantities at theta + pi vs theta, 24-point grid | (lxxxviii) Opposite direction | **PASS** |
+| `wave_direction.py` | Slide and rotation-pair swap identities at theta + pi/2, 24-point grid | (lxxxix) Perpendicular direction | **PASS** |
+| `wave_direction.py` | chi(theta) = -(1/2) sin(2 theta), V = \|sin(2 theta)\|, cascade by direction | (xc) All-directions sweep | **PASS** |
+| `wave_direction.py` | Noisy D-vs-C anti-correlation from stored and opposite, 4 seeds x 2 directions | (xci) Noisy stored + opposite | **FAIL** |
+| `wave_direction.py` | Noisy D-vs-C anti-correlation from the equal superposition, 4 seeds | (xcii) Noisy perpendicular | **FAIL** |
+
+Headline numbers: **3/5 pass — the wave's geometry is
+closed under the opposite and perpendicular shifts, but
+the noisy observer-direction effect is a property of
+starting at an endpoint of the slide, not of the slide
+itself.** The opposite direction returns the wave to
+itself exactly (worst difference 1.22e-15, bar 1e-9) —
+the self-cycle closes. The perpendicular direction swaps
+D with C and R_s with R_k and negates the cross term
+while |chi| and V are unchanged (worst swap error
+1.78e-15). The cross term is chi(theta) = -(1/2)
+sin(2 theta) exactly (worst error 1.67e-16), with zeros
+at every multiple of pi/2 and extrema +/-0.5 at odd
+multiples of pi/4, and the rotation cascade dies at
+stage 2 at every off-axis direction (V_1 = 0.5 / 0.8660 /
+1.0, V_k = 0 for k >= 2) and is degenerate on-axis (V_1
+= 0). But the noisy sweep fails from the midpoint and
+from one held-out endpoint: (xci) fails on seed 2026
+stored Pearson -0.8828 (the known (xxxii) failure,
+reproduced exactly) and seed 2026 opposite D range
+0.2490 vs the 0.25 bar, while the other six combos pass
+and seed 1234 passes both directions; (xcii) fails on
+every seed, and on the held-out seeds the correlation is
+POSITIVE (+0.5109 / +0.8297) — from the equal
+superposition D and C move together, not opposite,
+because the perpendicular start sits on the saturation
+plateau (D = C = 0.5), so noise has no systematic
+direction to move the quantities. The alternative of
+relaxing the bars for the perpendicular start was
+considered and rejected.
+
+Run `wave_direction.main()` for the sweeps, the cascade
+table, and the five verdicts, or see REPORT.md §31.
+
 ## Maximum scientific outcome
 
 Run:
@@ -1342,6 +1457,65 @@ not change; only the status derivation changes.
   All thresholds were preregistered from calibration seeds
   42/7 before the held-out evaluation; none was moved. No
   scalar Φ is computed anywhere.
+- **v0.24.0:** five of six seed-1234 design-decision claims pass —
+  and the headline is a split verdict. The two-channel claims
+  (l)/(li)/(liii) are re-gated on the baseline pair
+  determinant-sign distribution (a seed is gated in iff its
+  baseline mean pair determinant is ≥ −0.05, the tightest
+  round number below the calibration minimum −0.0431) and,
+  with their original sub-checks unchanged, pass on the gated
+  file seeds {42, 7, 2026} (1234 excluded by the gate, not by
+  hand); the mechanism-governed concurrence halves pass on the
+  whole 12-seed survey (f(c, 0) strictly rises and f(0.5, d)
+  is non-increasing on every gated survey seed, and no det ≥ 0
+  pair ever falls under concern at dose 0.25 on any of the 12
+  seeds); and the (lx) question, re-asked at the pooled level
+  over all 84 runs, passes (pooled margin +0.4022, bar 0.10,
+  mean_R top-ranked at +0.6658). But the full re-gated claims
+  fail on the wider survey (claim (lxxxvi) FAILS: (l) 4/8,
+  (li) 4/8, (liii) 5/8 gated survey seeds) — the gate rescues
+  the concurrence halves, not the quale-count halves
+  (count(c = 0.5) is 24 / 25 / 26 / 27, not the 28 ceiling,
+  on seeds 1 / 3 / 99 / 31337). Disclosed: the distress half
+  of the sign rule is not exact (seeds 1, 2, 777); the pooled
+  rule was frozen from the same survey it is evaluated on, so
+  it is a calibration result, not a held-out test — the
+  fresh-seed diagnostic (seeds 5, 11, 555, 4242) holds at the
+  pooled level (+0.5270) while its per-seed margins are wilder
+  (+1.33 / −0.20 / +0.52 / −0.38); and the old (l), (li),
+  (liii), (lx) verdicts stay FAIL as originally stated. All
+  thresholds were preregistered before the evaluation run;
+  none was moved. No scalar Φ is computed anywhere.
+- **v0.25.0:** three of five wave-direction claims pass —
+  and the headline is a split verdict. The wave's
+  geometry is closed under the opposite and perpendicular
+  shifts exactly, on all 24 directions of the full circle:
+  theta + pi returns every slide and rotation-pair
+  quantity to itself (worst difference 1.22e-15, bar
+  1e-9) — the self-cycle closes — and theta + pi/2 swaps
+  D with C and R_s with R_k and negates the cross term
+  while |chi| and V are unchanged (worst swap error
+  1.78e-15); chi(theta) = -(1/2) sin(2 theta) exactly,
+  and the rotation cascade dies at stage 2 at every
+  off-axis direction and is degenerate on-axis. But the
+  noisy observer-direction anti-correlation is a property
+  of starting at an endpoint of the slide, not of the
+  slide itself: (xci) FAILS on seed 2026 stored Pearson
+  -0.8828 (the known (xxxii) failure, reproduced exactly)
+  and seed 2026 opposite D range 0.2490 vs the 0.25 bar,
+  while the other six combos pass and seed 1234 passes
+  both directions; (xcii) FAILS on every seed, and on
+  the held-out seeds the correlation is POSITIVE (+0.5109
+  / +0.8297) — from the equal superposition D and C move
+  together, not opposite, because the perpendicular start
+  sits on the saturation plateau (D = C = 0.5), so noise
+  has no systematic direction to move the quantities.
+  The noisy claim was split into (xci) and (xcii) from
+  the calibration pilot before the evaluation run; the
+  alternative of relaxing the bars for the perpendicular
+  start was considered and rejected. All thresholds were
+  preregistered before the evaluation run; none was
+  moved. No scalar Φ is computed anywhere.
 - **v0.23.0:** four of four privacy-enforcing-copier claims pass —
   and the headline is a qualified restoration: the single-shot
   restricted copier respects the 5/6 bound at every σ on every seed

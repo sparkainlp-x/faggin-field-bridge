@@ -1,5 +1,242 @@
 # Changelog — Faggin Field Bridge
 
+## 0.27.0 (2026-11-19)
+
+The symmetry sweep: orbit-averaging the noisy
+direction sweep under sign flips of the noise
+coordinates, to fix the two v0.25.0 FAILs from
+outside the calibrator (Jean's directive:
+"Symmetry? Explore outside the big to fix"). The
+mechanism: unity.gaussian_copies re-seeds the RNG
+per sigma, so the same 5 noise vectors are reused
+at every sigma, scaled — the sweep traces 5 fixed
+noise directions. V4-full replaces each of the 5
+draws by its 4-orbit under sign flips of (z_u, z_w)
+in the slide-adapted basis (u = stored, w =
+"attention" inside P, k = kernel, m = remaining),
+i.e. 20 copies per sigma from the same 5 draws; z_k
+is never flipped. Four of five claims pass.
+(xcviii) orbit estimator exactness — FAILS
+honestly: the 1e-12 bar is tighter than the
+concurrence function's own numerical floor (worst
+sigma = 0 error 6.57e-09, worst Z2-vs-pair
+difference 8.44e-09, both in the density-matrix
+concurrence at the degenerate equal superposition;
+D itself is exact to 1e-16 and relabelling to
+2.22e-16). The bar was not moved to force a pass.
+(xcix) the stored Pearson rescue — (2026, stored)
+Pearson -0.8828 -> -0.9253 by orbit-averaging
+alone — PASSES. (c) (xci) under symmetry +
+calibration — all 8 combos pass all four bars with
+the frozen v0.26.0 calibrator rule; the only
+nonzero delta is (2026, opposite) +0.0040 (D range
+0.2490 -> 0.2500) — PASSES. (ci) the perpendicular
+inversion survives symmetrization on every seed
+(Pearson -0.7256 / +0.6364 / +0.3704 / +0.7481; D
+range 0.2365 / 0.0514 / 0.1141 / 0.0561, all below
+0.25; the calibrator holds delta = 0 on all four
+seeds) — PASSES. (cii) two failure kinds — Pearson
+without sigma = 1.0 passes (2026, stored)
+(-0.9433) and fails every perpendicular (-0.8091 /
+-0.4620 / +0.8013 / +0.8348): the stored failure
+is a saturation-point failure, the perpendicular
+failure is whole-curve — PASSES. The n-copies
+control is disclosed: plain copies rescue the
+Pearson too (n=10: -0.9323, n=20: -0.9289 on
+(2026, stored); n=20 passes (xci) 8/8 outright),
+so the rescue is variance reduction — symmetry's
+edge is determinism (the same 5 draws, no new
+randomness) plus opposite-D-range preservation
+(V4-full holds 0.2490; n=10 breaks it to 0.2387).
+Rejected: the five other groups (Z2, V4-plane, D4,
+swap, B4) all fix the stored Pearson but break the
+opposite D range to 0.2042-0.2317, below the
+rescuable bound 0.2381; the symmetrized start
+(mirror-average and mean-density-matrix, candidate
+3) fails on every seed; H_quad is anti-predictive
+(2026 highest at 1.92/2.0 yet holds the stored
+failure; seed 7 lowest at 0.97 yet stored passes).
+The (xci), (xcii) and (xxxii) verdicts stay FAIL as
+originally stated. The symmetry-entropy verdict
+(orbit entropy cannot prove reality is a quantum
+projection) is untouched: only the orbit-averaging
+mechanism is borrowed.
+
+## 0.26.0 (2026-11-19)
+
+Observer and calibration agents, inserted into the
+wave-direction / observer-cycle setup (Jean's directive,
+quoting the two v0.25.0 FAILs). The agents reuse the
+v0.1.0 pattern from attunement.py (the membrane-arena
+pattern): the observer (Yang) is read-only, the
+calibrator (Yin) is ONE clipped scalar delta in
+[-0.05, 0.05] — no second scale, no widened bound. The
+observer reads the slide state and the rotation pair at
+a direction and reports D, C, R_s, R_k, chi, V without
+touching the state. The calibrator scales the noisy
+sweep's D by (1 + delta) — the attunement pattern,
+concurrence never tuned — and picks delta by a frozen
+rule (scan the 201-point grid, minimize the number of
+failing (xxxii) bars, tie-break smallest |delta|). All
+five claims pass. (xciii) the observer is read-only:
+worst state change 0.0 (bar 1e-12), worst report-vs-direct
+0.0 (bar 1e-9) on the 24-point grid — PASSES. (xciv)
+the calibrator is bounded: +/-0.5 clip to +/-0.05
+exactly, delta = 0 reproduces the sweep exactly, every
+rule-picked delta inside the bound — PASSES. (xcv) the
+calibration agent on (xci): the D-range rescue — the
+(2026, opposite) miss is rescued at delta = +0.0040
+(D range 0.2490 -> 0.2500; the exact uncalibrated range
+is 0.2490105483 — the published 0.2490 was a 4-decimal
+rounding — needing delta >= 0.0039735, first grid point
++0.0040) and the D-range bar holds on all eight
+(seed, direction) combos — PASSES. The (2026, stored)
+Pearson miss survives: the rule holds delta = 0 there
+and no delta in the bound moves Pearson to -0.90 or
+below (diagnostic: minimum Pearson over the grid is
+-0.8828; at delta = +0.05 the clip moves it the wrong
+way, to -0.8436, and breaks Spearman too). (xcvi) the
+perpendicular inversion survives bounded calibration:
+Pearson stays above -0.90 on every seed with the agent
+on (-0.7982 / +0.1661 / +0.5109 / +0.8297), the agent
+holding delta = 0 on all four — PASSES. (xcvii) the
+closed loop (observe, calibrate once, re-read): 2 rounds,
+2 reads, held delta unchanged (0.0), round-2 report
+matching a fresh direct computation exactly (0.0) on all
+twelve combos — PASSES. The calibration pilot found the
+clip effect before the evaluation run: Pearson/Spearman
+are invariant under the rescaling only where no clipping
+bites (opposite/perpendicular, |Δ| <= 2.3e-16); on the
+stored direction the sigma = 0 point has D = 1.0 exactly,
+so delta > 0 clips it and the correlations move toward
+zero (seed 42: ΔPearson +0.027, ΔSpearman +0.094 at
+delta = +0.05). The separation the build establishes:
+a D-range failure is calibratable inside the bound iff
+the uncalibrated range is at least 0.25 / 1.05 = 0.2381,
+while a correlation failure is calibration-proof — the
+only deltas that move a stored-direction correlation do
+so through the clip, and only for the worse. The (xci)
+and (xcii) verdicts stay FAIL as originally stated.
+Rejected: widening the bound, hand-picking delta per
+combo, relaxing the bars, scaling C.
+
+## 0.25.0 (2026-11-19)
+
+Wave direction: check the opposite wave direction and the
+perpendicular wave direction — all possible directions
+(Jean's directive, "do all logic for maximum scientific
+outcomes", grounded in his Matrix logic: the observer
+facing the opposite direction is necessary for the
+self-cycle of self-knowing). The wave direction is the
+angle theta in the {stored, kernel} plane — the slide
+state psi(theta) = cos(theta)|stored> +
+sin(theta)|kernel> and the rotation pair psi1 =
+cos(theta) q1 + sin(theta) k1, psi2 = -sin(theta) q1 +
+cos(theta) k1 — swept over the full circle [0, 2 pi) on a
+24-point grid, where before it ran only on theta in
+[0, pi/2]. Three of five claims pass. (lxxxviii) the
+opposite direction (theta + pi): every slide and
+rotation-pair quantity is identical to theta, worst
+difference 1.22e-15 (bar 1e-9) — the wave returns to
+itself, up to a global phase of -1; the self-cycle closes
+— PASSES. (lxxxix) the perpendicular direction (theta +
+pi/2): the slide swaps D with C and R_s with R_k, the
+rotation pair swaps D1 with D2 and negates the cross term
+while |chi| and V are unchanged, worst swap error
+1.78e-15 (bar 1e-9) — the perpendicular direction knows
+the opposite pattern — PASSES. (xc) the all-directions
+sweep: chi(theta) = -(1/2) sin(2 theta) and V(theta) =
+|sin(2 theta)| exactly (worst errors 1.67e-16 / 3.33e-16),
+zeros at every multiple of pi/2, extrema +/-0.5 at odd
+multiples of pi/4, and the rotation cascade dies at stage
+2 at every off-axis direction (V_1 = 0.5 / 0.8660 / 1.0,
+V_k = 0 for k >= 2) and is degenerate on-axis (V_1 = 0)
+— PASSES. (xci) the noisy direction sweep from the
+stored and opposite directions — FAILS honestly: the
+stored direction on held-out seed 2026 reproduces the
+known (xxxii) failure exactly (Pearson -0.8828 vs the
+-0.90 bar), and the opposite direction on seed 2026
+misses the D-range bar by 0.0010 (0.2490 vs 0.25); the
+other six (seed, direction) combos pass all four bars,
+with seed 1234 passing both directions on its first
+noisy-sweep test (-0.9720 / -0.9889). (xcii) the noisy
+perpendicular direction — FAILS honestly, as calibrated:
+on both calibration seeds (42: Pearson -0.7982, C range
+0.2183; 7: Pearson +0.1661) and on both held-out seeds,
+where the correlation is POSITIVE (+0.5109 / +0.8297) —
+from the equal superposition D and C move together, not
+opposite. The perpendicular start sits on the saturation
+plateau (D = C = 0.5), so noise has no systematic
+direction to move the quantities: the trajectories trace
+the fixed noise directions and differ by seed (D humps
+to 0.79 on seed 42, drifts down to 0.395 on seed 7, both
+fall together to 0.38 on seed 1234, D falls to 0.37 on
+seed 2026). The observer-direction anti-correlation
+holds from the stored and opposite directions and breaks
+— inverts — at the perpendicular one. The noisy claim
+was split into (xci) and (xcii) from the calibration
+pilot before the evaluation run; the alternative of
+relaxing the bars for the perpendicular start was
+considered and rejected (the bars are the (xxxii) bars,
+reused for the same construction). No claim
+(i)-(lxxxvii) changes verdict in this build; the
+(xxxii) and (xxxv) originals stay FAIL as stated. All
+thresholds were preregistered in
+docs/preregistration-v0.25.0.md before the evaluation
+run; none was moved. No scalar Phi is computed anywhere.
+
+## 0.24.0 (2026-11-18)
+
+Seed-1234 design decisions: re-gate the two-channel empathy
+claims (l)/(li)/(liii) on the baseline pair determinant-sign
+distribution, and replace (lx)'s 0.10 margin with a pooled
+rule (follow-up to the v0.21.0 diagnosis and the v0.22.0
+per-generation result). The gate is frozen in
+docs/preregistration-v0.24.0.md before the evaluation run:
+a seed is gated in iff its baseline resonance field (N = 8,
+sigma = 0.25) has mean baseline pair determinant >= -0.05
+(the tightest round number below the calibration minimum
+-0.0431, seed 42). On the 12-seed survey it admits 8 seeds
+and excludes 1234, 2, 777, 2024. Five of six claims pass.
+(lxxxii)-(lxxxiv) the ORIGINAL (l)/(li)/(liii) sub-checks,
+unchanged, on the gated file seeds {42, 7, 2026} — all PASS
+(1234 is excluded by the gate, not by hand). (lxxxv) the
+mechanism-governed concurrence halves on the whole 12-seed
+survey — f(c, 0) strictly rises and f(0.5, d) is
+non-increasing on every gated survey seed, and no det >= 0
+pair ever falls under concern at dose 0.25 on any of the 12
+seeds — PASSES. (lxxxvii) the pooled Cogitate rule: over all
+84 runs (12 seeds x 7 sigma), r(gap, mean_R) - r(gap, mean_D)
+= +0.4022 (bar 0.10) and mean_R is the top-ranked pooled
+predictor (+0.6658, next: post +0.5373) — PASSES; the old
+(lx) verdict (FAIL, honest, per-seed margin) stands
+unchanged. (lxxxvi) the FULL re-gated claims on all gated
+survey seeds — FAILS honestly: (l) passes on 4/8, (li) on
+4/8, (liii) on 5/8 gated survey seeds. The gate rescues the
+concurrence halves, not the quale-count halves: count(c =
+0.5) is 24 / 25 / 26 / 27, not the 28 ceiling, on seeds 1 /
+3 / 99 / 31337, and the swap fails on seed 3 by 0.0031
+(0.2969 vs 0.30). Disclosed: the distress half of the sign
+rule is not exact (negative-det pairs fall under distress
+on seeds 1, 2, 777); a fraction-negative gate was considered
+and rejected (it admits seeds 777 and 2024, whose f dips
+under concern); a mean_D-shape gate for (lx) was considered
+and rejected (hump-shaped seeds 3, 99, 123 pass the 0.10
+margin while falling seeds 777, 2024 fail it); the pooled
+rule was frozen from the same survey it is evaluated on
+(calibration, not a held-out test) — the fresh-seed
+diagnostic (seeds 5, 11, 555, 4242, reported not gated)
+holds at the pooled level (+0.5270, mean_R top-ranked) while
+its per-seed margins are wilder than the survey's (+1.3257 /
+-0.1963 / +0.5211 / -0.3788); and no per-generation
+restatement applies to the two-channel claims (no pooling
+across generations there), while the XOR (lxv) failure was
+already corrected per-generation in v0.22.0 ((lxxvii) PASS,
+mean per-generation gap +1.4356 on seed 1234 vs pooled
+-0.2591). No claim (i)-(lxxxi) changes verdict in this
+build; the (l)/(li)/(liii) and (lx) originals stay FAIL as
+stated.
+
 ## 0.23.0 (2026-11-18)
 
 Privacy-enforcing copier: is the 5/6 cloning bound
